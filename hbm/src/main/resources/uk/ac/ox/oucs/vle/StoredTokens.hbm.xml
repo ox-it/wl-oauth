@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!--
+		put your value object in the class name, the table name is optional
+		but you should specify it to avoid collisions
+	-->
+	<class name="uk.ac.ox.oucs.vle.StoredTokens" table="STORED_TOKENS">
+
+		<!-- <cache usage="read-write"/> -->
+
+		<!-- create the primary key id -->
+		<id name="id" type="string">
+			<column name="ID" />
+			<generator class="uuid" />
+		</id>
+		<property name="requestToken" type="string" index="request_token_idx" />
+		<property name="tokenSecret" type="string" />
+		<property name="accessToken" type="string" index="access_token_idx" />
+		<property name="consumer" type="string" />
+		<property name="user" type="string" index="user_idx" />
+		<property name="updated" type="date" />
+
+	</class>
+</hibernate-mapping>
