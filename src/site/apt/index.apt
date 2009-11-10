@@ -1,0 +1,20 @@
+   ------------------------
+   OAuth Provider for Sakai
+   ------------------------
+   
+Introduction
+
+  This is a project to allow Sakai to function as an OAuth provider. This means sakai can create OAuth tokens (request/access) and then authenticate requests based on these tokens. This allows people to create 3rd party services that can access Sakai without being given the users credentials or specially trusted access to the sakai installation.
+  
+Configuration
+
+  To configure sakai you need to specify the OAuth consumers:
+  
+----
+oauth.consumers=sakai
+oauth.sakai.description=A Quick Test
+oauth.sakai.secret=A Secret
+#oauth.sakai.callbackURL=http://localhost:9080/oauth-exmaple-consumer/Sakai
+----
+
+  The callbackURL might be optional but I'm not yet sure.
