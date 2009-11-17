@@ -26,10 +26,6 @@
         <servlet-name>AccessTokenServlet</servlet-name>
         <servlet-class>net.oauth.example.provider.servlets.AccessTokenServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>EchoServlet</servlet-name>
-        <servlet-class>net.oauth.example.provider.servlets.EchoServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>RequestTokenServlet</servlet-name>
         <url-pattern>/request_token</url-pattern>
@@ -41,10 +37,6 @@
     <servlet-mapping>
         <servlet-name>AccessTokenServlet</servlet-name>
         <url-pattern>/access_token</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EchoServlet</servlet-name>
-        <url-pattern>/echo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
