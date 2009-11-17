@@ -197,9 +197,12 @@ public class AuthorizationServlet extends HttpServlet {
             out.close();
         } else {
             String token = accessor.requestToken;
-            // Must add a verifier code.
             if (token != null) {
                 callback = OAuth.addParameters(callback, "oauth_token", token);
+            }
+            String verifier = (String)accessor.getProperty(OAuth.OAUTH_VERIFIER);
+            if (verifier != null) {
+            	callback = OAuth.addParameters(callback, OAuth.OAUTH_VERIFIER, verifier);
             }
 
             response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
