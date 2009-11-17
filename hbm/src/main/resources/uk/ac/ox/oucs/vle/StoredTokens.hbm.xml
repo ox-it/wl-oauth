@@ -21,6 +21,8 @@
 		<property name="accessToken" type="string" index="access_token_idx" />
 		<property name="consumer" type="string" />
 		<property name="user" type="string" index="user_idx" />
+		<property name="callback" type="string" />
+		<property name="verifier" type="string" />
 		<property name="updated" type="date" />
 
 	</class>

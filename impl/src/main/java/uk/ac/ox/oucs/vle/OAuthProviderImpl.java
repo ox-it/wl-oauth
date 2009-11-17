@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
 
+import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthException;
@@ -86,6 +88,7 @@ public class OAuthProviderImpl implements OAuthProvider {
         String consumer_key = (String) accessor.consumer.getProperty("name");
         // generate token and secret based on consumer_key
         
+        // TODO Need a better way of generating tokens in the long run.
         // for now use md5 of name + current time as token
         String token_data = consumer_key + System.nanoTime();
         String token = DigestUtils.md5Hex(token_data);
@@ -136,7 +139,9 @@ public class OAuthProviderImpl implements OAuthProvider {
 	public void markAsAuthorized(OAuthAccessor accessor, String userId)
 			throws OAuthException {
         
+		// Need to set verifier code as well.
         accessor.setProperty("user", userId);
+        accessor.setProperty(OAuth.OAUTH_VERIFIER, Integer.toString(new Random().nextInt(10000)));
         
         // update token in DB
         save(accessor);
@@ -156,6 +161,8 @@ public class OAuthProviderImpl implements OAuthProvider {
 		token.setRequestToken(accessor.requestToken);
 		token.setTokenSecret(accessor.tokenSecret);
 		token.setUser((String)accessor.getProperty("user"));
+		token.setCallback((String)accessor.getProperty(OAuth.OAUTH_CALLBACK));
+		token.setVerifier((String)accessor.getProperty(OAuth.OAUTH_VERIFIER));
 		return token;
 	}
 	
@@ -171,6 +178,8 @@ public class OAuthProviderImpl implements OAuthProvider {
 		accessor.tokenSecret = token.getTokenSecret();
 		accessor.setProperty("id", token.getId());
 		accessor.setProperty("user", token.getUser());
+		accessor.setProperty(OAuth.OAUTH_CALLBACK, token.getCallback());
+		accessor.setProperty(OAuth.OAUTH_VERIFIER, token.getVerifier());
 		return accessor;
 	}
 	

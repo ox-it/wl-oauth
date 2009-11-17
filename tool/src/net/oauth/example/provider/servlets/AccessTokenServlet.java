@@ -74,6 +74,13 @@ public class AccessTokenServlet extends HttpServlet {
                  OAuthProblemException problem = new OAuthProblemException("permission_denied");
                 throw problem;
             }
+            if (accessor.getProperty(OAuth.OAUTH_VERIFIER) == null) {
+            	throw new OAuthProblemException("verifier_not_set");
+            }
+            if (!accessor.getProperty(OAuth.OAUTH_VERIFIER).equals(accessor.getProperty(OAuth.OAUTH_VERIFIER))) {
+            	throw new OAuthProblemException("verifier_incorrect");
+            }
+            
             // generate access token and secret
             provider.generateAccessToken(accessor);
             

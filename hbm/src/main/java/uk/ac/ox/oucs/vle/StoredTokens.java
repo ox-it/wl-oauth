@@ -10,6 +10,8 @@ public class StoredTokens {
 	private String accessToken;
 	private String consumer;
 	private String user;
+	private String callback;
+	private String verifier;
 	private Date updated;
 	
 	public String getId() {
@@ -53,5 +55,17 @@ public class StoredTokens {
 	}
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+	public String getCallback() {
+		return callback;
+	}
+	public void setCallback(String callback) {
+		this.callback = callback;
+	}
+	public String getVerifier() {
+		return verifier;
+	}
+	public void setVerifier(String verifier) {
+		this.verifier = verifier;
 	}
 }

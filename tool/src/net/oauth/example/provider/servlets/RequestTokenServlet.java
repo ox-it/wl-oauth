@@ -67,26 +67,30 @@ public class RequestTokenServlet extends HttpServlet {
 
         try {
             OAuthMessage requestMessage = OAuthServlet.getMessage(request, null);
-            
             OAuthConsumer consumer = provider.getConsumer(requestMessage);
             
             OAuthAccessor accessor = new OAuthAccessor(consumer);
             provider.validateMessage(requestMessage, accessor);
-            {
-                // Support the 'Variable Accessor Secret' extension
-                // described in http://oauth.pbwiki.com/AccessorSecret
-                String secret = requestMessage.getParameter("oauth_accessor_secret");
-                if (secret != null) {
-                    accessor.setProperty(OAuthConsumer.ACCESSOR_SECRET, secret);
-                }
+            
+            // Support the 'Variable Accessor Secret' extension
+            // described in http://oauth.pbwiki.com/AccessorSecret
+            String secret = requestMessage.getParameter("oauth_accessor_secret");
+            if (secret != null) {
+            	accessor.setProperty(OAuthConsumer.ACCESSOR_SECRET, secret);
+            }
+            
+            String callback = requestMessage.getParameter(OAuth.OAUTH_CALLBACK);
+            if (callback != null) {
+            	accessor.setProperty(OAuth.OAUTH_CALLBACK, callback);
             }
             // generate request_token and secret
             provider.generateRequestToken(accessor);
             
             response.setContentType("text/plain");
             OutputStream out = response.getOutputStream();
-            OAuth.formEncode(OAuth.newList("oauth_token", accessor.requestToken,
-                                           "oauth_token_secret", accessor.tokenSecret),
+            OAuth.formEncode(OAuth.newList(OAuth.OAUTH_TOKEN, accessor.requestToken,
+                                           OAuth.OAUTH_TOKEN_SECRET, accessor.tokenSecret,
+                                           OAuth.OAUTH_CALLBACK_CONFIRMED, Boolean.toString(callback != null)),
                              out);
             out.close();
             

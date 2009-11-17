@@ -175,14 +175,18 @@ public class AuthorizationServlet extends HttpServlet {
     throws IOException, ServletException{
         // send the user back to site's callBackUrl
         String callback = request.getParameter("oauth_callback");
-        if("none".equals(callback) 
-            && accessor.consumer.callbackURL != null 
+        if (callback == null) {
+        	callback = (String) accessor.getProperty(OAuth.OAUTH_CALLBACK);
+        }
+        
+        if(callback == null) 
+            if (accessor.consumer.callbackURL != null 
                 && accessor.consumer.callbackURL.length() > 0){
             // first check if we have something in our properties file
             callback = accessor.consumer.callbackURL;
         }
         
-        if( "none".equals(callback) ) {
+        if(callback == null || "oob".equals(callback)) {
             // no call back it must be a client
             response.setContentType("text/plain");
             PrintWriter out = response.getWriter();
@@ -192,10 +196,8 @@ public class AuthorizationServlet extends HttpServlet {
                     + " in the client.");
             out.close();
         } else {
-            // if callback is not passed in, use the callback from config
-            if(callback == null || callback.length() <=0 )
-                callback = accessor.consumer.callbackURL;
             String token = accessor.requestToken;
+            // Must add a verifier code.
             if (token != null) {
                 callback = OAuth.addParameters(callback, "oauth_token", token);
             }
