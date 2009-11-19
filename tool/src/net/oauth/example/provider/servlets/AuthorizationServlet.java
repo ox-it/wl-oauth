@@ -31,6 +31,8 @@ import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolException;
 import org.sakaiproject.tool.cover.ActiveToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.Web;
 
 import uk.ac.ox.oucs.vle.OAuthProvider;
@@ -89,7 +91,6 @@ public class AuthorizationServlet extends HttpServlet {
 						.setAttribute(Tool.HELPER_DONE_URL, returnUrl
 								.toString());
 
-
 				doLogin(request, response);
 			} else {
 
@@ -99,8 +100,12 @@ public class AuthorizationServlet extends HttpServlet {
 
 					OAuthAccessor accessor = provider
 							.getAccessor(requestMessage);
-					provider.markAsAuthorized(accessor, currentUserId);
-					if (accessor.getProperty("user") != null) {
+					if (request.getParameter("authorize") != null) {
+						provider.markAsAuthorized(accessor, currentUserId);
+					}
+					
+					// TODO Should make the session as denied rather than unauthorized.
+					if (accessor.getProperty("user") != null || request.getParameter("deny") != null) {
 						// already authorized send the user back
 						returnToConsumer(request, response, accessor);
 					} else {
@@ -128,15 +133,14 @@ public class AuthorizationServlet extends HttpServlet {
 	private void sendToAuthorizePage(HttpServletRequest request,
 			HttpServletResponse response, OAuthAccessor accessor)
 			throws IOException, ServletException {
-		String callback = request.getParameter("oauth_callback");
-		if (callback == null || callback.length() <= 0) {
-			callback = "none";
-		}
+		User user = UserDirectoryService.getCurrentUser();
+
 		String consumer_description = (String) accessor.consumer
 				.getProperty("description");
 		request.setAttribute("CONS_DESC", consumer_description);
-		request.setAttribute("CALLBACK", callback);
 		request.setAttribute("TOKEN", accessor.requestToken);
+		request.setAttribute("USER_NAME", user.getDisplayName());
+		request.setAttribute("USER_ID", user.getDisplayId());
 		request.getRequestDispatcher //
 				("/authorize.jsp").forward(request, response);
 
