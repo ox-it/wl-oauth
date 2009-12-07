@@ -17,7 +17,6 @@ oauth.sakai.secret=A Secret
 #oauth.sakai.callbackURL=http://localhost:9080/oauth-exmaple-consumer/Sakai
 ----
 
-  The callbackURL might be optional but I'm not yet sure.
   
-  You also need to setup the filters in any WebApp which should be protected by Oauth. In the web.xml file you need to change the sakai filter and add a pair of OAuth ones.
+  You also need to setup the filters in any WebApp which should be protected by Oauth. In the web.xml file you need to change the sakai filter and add a pair of OAuth ones, but make sure the filters only apply to requests and not includes and forwards.
   
