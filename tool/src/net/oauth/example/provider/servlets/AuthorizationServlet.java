@@ -135,12 +135,14 @@ public class AuthorizationServlet extends HttpServlet {
 			throws IOException, ServletException {
 		User user = UserDirectoryService.getCurrentUser();
 
-		String consumer_description = (String) accessor.consumer
-				.getProperty("description");
-		request.setAttribute("CONS_DESC", consumer_description);
+		request.setAttribute("CONS_DESC", accessor.consumer.getProperty(OAuthProvider.DESCRIPTION));
 		request.setAttribute("TOKEN", accessor.requestToken);
 		request.setAttribute("USER_NAME", user.getDisplayName());
 		request.setAttribute("USER_ID", user.getDisplayId());
+		request.setAttribute("CONS_NAME", accessor.consumer.getProperty(OAuthProvider.NAME));
+		request.setAttribute("SERV_NAME", ServerConfigurationService.getServerName());
+		request.setAttribute("SKIN_PATH", ServerConfigurationService.getString("skin.repo", "/library/skin"));
+		request.setAttribute("DEFAULT_SKIN", ServerConfigurationService.getString("skin.default", "defulat"));
 		request.getRequestDispatcher //
 				("/authorize.jsp").forward(request, response);
 
