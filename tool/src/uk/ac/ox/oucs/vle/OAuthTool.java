@@ -31,19 +31,14 @@ import javax.faces.context.FacesContext;
 
 import net.oauth.OAuthAccessor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.util.ResourceLoader;
 
 /**
  * @author buckett
  */
-public class OauthTool {
+public class OAuthTool {
 
 	private static final long serialVersionUID = 1L;
-
-	/** Our log (commons). */
-	private static Log M_log = LogFactory.getLog(OauthTool.class);
 
 	private HtmlDataTable accessorTable;
 

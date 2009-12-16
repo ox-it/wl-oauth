@@ -22,7 +22,7 @@
 	<managed-bean>
 		<description>OAuth Tool Bean</description>
 		<managed-bean-name>oauth</managed-bean-name>
-		<managed-bean-class>uk.ac.ox.oucs.vle.OauthTool</managed-bean-class>
+		<managed-bean-class>uk.ac.ox.oucs.vle.OAuthTool</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
