@@ -101,6 +101,13 @@
       <type>pom</type>
       <scope>import</scope>
     </dependency>
+    <dependency>
+      <!-- Scope in the imported JSF is wrong and should be compile -->
+      <groupId>jsf</groupId>
+      <artifactId>jsf-api</artifactId>
+      <version>1.1.01</version>
+      <scope>compile</scope>
+    </dependency>
 
     
   </dependencies>
