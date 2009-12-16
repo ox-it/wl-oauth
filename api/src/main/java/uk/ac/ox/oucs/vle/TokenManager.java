@@ -1,8 +1,8 @@
 package uk.ac.ox.oucs.vle;
 
-import java.util.Set;
+import java.util.Collection;
 
-import net.oauth.OAuthConsumer;
+import net.oauth.OAuthAccessor;
 
 
 /**
@@ -12,7 +12,14 @@ import net.oauth.OAuthConsumer;
  */
 public interface TokenManager {
 
-	public Set<OAuthConsumer> getAuthorizedConsumers(String userId);
+	String UPDATED = TokenManager.class.getName()+ "#UPDATED";
+	String ID = "id";
+
+	/**
+	 * Gets the authorized consumers for the current user.
+	 * @return A set of consumer tokens.
+	 */
+	public Collection<OAuthAccessor> getAuthorizedConsumers();
 	
-	
+	public void removeToken(String id);
 }

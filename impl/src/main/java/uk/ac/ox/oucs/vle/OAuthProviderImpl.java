@@ -10,6 +10,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.id.api.IdManager;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
@@ -29,6 +30,9 @@ public class OAuthProviderImpl implements OAuthProvider {
 	
 	private ServerConfigurationService serverConfig;
 	
+	private StoredTokensDAO store;
+	
+	
 	public void setValidator(OAuthValidator validator) {
 		this.validator = validator;
 	}
@@ -40,19 +44,21 @@ public class OAuthProviderImpl implements OAuthProvider {
 	public void setStore(StoredTokensDAO store) {
 		this.store = store;
 	}
-
-	private StoredTokensDAO store;
 	
 	public void init() {
 		String consumersConfig = serverConfig.getString("oauth.consumers", null);
 		if (consumersConfig != null) {
 			String consumerKeys[] = consumersConfig.split(",");
 			for (String consumerKey : consumerKeys) {
+				String consumerName = serverConfig.getString("oauth."+ consumerKey+ ".name", null);
 				String consumerDescription = serverConfig.getString("oauth."+ consumerKey+ ".description", null);
+				String consumerURL = serverConfig.getString("oauth."+ consumerKey+ ".url", null);
 				String consumerCallbackURL = serverConfig.getString("oauth."+ consumerKey+ ".callbackURL", null);
 				String consumerSecret = serverConfig.getString("oauth."+ consumerKey+ ".secret", null);
 				OAuthConsumer consumer = new OAuthConsumer(consumerCallbackURL, consumerKey, consumerSecret, null);
-				consumer.setProperty("description", consumerDescription);
+				consumer.setProperty(OAuthProvider.DESCRIPTION, consumerDescription);
+				consumer.setProperty(OAuthProvider.NAME, consumerName);
+				consumer.setProperty(OAuthProvider.URL, consumerURL);
 				consumers.put(consumerKey, consumer);
 			}
 		}
@@ -66,7 +72,7 @@ public class OAuthProviderImpl implements OAuthProvider {
 	public void generateAccessToken(OAuthAccessor accessor)
 			throws OAuthException {
         // generate oauth_token and oauth_secret
-        String consumer_key = (String) accessor.consumer.getProperty("name");
+        String consumer_key = (String) accessor.consumer.getProperty(OAuthProvider.NAME);
         // generate token and secret based on consumer_key
         
         // for now use md5 of name + current time as token
@@ -85,7 +91,7 @@ public class OAuthProviderImpl implements OAuthProvider {
 			throws OAuthException {
 
         // generate oauth_token and oauth_secret
-        String consumer_key = (String) accessor.consumer.getProperty("name");
+        String consumer_key = (String) accessor.consumer.getProperty(OAuthProvider.NAME);
         // generate token and secret based on consumer_key
         
         // TODO Need a better way of generating tokens in the long run.
@@ -153,9 +159,9 @@ public class OAuthProviderImpl implements OAuthProvider {
 		validator.validateMessage(message, accessor);
 	}
 
-	StoredTokens convert(OAuthAccessor accessor) {
+	public StoredTokens convert(OAuthAccessor accessor) {
 		StoredTokens token = new StoredTokens();
-		token.setId((String) accessor.getProperty("id"));
+		token.setId((String) accessor.getProperty(TokenManager.ID));
 		token.setAccessToken(accessor.accessToken);
 		token.setConsumer(accessor.consumer.consumerKey);
 		token.setRequestToken(accessor.requestToken);
@@ -166,7 +172,7 @@ public class OAuthProviderImpl implements OAuthProvider {
 		return token;
 	}
 	
-	OAuthAccessor convert(StoredTokens token) {
+	public OAuthAccessor convert(StoredTokens token) {
 		String consumerKey = token.getConsumer();
 		OAuthConsumer consumer = consumers.get(consumerKey);
 		if (consumer == null) {
@@ -176,10 +182,11 @@ public class OAuthProviderImpl implements OAuthProvider {
 		accessor.accessToken = token.getAccessToken();
 		accessor.requestToken = token.getRequestToken();
 		accessor.tokenSecret = token.getTokenSecret();
-		accessor.setProperty("id", token.getId());
+		accessor.setProperty(TokenManager.ID, token.getId());
 		accessor.setProperty("user", token.getUser());
 		accessor.setProperty(OAuth.OAUTH_CALLBACK, token.getCallback());
 		accessor.setProperty(OAuth.OAUTH_VERIFIER, token.getVerifier());
+		accessor.setProperty(TokenManager.UPDATED, token.getUpdated());
 		return accessor;
 	}
 	

@@ -1,7 +1,6 @@
 package uk.ac.ox.oucs.vle;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
@@ -20,6 +19,10 @@ import net.oauth.OAuthValidator;
  * 
  */
 public interface OAuthProvider extends OAuthValidator {
+
+	public static final String URL = "URL";
+	public static final String NAME = "name";
+	public static final String DESCRIPTION = "description";
 
 	public OAuthConsumer getConsumer(OAuthMessage requestMessage)
 			throws IOException, OAuthProblemException;
