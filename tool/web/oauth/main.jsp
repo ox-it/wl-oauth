@@ -29,6 +29,7 @@
 				</h:column>
 				<h:column>
 					<h:outputText value="#{consumer.description}" />
+					<f:verbatim><br/></f:verbatim>
 					<h:outputText value="#{msgs.last_updated}"/>
 					<h:outputFormat value="#{consumer.age}">
 					</h:outputFormat>
