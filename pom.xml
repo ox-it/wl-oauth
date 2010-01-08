@@ -10,6 +10,7 @@
 
   <modules>
     <module>api</module>
+    <module>assembly</module>
     <module>filter</module>
     <module>hbm</module>
     <module>impl</module>
