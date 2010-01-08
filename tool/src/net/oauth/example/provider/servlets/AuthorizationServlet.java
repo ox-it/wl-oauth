@@ -25,6 +25,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.oauth.OAuth;
+import net.oauth.OAuthAccessor;
+import net.oauth.OAuthMessage;
+import net.oauth.server.OAuthServlet;
+
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.tool.api.ActiveTool;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.Tool;
@@ -33,15 +39,9 @@ import org.sakaiproject.tool.cover.ActiveToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.cover.UserDirectoryService;
-import org.sakaiproject.util.Web;
 
 import uk.ac.ox.oucs.vle.OAuthProvider;
 import uk.ac.ox.oucs.vle.OAuthProviderCover;
-
-import net.oauth.OAuth;
-import net.oauth.OAuthAccessor;
-import net.oauth.OAuthMessage;
-import net.oauth.server.OAuthServlet;
 
 /**
  * Autherization request handler.
