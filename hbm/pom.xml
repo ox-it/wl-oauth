@@ -11,7 +11,4 @@
 	<artifactId>oauth-hbm</artifactId>
 	<name>OAuth Hibernate</name>
 	<packaging>jar</packaging>
-	<properties>
-		<deploy.target>shared</deploy.target>
-	</properties>
 </project>
