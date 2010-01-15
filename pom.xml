@@ -171,13 +171,6 @@
             <scope>provided</scope>
           </dependency>
 
-          <!-- Extra deps. -->
-          <dependency>
-            <groupId>org.sakaiproject</groupId>
-            <artifactId>sakai-jldap-provider</artifactId>
-            <version>${sakai.version}</version>
-            <scope>provided</scope>
-          </dependency>
         </dependencies>
       </dependencyManagement>
     </profile>
@@ -211,13 +204,6 @@
             <version>${kernel.version}</version>
           </dependency>
 
-          <!-- Extra deps. -->
-          <dependency>
-            <groupId>org.sakaiproject</groupId>
-            <artifactId>sakai-jldap-provider</artifactId>
-            <version>${sakai.version}</version>
-            <scope>provided</scope>
-          </dependency>
         </dependencies>
       </dependencyManagement>
     </profile>
