@@ -141,6 +141,7 @@ public class AuthorizationServlet extends HttpServlet {
 		request.setAttribute("USER_ID", user.getDisplayId());
 		request.setAttribute("CONS_NAME", accessor.consumer.getProperty(OAuthProvider.NAME));
 		request.setAttribute("SERV_NAME", ServerConfigurationService.getServerName());
+		request.setAttribute("UI_NAME", ServerConfigurationService.getString("ui.service", "Sakai"));
 		request.setAttribute("SKIN_PATH", ServerConfigurationService.getString("skin.repo", "/library/skin"));
 		request.setAttribute("DEFAULT_SKIN", ServerConfigurationService.getString("skin.default", "defulat"));
 		request.getRequestDispatcher //
