@@ -9,7 +9,7 @@
   </parent>
   <groupId>uk.ac.ox.oucs</groupId>
   <artifactId>oauth-filter</artifactId>
-  <name>oAuth Filter</name>
+  <name>OAuth Filter</name>
   <packaging>jar</packaging>
   <profiles>
     <profile>
