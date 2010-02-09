@@ -121,7 +121,7 @@ public class OAuthPreFilter implements Filter {
 		if (permissions != null) {
 			Set<String> permissionSet = new HashSet<String>(Arrays.asList(permissions.split(",")));
 			limitedPermissionAdvisor = new LimitedPermissionsAdvisor(permissionSet);
-			log.info(limitedPermissionAdvisor);
+			log.debug(limitedPermissionAdvisor);
 		}
 		debugPermissions = ServerConfigurationService.getBoolean("oauth.permissions.debug", false);
 	}
