@@ -24,6 +24,7 @@
         <link href="<%=skinPath%>/<%=defaultSkin%>/mobile.css" type="text/css" rel="stylesheet" media="only screen and (max-device-width: 420px)" /> 
         <script type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
         <title><%=uiName%> : OAuth Provider</title>
+        <meta name="viewport" content="width=device-width"/>  
         <style type="text/css">
         #wrapper {
             /* Max width of 420px and centre */
