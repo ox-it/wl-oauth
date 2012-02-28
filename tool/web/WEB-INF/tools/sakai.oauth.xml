@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<registration>
-  <tool id="sakai.oauth"
-        title="Trusted Applications"
-        description="Tool to allow you to manage applications that can access the service.">
-     <category name="myworkspace" />
-  </tool>
-</registration>
