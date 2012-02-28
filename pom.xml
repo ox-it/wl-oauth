@@ -1,10 +1,171 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>uk.ac.ox.oucs</groupId>
+    <groupId>uk.ac.ox.oucs.oauth</groupId>
     <artifactId>oauth-base</artifactId>
     <packaging>pom</packaging>
     <name>OAuth Base</name>
     <version>1.1-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- maven-compiler-plugin config -->
+        <maven.compiler.source>6</maven.compiler.source>
+        <maven.compiler.target>6</maven.compiler.target>
+
+        <!-- dependencies versions -->
+        <sakai.kernel.version>1.2.5ox1-SNAPSHOT</sakai.kernel.version>
+        <oauth.version>20100527</oauth.version>
+        <joda-time.version>2.1</joda-time.version>
+        <sakai.jsf.version>2.8.2</sakai.jsf.version>
+    </properties>
+
+    <modules>
+        <module>api</module>
+        <module>assembly</module>
+        <module>impl</module>
+        <module>impl/dao-hbm</module>
+        <module>impl/dao-memory</module>
+        <module>pack</module>
+        <module>tool</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Internal dependencies -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>oauth-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>oauth-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>oauth-dao-hbm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>oauth-dao-memory</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Dependencies -->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.oauth.core</groupId>
+                <artifactId>oauth</artifactId>
+                <version>${oauth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.oauth.core</groupId>
+                <artifactId>oauth-provider</artifactId>
+                <version>${oauth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate</artifactId>
+                <!-- TODO: Define version -->
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <!-- TODO: Define version -->
+            </dependency>
+
+            <!-- Sakai dependencies -->
+            <dependency>
+                <groupId>org.sakaiproject.kernel</groupId>
+                <artifactId>sakai-kernel-api</artifactId>
+                <version>${sakai.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.kernel</groupId>
+                <artifactId>sakai-component-manager</artifactId>
+                <version>${sakai.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.kernel</groupId>
+                <artifactId>sakai-kernel-private</artifactId>
+                <version>${sakai.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.kernel</groupId>
+                <artifactId>sakai-kernel-util</artifactId>
+                <version>${sakai.kernel.version}</version>
+            </dependency>
+
+            <!-- JSF Sakai -->
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-app</artifactId>
+                <version>${sakai.jsf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>jsf</groupId>
+                        <artifactId>jsf-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>myfaces-widgets-depend</artifactId>
+                <version>${sakai.jsf.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-spreadsheet</artifactId>
+                <version>${sakai.jsf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-tool</artifactId>
+                <version>${sakai.jsf.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>sakai.maven2</id>
+            <name>Sakai Maven2 Repo</name>
+            <url>https://source.sakaiproject.org/maven2</url>
+        </repository>
+        <repository>
+            <id>maven-repo.oucs</id>
+            <name>OUCS Maven Repository</name>
+            <layout>default</layout>
+            <url>http://maven-repo.oucs.ox.ac.uk/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>oauth</id>
+            <url>http://oauth.googlecode.com/svn/code/maven/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-repo.oucs</id>
+            <name>OUCS Maven Repository</name>
+            <layout>default</layout>
+            <url>http://maven-repo.oucs.ox.ac.uk/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
