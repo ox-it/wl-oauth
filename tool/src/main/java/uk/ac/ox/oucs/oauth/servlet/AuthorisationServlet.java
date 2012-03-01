@@ -133,7 +133,7 @@ public class AuthorisationServlet extends HttpServlet {
     private void sendToAuthorisePage(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        Accessor accessor = oAuthService.getAccessor(request.getParameter("oauthToken"), Accessor.Type.REQUEST);
+        Accessor accessor = oAuthService.getAccessor(request.getParameter("oauth_token"), Accessor.Type.REQUEST);
         Consumer consumer = oAuthService.getConsumer(accessor.getConsumerId());
         accessor = oAuthService.startAuthorisation(accessor.getToken());
 
