@@ -43,11 +43,13 @@ public class AuthorisationServlet extends HttpServlet {
     private ActiveToolManager activeToolManager;
     private ServerConfigurationService serverConfigurationService;
     private String authorisePath;
-    private static final String SAKAI_LOGIN_TOOL = "sakai-login";
+    private static final String SAKAI_LOGIN_TOOL = "sakai.login";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        oAuthService = (OAuthService) ComponentManager.getInstance().get(OAuthService.class.getCanonicalName());
+        oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class.getCanonicalName());
         sessionManager = (SessionManager) ComponentManager.getInstance().get(SessionManager.class.getCanonicalName());
         activeToolManager = (ActiveToolManager) ComponentManager.getInstance().get(ActiveToolManager.class.getCanonicalName());
         userDirectoryService = (UserDirectoryService) ComponentManager.getInstance().get(UserDirectoryService.class.getCanonicalName());
@@ -103,7 +105,8 @@ public class AuthorisationServlet extends HttpServlet {
 
     private void sendToLoginPage(HttpServletRequest request, HttpServletResponse response) throws ToolException {
         //If not logging-in, set the return path and proceed to the login steps
-        if (!request.getPathInfo().startsWith(LOGIN_PATH)) {
+        String pathInfo = request.getPathInfo();
+        if (pathInfo == null || !pathInfo.startsWith(LOGIN_PATH)) {
             Session session = sessionManager.getCurrentSession();
 
             //Set the return path for after login if needed (Note: in session, not tool session, special for Login helper)
