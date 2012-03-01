@@ -167,7 +167,7 @@ public class OAuthServiceImpl implements OAuthService {
             accessAccessor.setExpirationDate(new DateTime().plusMinutes(consumer.getDefaultValidity()).toDate());
         accessAccessor.setToken(generateToken(accessAccessor));
 
-        updateAccessorStatus(accessAccessor, Accessor.Status.EXPIRED);
+        updateAccessorStatus(requestAccessor, Accessor.Status.EXPIRED);
         oAuthProvider.createAccessor(accessAccessor);
 
         return accessAccessor;
@@ -204,7 +204,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     private static boolean isStillValid(Accessor accessor) {
-        return new DateTime(accessor.getExpirationDate()).isAfterNow();
+        return accessor.getExpirationDate() == null || new DateTime(accessor.getExpirationDate()).isAfterNow();
     }
 
     private void updateAccessorStatus(Accessor accessor, Accessor.Status status) {
