@@ -66,7 +66,7 @@ public class OAuthProvider {
         return consumerDao.update(consumer);
     }
 
-    public void removeConsumer(String consumerId) {
-        consumerDao.remove(consumerId);
+    public void removeConsumer(Consumer consumer) {
+        consumerDao.remove(consumer);
     }
 }
