@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <!-- Add our HBM files to the Sakai global session factory -->
+    <bean class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+        <property name="mappingResources">
+            <list>
+                <value>uk/ac/ox/oucs/oauth/StoredToken.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="uk.ac.ox.oucs.oauth.OAuthService" class="uk.ac.ox.oucs.oauth.service.OAuthServiceImpl">
+        <property name="oAuthProvider">
+            <bean class="uk.ac.ox.oucs.oauth.dao.OAuthProvider">
+                <property name="accessorDao">
+                    <bean class="uk.ac.ox.oucs.oauth.dao.MemoryAccessorDao">
+                        <constructor-arg><map /></constructor-arg>
+                    </bean>
+                    <!--
+                    <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                        <property name="transactionManager"
+                                  ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+                        <property name="target">
+                            <bean class="uk.ac.ox.oucs.oauth.dao.HibernateAccessorDao">
+                                <property name="sessionFactory"
+                                          ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+                            </bean>
+                        </property>
+                        <property name="transactionAttributes">
+                            <props>
+                                <prop key="*">PROPAGATION_REQUIRED</prop>
+                            </props>
+                        </property>
+                    </bean>
+                    -->
+                </property>
+                <property name="consumerDao">
+                    <bean class="uk.ac.ox.oucs.oauth.dao.MemoryConsumerDao">
+                        <constructor-arg>
+                            <map>
+                                <entry key="sakai">
+                                    <bean class="uk.ac.ox.oucs.oauth.domain.Consumer">
+                                        <property name="id" value="sakai"/>
+                                        <property name="secret" value="A Secret"/>
+                                        <property name="name" value="WebLearn Portal"/>
+                                        <property name="description" value="WebLean web site"/>
+                                        <property name="URL" value="http://weblearn.ox.ac.uk/"/>
+                                        <property name="rights">
+                                            <list>
+                                                <value>test</value>
+                                                <value>teste</value>
+                                            </list>
+                                        </property>
+                                    </bean>
+                                </entry>
+                            </map>
+                        </constructor-arg>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="keepOldAccessors" value="true" />
+    </bean>
+    <bean id="uk.ac.ox.oucs.oauth.service.OAuthHttpService" class="uk.ac.ox.oucs.oauth.service.OAuthHttpServiceImpl">
+        <property name="oAuthService" ref="uk.ac.ox.oucs.oauth.OAuthService" />
+        <property name="oAuthValidator">
+            <bean class="net.oauth.SimpleOAuthValidator"/>
+        </property>
+    </bean>
+
+</beans>
