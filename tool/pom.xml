@@ -45,6 +45,7 @@
         <dependency>
             <groupId>org.sakaiproject.jsf</groupId>
             <artifactId>myfaces-widgets-depend</artifactId>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.jsf</groupId>

@@ -6,6 +6,7 @@
         <groupId>uk.ac.ox.oucs.oauth</groupId>
         <artifactId>oauth-base</artifactId>
         <version>1.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>oauth-assembly</artifactId>
     <name>OAuth Assembly</name>
@@ -15,12 +16,14 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>oauth-api</artifactId>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>oauth-hbm</artifactId>
-            <type>jar</type>
+            <artifactId>oauth-dao-memory</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>oauth-dao-hbm</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
