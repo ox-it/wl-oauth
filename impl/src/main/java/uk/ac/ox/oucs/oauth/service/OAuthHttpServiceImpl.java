@@ -61,15 +61,14 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     public void handleRequestToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             OAuthMessage oAuthMessage = OAuthServlet.getMessage(request, null);
+            Consumer consumer = oAuthService.getConsumer(oAuthMessage.getConsumerKey());
+            OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(consumer);
+            oAuthValidator.validateMessage(oAuthMessage, new OAuthAccessor(oAuthConsumer));
+
             String secret = oAuthMessage.getParameter(OAuthConsumer.ACCESSOR_SECRET);
             String callback = oAuthMessage.getParameter(OAuth.OAUTH_CALLBACK);
-
-            Consumer consumer = oAuthService.getConsumer(oAuthMessage.getConsumerKey());
             Accessor accessor = oAuthService.createRequestAccessor(consumer.getId(), secret, callback);
-            OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(consumer);
             OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(accessor, oAuthConsumer);
-
-            oAuthValidator.validateMessage(oAuthMessage, oAuthAccessor);
 
             sendOAuthResponse(response, OAuth.newList(
                     OAuth.OAUTH_TOKEN, oAuthAccessor.requestToken,
