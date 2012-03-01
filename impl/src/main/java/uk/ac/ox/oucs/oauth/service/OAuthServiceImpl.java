@@ -33,9 +33,12 @@ public class OAuthServiceImpl implements OAuthService {
     public Accessor getAccessor(String oAuthToken, Accessor.Type expectedType) {
         Accessor accessor = oAuthProvider.getAccessor(oAuthToken);
 
+        if (accessor == null)
+            //TODO: Throw a nice exception
+            throw new RuntimeException();
+
         if (accessor.getStatus() == Accessor.Status.VALID && !isStillValid(accessor))
             updateAccessorStatus(accessor, Accessor.Status.EXPIRED);
-
 
         if (accessor.getStatus() != Accessor.Status.VALID)
             //TODO: Throw a nice exception
@@ -132,7 +135,7 @@ public class OAuthServiceImpl implements OAuthService {
     @Override
     public Accessor authoriseToken(String accessorId, String verifier, String userId) {
         Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
-        if(!accessor.getVerifier().equals(verifier))
+        if (!accessor.getVerifier().equals(verifier))
             //TODO: Throw a nice Exception
             throw new RuntimeException();
         accessor.setVerifier(generateVerifier(accessor));
