@@ -16,7 +16,7 @@ interface AccessorDao {
 
     Accessor update(Accessor accessor);
 
-    void remove(String accessorId);
+    void remove(Accessor accessor);
 
-    void removeExpiredTokens();
+    void markExpiredAccessors();
 }

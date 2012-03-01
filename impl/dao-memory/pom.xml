@@ -6,6 +6,7 @@
         <groupId>uk.ac.ox.oucs.oauth</groupId>
         <artifactId>oauth-base</artifactId>
         <version>1.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>oauth-dao-memory</artifactId>
     <name>OAuth In-memory DAO</name>
@@ -19,4 +20,3 @@
         </dependency>
     </dependencies>
 </project>
-

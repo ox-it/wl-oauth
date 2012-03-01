@@ -45,12 +45,12 @@ public class MemoryAccessorDao implements AccessorDao {
     }
 
     @Override
-    public void remove(String accessorId) {
-        accessors.remove(accessorId);
+    public void remove(Accessor accessor) {
+        accessors.remove(accessor.getToken());
     }
 
     @Override
-    public void removeExpiredTokens() {
+    public void markExpiredAccessors() {
         Collection<String> expiredIds = new LinkedList<String>();
         for (Accessor accessor : accessors.values()) {
             if (accessor.getExpirationDate().before(new Date()))

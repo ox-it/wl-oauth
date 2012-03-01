@@ -29,7 +29,7 @@ public class MemoryConsumerDao implements ConsumerDao {
         return get(consumer.getId());
     }
 
-    public void remove(String consumerId) {
-        consumers.remove(consumerId);
+    public void remove(Consumer consumer) {
+        consumers.remove(consumer.getId());
     }
 }

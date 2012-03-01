@@ -19,7 +19,8 @@ public class Accessor {
 
     public static enum Type {
         REQUEST,
-        REQUEST_AUTH,
+        REQUEST_AUTHORISING,
+        REQUEST_AUTHORISED,
         ACCESS
     }
 

@@ -12,5 +12,5 @@ interface ConsumerDao {
 
     Consumer update(Consumer consumer);
 
-    void remove(String consumerId);
+    void remove(Consumer consumer);
 }
