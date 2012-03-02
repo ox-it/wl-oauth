@@ -90,4 +90,13 @@ public class Consumer {
     public void setDefaultValidity(Integer defaultValidity) {
         this.defaultValidity = defaultValidity;
     }
+
+    @Override
+    public String toString() {
+        return "Consumer{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", URL='" + URL + '\'' +
+                '}';
+    }
 }

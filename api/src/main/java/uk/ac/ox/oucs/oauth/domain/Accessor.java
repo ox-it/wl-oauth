@@ -109,4 +109,17 @@ public class Accessor {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+
+    @Override
+    public String toString() {
+        return "Accessor{" +
+                "token='" + token.substring(0, 7) + '\'' +
+                ", type=" + type +
+                ", status=" + status +
+                ", consumerId='" + consumerId + '\'' +
+                ", expirationDate=" + expirationDate +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
 }
