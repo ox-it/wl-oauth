@@ -7,6 +7,7 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
+import uk.ac.ox.oucs.oauth.exception.OAuthException;
 import uk.ac.ox.oucs.oauth.service.OAuthHttpService;
 import uk.ac.ox.oucs.oauth.service.OAuthService;
 
@@ -87,7 +88,6 @@ public class AuthorisationServlet extends HttpServlet {
      */
     private void handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-
         String pathInfo = request.getPathInfo();
         String currentUserId = sessionManager.getCurrentSessionUserId();
         if (currentUserId == null || (pathInfo != null && pathInfo.startsWith(LOGIN_PATH)))
@@ -132,25 +132,31 @@ public class AuthorisationServlet extends HttpServlet {
      */
     private void sendToAuthorisePage(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+        Accessor accessor = null;
+        try {
+            accessor = oAuthService.getAccessor(request.getParameter("oauth_token"), Accessor.Type.REQUEST);
+            Consumer consumer = oAuthService.getConsumer(accessor.getConsumerId());
+            accessor = oAuthService.startAuthorisation(accessor.getToken());
 
-        Accessor accessor = oAuthService.getAccessor(request.getParameter("oauth_token"), Accessor.Type.REQUEST);
-        Consumer consumer = oAuthService.getConsumer(accessor.getConsumerId());
-        accessor = oAuthService.startAuthorisation(accessor.getToken());
+            User user = userDirectoryService.getCurrentUser();
+            request.setAttribute("userName", user.getDisplayName());
+            request.setAttribute("userId", user.getDisplayId());
+            request.setAttribute("uiName", serverConfigurationService.getString("ui.service", "Sakai"));
+            request.setAttribute("skinPath", serverConfigurationService.getString("skin.repo", "/library/skin"));
+            request.setAttribute("defaultSkin", serverConfigurationService.getString("skin.default", "default"));
+            request.setAttribute("authorise", AUTHORISE_BUTTON);
+            request.setAttribute("deny", DENY_BUTTON);
+            request.setAttribute("oauthVerifier", accessor.getVerifier());
+            request.setAttribute("appName", consumer.getName());
+            request.setAttribute("appDesc", consumer.getDescription());
+            request.setAttribute("token", accessor.getToken());
 
-        User user = userDirectoryService.getCurrentUser();
-        request.setAttribute("userName", user.getDisplayName());
-        request.setAttribute("userId", user.getDisplayId());
-        request.setAttribute("uiName", serverConfigurationService.getString("ui.service", "Sakai"));
-        request.setAttribute("skinPath", serverConfigurationService.getString("skin.repo", "/library/skin"));
-        request.setAttribute("defaultSkin", serverConfigurationService.getString("skin.default", "default"));
-        request.setAttribute("authorise", AUTHORISE_BUTTON);
-        request.setAttribute("deny", DENY_BUTTON);
-        request.setAttribute("oauthVerifier", accessor.getVerifier());
-        request.setAttribute("appName", consumer.getName());
-        request.setAttribute("appDesc", consumer.getDescription());
-        request.setAttribute("token", accessor.getToken());
-
-        request.getRequestDispatcher(authorisePath).forward(request, response);
+            request.getRequestDispatcher(authorisePath).forward(request, response);
+        } catch (OAuthException e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            if (accessor != null && accessor.getCallbackUrl() != null && !OAuthService.OUT_OF_BAND_CALLBACK.equals(accessor.getCallbackUrl()))
+                response.setHeader("Location", accessor.getCallbackUrl());
+        }
     }
 
     /**
