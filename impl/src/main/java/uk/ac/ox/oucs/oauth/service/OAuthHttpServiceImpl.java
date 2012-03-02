@@ -37,17 +37,18 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     public boolean isValidOAuthRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             OAuthMessage message = OAuthServlet.getMessage(request, null);
+            //Non existing token, just continue
+            if (message.getToken() == null)
+                return false;
             OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(oAuthService.getConsumer(message.getConsumerKey()));
-            String token = message.getToken();
-            OAuthAccessor oAuthAccessor;
-            if (token != null)
-                oAuthAccessor = Util.convertToOAuthAccessor(oAuthService.getAccessor(message.getToken(), Accessor.Type.ACCESS), oAuthConsumer);
-            else
-                oAuthAccessor = new OAuthAccessor(oAuthConsumer);
-
+            OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(oAuthService.getAccessor(message.getToken(), Accessor.Type.ACCESS), oAuthConsumer);
             oAuthValidator.validateMessage(message, oAuthAccessor);
-        } catch (Exception e) {
-            return false;
+        } catch (uk.ac.ox.oucs.oauth.exception.OAuthException e) {
+            handleException(convertException(e), request, response, true);
+        } catch (OAuthException e) {
+            handleException(new OAuthProblemException(), request, response, true);
+        } catch (URISyntaxException e) {
+            handleException(e, request, response, true);
         }
         return true;
     }
