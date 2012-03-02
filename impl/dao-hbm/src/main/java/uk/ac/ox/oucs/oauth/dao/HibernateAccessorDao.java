@@ -21,7 +21,7 @@ public class HibernateAccessorDao extends HibernateDaoSupport implements Accesso
 
     public List<Accessor> getByUser(String userId) {
         return (List<Accessor>) getHibernateTemplate().find(
-                "FROM Accessor a WHERE a.user = ?",
+                "FROM Accessor a WHERE a.userId = ?",
                 new Object[]{userId});
     }
 
