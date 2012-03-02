@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- =========== FACES CONFIGURATION FILE ================================== -->
+<faces-config>
+    <!-- =================== Tool Beans ============== -->
+    <managed-bean>
+        <description>OAuth Tool Bean</description>
+        <managed-bean-name>oauth</managed-bean-name>
+        <managed-bean-class>uk.ac.ox.oucs.oauth.tool.OAuthTool</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>Dynamic Resource Bundle Loader</description>
+        <managed-bean-name>msg</managed-bean-name>
+        <managed-bean-class>org.sakaiproject.util.ResourceLoader</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+        <managed-property>
+            <description>Bundle baseName</description>
+            <property-name>baseName</property-name>
+            <value>uk.ac.ox.oucs.oauth.tool.Messages</value>
+        </managed-property>
+    </managed-bean>
+</faces-config>
