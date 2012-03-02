@@ -49,7 +49,7 @@ public class OAuthPostFilter implements Filter {
         if (principal != null && sessionManager.getCurrentSessionUserId() == null) {
             try {
                 final String eid = userDirectoryService.getUserEid(principal.getName());
-                final String uid = userDirectoryService.getUserId(principal.getName());
+                final String uid = principal.getName();
 
                 // TODO This is a hack and we should go through the AuthenticationManager API.
                 Authentication authentication = new Authentication() {
