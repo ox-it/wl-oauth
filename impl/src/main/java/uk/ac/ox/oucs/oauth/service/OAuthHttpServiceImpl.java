@@ -46,18 +46,8 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                 oAuthAccessor = new OAuthAccessor(oAuthConsumer);
 
             oAuthValidator.validateMessage(message, oAuthAccessor);
-        } catch (InvalidConsumerException e) {
-            handleException(new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN), request, response, true);
-        } catch (ExpiredAccessorException e) {
-            handleException(new OAuthProblemException(OAuth.Problems.TOKEN_EXPIRED), request, response, true);
-        } catch (RevokedAccessorException e) {
-            handleException(new OAuthProblemException(OAuth.Problems.TOKEN_REVOKED), request, response, true);
-        } catch (InvalidAccessorException e) {
-            handleException(new OAuthProblemException(OAuth.Problems.TOKEN_REJECTED), request, response, true);
-        } catch (OAuthException e) {
-            handleException(new OAuthProblemException(), request, response, true);
-        } catch (URISyntaxException e) {
-            handleException(e, request, response, true);
+        } catch (Exception e) {
+            return false;
         }
         return true;
     }
