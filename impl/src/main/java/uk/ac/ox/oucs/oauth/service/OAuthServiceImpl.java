@@ -180,6 +180,16 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
+    public void denyRequestAccessor(String accessorId) {
+        try {
+            Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
+            updateAccessorStatus(accessor, Accessor.Status.REVOKED);
+        } catch (OAuthException ignored) {
+            //If the accessor is already expired/revoked, nothing to do/handle
+        }
+    }
+
+    @Override
     public Collection<Accessor> getAccessAccessorForUser(String userId) {
         Collection<Accessor> accessors = new ArrayList<Accessor>(oAuthProvider.getAccessorsByUser(userId));
 

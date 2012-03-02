@@ -132,6 +132,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                     response.setHeader("Location", callbackUrl);
                 }
             } else {
+                oAuthService.denyRequestAccessor(accessor.getToken());
                 if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
                     response.setContentType("text/plain");
                     PrintWriter out = response.getWriter();

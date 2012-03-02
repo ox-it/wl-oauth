@@ -29,4 +29,6 @@ public interface OAuthService {
     Collection<Accessor> getAccessAccessorForUser(String userId);
     
     void revokeAccessor(String accessorId);
+
+    void denyRequestAccessor(String token);
 }
