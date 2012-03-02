@@ -40,9 +40,9 @@ public class OAuthServiceImpl implements OAuthService {
         if (accessor.getStatus() == Accessor.Status.VALID && !isStillValid(accessor))
             updateAccessorStatus(accessor, Accessor.Status.EXPIRED);
 
-        if(accessor.getStatus() == Accessor.Status.EXPIRED)
+        if (accessor.getStatus() == Accessor.Status.EXPIRED)
             throw new ExpiredAccessorException("Accessor '" + token + " expired");
-        else if(accessor.getStatus() == Accessor.Status.REVOKED)
+        else if (accessor.getStatus() == Accessor.Status.REVOKED)
             throw new RevokedAccessorException("Accessor '" + token + " revoked");
         else if (accessor.getStatus() != Accessor.Status.VALID)
             throw new InvalidAccessorException("Accessor '" + token + "' is not valid. (" + accessor.getStatus() + ")");
@@ -184,11 +184,9 @@ public class OAuthServiceImpl implements OAuthService {
             if (accessor.getStatus() == Accessor.Status.VALID && !isStillValid(accessor))
                 updateAccessorStatus(accessor, Accessor.Status.EXPIRED);
 
-            if (accessor.getStatus() != Accessor.Status.VALID)
+            if (accessor.getStatus() != Accessor.Status.VALID ||
+                    accessor.getType() != Accessor.Type.ACCESS)
                 iterator.remove();
-            if (accessor.getType() != Accessor.Type.ACCESS) {
-                iterator.remove();
-            }
         }
         return accessors;
     }
