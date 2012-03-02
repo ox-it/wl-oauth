@@ -118,40 +118,44 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     }
 
     @Override
-    public void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response, boolean authorised, String token, String verifier, String userId) throws IOException {
-        Accessor accessor = oAuthService.getAccessor(token, Accessor.Type.REQUEST_AUTHORISING);
-        Consumer consumer = oAuthService.getConsumer(accessor.getConsumerId());
-        if (authorised) {
-            accessor = oAuthService.authoriseToken(accessor.getToken(), verifier, userId);
-            if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
-                response.setContentType("text/plain");
-                PrintWriter out = response.getWriter();
-                out.println("You have successfully authorized '" + consumer.getName() + "'.\n" +
-                        "The authorisation token is: " + accessor.getToken() + "\n" +
-                        "Please close this browser window and click continue in the client.");
-                out.flush();
-                out.close();
-            } else {
-                String callbackUrl = OAuth.addParameters(accessor.getCallbackUrl(),
-                        OAuth.OAUTH_TOKEN, accessor.getToken(),
-                        OAuth.OAUTH_VERIFIER, OAuth.OAUTH_VERIFIER);
+    public void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response, boolean authorised, String token, String verifier, String userId) throws IOException, ServletException {
+        try {
+            Accessor accessor = oAuthService.getAccessor(token, Accessor.Type.REQUEST_AUTHORISING);
+            Consumer consumer = oAuthService.getConsumer(accessor.getConsumerId());
+            if (authorised) {
+                accessor = oAuthService.authoriseAccessor(accessor.getToken(), verifier, userId);
+                if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
+                    response.setContentType("text/plain");
+                    PrintWriter out = response.getWriter();
+                    out.println("You have successfully authorized '" + consumer.getName() + "'.\n" +
+                            "The authorisation token is: " + accessor.getToken() + "\n" +
+                            "Please close this browser window and click continue in the client.");
+                    out.flush();
+                    out.close();
+                } else {
+                    String callbackUrl = OAuth.addParameters(accessor.getCallbackUrl(),
+                            OAuth.OAUTH_TOKEN, accessor.getToken(),
+                            OAuth.OAUTH_VERIFIER, OAuth.OAUTH_VERIFIER);
 
-                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", callbackUrl);
-            }
-        } else {
-            if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
-                response.setContentType("text/plain");
-                PrintWriter out = response.getWriter();
-                out.println("You have not  authorized '" + consumer.getName() + "'.\n" +
-                        "Please close this browser window and click continue in the client.");
-                out.flush();
-                out.close();
+                    response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+                    response.setHeader("Location", callbackUrl);
+                }
             } else {
-                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", accessor.getCallbackUrl());
-            }
+                if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
+                    response.setContentType("text/plain");
+                    PrintWriter out = response.getWriter();
+                    out.println("You have not  authorized '" + consumer.getName() + "'.\n" +
+                            "Please close this browser window and click continue in the client.");
+                    out.flush();
+                    out.close();
+                } else {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setHeader("Location", accessor.getCallbackUrl());
+                }
 
+            }
+        } catch (uk.ac.ox.oucs.oauth.exception.OAuthException e) {
+            handleException(convertException(e), request, response, true);
         }
     }
 
