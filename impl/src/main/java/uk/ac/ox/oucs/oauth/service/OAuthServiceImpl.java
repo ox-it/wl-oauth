@@ -6,11 +6,12 @@ import uk.ac.ox.oucs.oauth.advisor.LimitedPermissionsAdvisor;
 import uk.ac.ox.oucs.oauth.dao.OAuthProvider;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
-import uk.ac.ox.oucs.oauth.exception.OAuthException;
+import uk.ac.ox.oucs.oauth.exception.*;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
@@ -34,18 +35,20 @@ public class OAuthServiceImpl implements OAuthService {
         Accessor accessor = oAuthProvider.getAccessor(oAuthToken);
 
         if (accessor == null)
-            //TODO: Throw a nice exception
-            throw new RuntimeException();
+            throw new InvalidAccessorException("Accessor '" + oAuthToken + "' doesn't exist.");
 
         if (accessor.getStatus() == Accessor.Status.VALID && !isStillValid(accessor))
             updateAccessorStatus(accessor, Accessor.Status.EXPIRED);
 
-        if (accessor.getStatus() != Accessor.Status.VALID)
-            //TODO: Throw a nice exception
-            throw new RuntimeException();
+        if(accessor.getStatus() == Accessor.Status.EXPIRED)
+            throw new ExpiredAccessorException("Accessor '" + oAuthToken + " expired");
+        else if(accessor.getStatus() == Accessor.Status.REVOKED)
+            throw new RevokedAccessorException("Accessor '" + oAuthToken + " revoked");
+        else if (accessor.getStatus() != Accessor.Status.VALID)
+            throw new InvalidAccessorException("Accessor '" + oAuthToken + "' is not valid. (" + accessor.getStatus() + ")");
+
         if (accessor.getType() != expectedType)
-            //TODO: Throw a nice exception
-            throw new RuntimeException();
+            throw new InvalidAccessorException("Accessor with unexpected type " + accessor.getType());
 
         return accessor;
     }
@@ -66,8 +69,7 @@ public class OAuthServiceImpl implements OAuthService {
     public Accessor createRequestAccessor(String consumerId, String secret, String callback) {
         Consumer consumer = oAuthProvider.getConsumer(consumerId);
         if (consumer == null)
-            //TODO: Throw a nice exception
-            throw new RuntimeException();
+            throw new InvalidConsumerException("Invalid consumer " + consumerId);
         Accessor accessor = new Accessor();
         accessor.setConsumerId(consumer.getId());
         accessor.setType(Accessor.Type.REQUEST);
@@ -175,7 +177,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Collection<Accessor> getAccessAccessorForUser(String userId) {
-        Collection<Accessor> accessors = oAuthProvider.getAccessorsByUser(userId);
+        Collection<Accessor> accessors = new ArrayList<Accessor>(oAuthProvider.getAccessorsByUser(userId));
 
         for (Iterator<Accessor> iterator = accessors.iterator(); iterator.hasNext(); ) {
             Accessor accessor = iterator.next();

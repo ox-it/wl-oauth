@@ -4,7 +4,12 @@ import net.oauth.*;
 import net.oauth.server.OAuthServlet;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
+import uk.ac.ox.oucs.oauth.exception.ExpiredAccessorException;
+import uk.ac.ox.oucs.oauth.exception.InvalidAccessorException;
+import uk.ac.ox.oucs.oauth.exception.InvalidConsumerException;
+import uk.ac.ox.oucs.oauth.exception.RevokedAccessorException;
 
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +34,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     }
 
     @Override
-    public boolean isValidOAuthRequest(HttpServletRequest request) throws IOException {
+    public boolean isValidOAuthRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             OAuthMessage message = OAuthServlet.getMessage(request, null);
             OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(oAuthService.getConsumer(message.getConsumerKey()));
@@ -41,12 +46,18 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                 oAuthAccessor = new OAuthAccessor(oAuthConsumer);
 
             oAuthValidator.validateMessage(message, oAuthAccessor);
+        } catch (InvalidConsumerException e) {
+            handleException(new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN), request, response, true);
+        } catch (ExpiredAccessorException e) {
+            handleException(new OAuthProblemException(OAuth.Problems.TOKEN_EXPIRED), request, response, true);
+        } catch (RevokedAccessorException e) {
+            handleException(new OAuthProblemException(OAuth.Problems.TOKEN_REVOKED), request, response, true);
+        } catch (InvalidAccessorException e) {
+            handleException(new OAuthProblemException(OAuth.Problems.TOKEN_REJECTED), request, response, true);
         } catch (OAuthException e) {
-            //TODO: Handle exceptions in a better way
-            return false;
+            handleException(new OAuthProblemException(), request, response, true);
         } catch (URISyntaxException e) {
-            //TODO: Handle exceptions in a better way
-            return false;
+            handleException(e, request, response, true);
         }
         return true;
     }
@@ -58,7 +69,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     }
 
     @Override
-    public void handleRequestToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void handleRequestToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             OAuthMessage oAuthMessage = OAuthServlet.getMessage(request, null);
             Consumer consumer = oAuthService.getConsumer(oAuthMessage.getConsumerKey());
@@ -74,15 +85,17 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                     OAuth.OAUTH_TOKEN, oAuthAccessor.requestToken,
                     OAuth.OAUTH_TOKEN_SECRET, oAuthAccessor.tokenSecret,
                     OAuth.OAUTH_CALLBACK_CONFIRMED, "true"));
+        } catch (uk.ac.ox.oucs.oauth.exception.OAuthException e) {
+            handleException(convertException(e), request, response, true);
         } catch (OAuthException e) {
-            //TODO: Handle exceptions in a better way
+            handleException(new OAuthProblemException(), request, response, true);
         } catch (URISyntaxException e) {
-            //TODO: Handle exceptions in a better way
+            handleException(e, request, response, true);
         }
     }
 
     @Override
-    public void handleGetAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void handleGetAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             OAuthMessage oAuthMessage = OAuthServlet.getMessage(request, null);
             Accessor requestAccessor = oAuthService.getAccessor(oAuthMessage.getToken(), Accessor.Type.REQUEST_AUTHORISED);
@@ -95,10 +108,12 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             sendOAuthResponse(response, OAuth.newList(
                     OAuth.OAUTH_TOKEN, accessAccessor.getToken(),
                     OAuth.OAUTH_TOKEN_SECRET, accessAccessor.getSecret()));
+        } catch (uk.ac.ox.oucs.oauth.exception.OAuthException e) {
+            handleException(convertException(e), request, response, true);
         } catch (OAuthException e) {
-            //TODO: Handle exceptions in a better way
+            handleException(new OAuthProblemException(), request, response, true);
         } catch (URISyntaxException e) {
-            //TODO: Handle exceptions in a better way
+            handleException(e, request, response, true);
         }
     }
 
@@ -156,5 +171,26 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
         OAuth.formEncode(parameters, os);
         os.flush();
         os.close();
+    }
+
+    private static void handleException(Exception e, HttpServletRequest request,
+                                        HttpServletResponse response, boolean sendBody)
+            throws IOException, ServletException {
+        String realm = (request.isSecure()) ? "https://" : "http://";
+        realm += request.getLocalName();
+        OAuthServlet.handleException(response, e, realm, sendBody);
+    }
+
+    private static OAuthException convertException(uk.ac.ox.oucs.oauth.exception.OAuthException originalException) {
+        if (originalException instanceof InvalidConsumerException)
+            return new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN);
+        else if (originalException instanceof ExpiredAccessorException)
+            return new OAuthProblemException(OAuth.Problems.TOKEN_EXPIRED);
+        else if (originalException instanceof RevokedAccessorException)
+            return new OAuthProblemException(OAuth.Problems.TOKEN_REVOKED);
+        else if (originalException instanceof InvalidAccessorException)
+            return new OAuthProblemException(OAuth.Problems.TOKEN_REJECTED);
+        else
+            return new OAuthProblemException();
     }
 }

@@ -3,12 +3,14 @@ package uk.ac.ox.oucs.oauth.filter;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
+import uk.ac.ox.oucs.oauth.exception.InvalidAccessorException;
 import uk.ac.ox.oucs.oauth.service.OAuthHttpService;
 import uk.ac.ox.oucs.oauth.service.OAuthService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -28,29 +30,35 @@ public class OAuthPreFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+
         //Only apply filter on valid OAuth requests
-        if (!oAuthHttpService.isValidOAuthRequest(req)) {
+        if (!oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
             return;
         }
 
-        String oAuthToken = oAuthHttpService.getOAuthAccessToken(req);
-        final Accessor accessor = oAuthService.getAccessor(oAuthToken, Accessor.Type.ACCESS);
+        try {
+            String oAuthToken = oAuthHttpService.getOAuthAccessToken(req);
+            final Accessor accessor = oAuthService.getAccessor(oAuthToken, Accessor.Type.ACCESS);
 
-        HttpServletRequest wrappedRequest = new HttpServletRequestWrapper(req) {
-            @Override
-            public Principal getUserPrincipal() {
-                return new Principal() {
-                    public String getName() {
-                        return accessor.getUserId();
-                    }
-                };
-            }
-        };
+            HttpServletRequest wrappedRequest = new HttpServletRequestWrapper(req) {
+                @Override
+                public Principal getUserPrincipal() {
+                    return new Principal() {
+                        public String getName() {
+                            return accessor.getUserId();
+                        }
+                    };
+                }
+            };
 
-        securityService.pushAdvisor(oAuthService.getSecurityAdvisor(accessor.getToken()));
+            securityService.pushAdvisor(oAuthService.getSecurityAdvisor(accessor.getToken()));
 
-        chain.doFilter(wrappedRequest, response);
+            chain.doFilter(wrappedRequest, response);
+        } catch (InvalidAccessorException e) {
+            //TODO: Redirect to an error page
+        }
     }
 
     public void destroy() {

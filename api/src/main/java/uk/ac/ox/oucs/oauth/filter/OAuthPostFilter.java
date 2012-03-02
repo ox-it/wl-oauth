@@ -13,6 +13,7 @@ import uk.ac.ox.oucs.oauth.service.OAuthHttpService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -38,8 +39,9 @@ public class OAuthPostFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
         //Only apply filter on OAuth request
-        if (!oAuthHttpService.isValidOAuthRequest(req)) {
+        if (!oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
             return;
         }
@@ -63,7 +65,7 @@ public class OAuthPostFilter implements Filter {
                 log.warn("Failed to find user \"" + principal.getName() + "\". This shouldn't happen", e);
             }
         }
-        chain.doFilter(req, response);
+        chain.doFilter(req, res);
     }
 
     public void destroy() {
