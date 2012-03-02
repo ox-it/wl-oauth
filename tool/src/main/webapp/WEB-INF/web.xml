@@ -98,7 +98,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AuthorizationServlet</servlet-name>
-        <url-pattern>/authorize/*</url-pattern>
+        <url-pattern>/authorise/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccessTokenServlet</servlet-name>
