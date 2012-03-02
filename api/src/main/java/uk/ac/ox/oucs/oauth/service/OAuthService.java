@@ -22,7 +22,7 @@ public interface OAuthService {
 
     Accessor startAuthorisation(String accessorId);
 
-    Accessor authoriseToken(String accessorId, String verifier, String userId);
+    Accessor authoriseAccessor(String accessorId, String verifier, String userId);
 
     Accessor createAccessAccessor(String requestAccessorId);
     
