@@ -27,10 +27,6 @@
             <artifactId>sakai-component-manager</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.sakaiproject.kernel</groupId>
-            <artifactId>sakai-kernel-util</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>

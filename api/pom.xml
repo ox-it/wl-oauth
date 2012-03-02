@@ -27,11 +27,6 @@
             <artifactId>sakai-kernel-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!-- TODO: Remove the util dependency when the OAuthPostFilter is fixed -->
-        <dependency>
-            <groupId>org.sakaiproject.kernel</groupId>
-            <artifactId>sakai-kernel-util</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.sakaiproject.kernel</groupId>
             <artifactId>sakai-component-manager</artifactId>
