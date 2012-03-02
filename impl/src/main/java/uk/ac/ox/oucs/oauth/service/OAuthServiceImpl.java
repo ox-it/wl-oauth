@@ -31,21 +31,21 @@ public class OAuthServiceImpl implements OAuthService {
         this.keepOldAccessors = keepOldAccessors;
     }
 
-    public Accessor getAccessor(String oAuthToken, Accessor.Type expectedType) {
-        Accessor accessor = oAuthProvider.getAccessor(oAuthToken);
+    public Accessor getAccessor(String token, Accessor.Type expectedType) {
+        Accessor accessor = oAuthProvider.getAccessor(token);
 
         if (accessor == null)
-            throw new InvalidAccessorException("Accessor '" + oAuthToken + "' doesn't exist.");
+            throw new InvalidAccessorException("Accessor '" + token + "' doesn't exist.");
 
         if (accessor.getStatus() == Accessor.Status.VALID && !isStillValid(accessor))
             updateAccessorStatus(accessor, Accessor.Status.EXPIRED);
 
         if(accessor.getStatus() == Accessor.Status.EXPIRED)
-            throw new ExpiredAccessorException("Accessor '" + oAuthToken + " expired");
+            throw new ExpiredAccessorException("Accessor '" + token + " expired");
         else if(accessor.getStatus() == Accessor.Status.REVOKED)
-            throw new RevokedAccessorException("Accessor '" + oAuthToken + " revoked");
+            throw new RevokedAccessorException("Accessor '" + token + " revoked");
         else if (accessor.getStatus() != Accessor.Status.VALID)
-            throw new InvalidAccessorException("Accessor '" + oAuthToken + "' is not valid. (" + accessor.getStatus() + ")");
+            throw new InvalidAccessorException("Accessor '" + token + "' is not valid. (" + accessor.getStatus() + ")");
 
         if (accessor.getType() != expectedType)
             throw new InvalidAccessorException("Accessor with unexpected type " + accessor.getType());
@@ -75,7 +75,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setType(Accessor.Type.REQUEST);
         accessor.setStatus(Accessor.Status.VALID);
         accessor.setCreationDate(new DateTime().toDate());
-        //A request token is valid for 15 minutes only
+        //A request accessor is valid for 15 minutes only
         accessor.setExpirationDate(new DateTime().plusMinutes(15).toDate());
         if (secret != null)
             //Support Variable Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
@@ -135,15 +135,14 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public Accessor authoriseToken(String accessorId, String verifier, String userId) {
+    public Accessor authoriseAccessor(String accessorId, String verifier, String userId) {
         Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
         if (!accessor.getVerifier().equals(verifier))
-            //TODO: Throw a nice Exception
-            throw new RuntimeException();
+            throw new OAuthException("Accessor verifier invalid.");
         accessor.setVerifier(generateVerifier(accessor));
         accessor.setType(Accessor.Type.REQUEST_AUTHORISED);
         accessor.setUserId(userId);
-        //An authorised request token is valid for one month only
+        //An authorised request accessor is valid for one month only
         accessor.setExpirationDate(new DateTime().plusMonths(1).toDate());
         accessor = oAuthProvider.updateAccessor(accessor);
         return accessor;
@@ -164,7 +163,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessAccessor.setType(Accessor.Type.ACCESS);
         accessAccessor.setStatus(Accessor.Status.VALID);
         accessAccessor.setCreationDate(new DateTime().toDate());
-        //An access token is valid based on the number of minutes given by the consumer
+        //An access accessor is valid based on the number of minutes given by the consumer
         if (consumer.getDefaultValidity() != null)
             accessAccessor.setExpirationDate(new DateTime().plusMinutes(consumer.getDefaultValidity()).toDate());
         accessAccessor.setToken(generateToken(accessAccessor));
@@ -188,7 +187,6 @@ public class OAuthServiceImpl implements OAuthService {
             if (accessor.getStatus() != Accessor.Status.VALID)
                 iterator.remove();
             if (accessor.getType() != Accessor.Type.ACCESS) {
-                //TODO: THIS SHOULD NEVER HAPPEN THROW EXCEPTIONS AND KILL EVERYTHING IF WE GET THERE !!!!
                 iterator.remove();
             }
         }
@@ -201,7 +199,7 @@ public class OAuthServiceImpl implements OAuthService {
             Accessor accessor = getAccessor(accessorId, Accessor.Type.ACCESS);
             updateAccessorStatus(accessor, Accessor.Status.REVOKED);
         } catch (OAuthException ignored) {
-            //If the token is already expired/revoked, nothing to do/handle
+            //If the accessor is already expired/revoked, nothing to do/handle
         }
     }
 
