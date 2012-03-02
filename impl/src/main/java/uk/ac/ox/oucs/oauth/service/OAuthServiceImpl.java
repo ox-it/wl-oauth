@@ -106,12 +106,17 @@ public class OAuthServiceImpl implements OAuthService {
 
     private static String generateMd5(String string) {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            byte[] md5Bytes = messageDigest.digest(string.getBytes("UTF-8"));
+            MessageDigest messageDigest;
+            try {
+                messageDigest = MessageDigest.getInstance("SHA-1");
+            } catch (NoSuchAlgorithmException e) {
+                messageDigest = MessageDigest.getInstance("MD5");
+            }
+            byte[] hashBytes = messageDigest.digest(string.getBytes("UTF-8"));
 
             StringBuilder md5String = new StringBuilder();
-            for (byte md5Byte : md5Bytes) {
-                md5String.append(Integer.toString((md5Byte & 0xff) + 0x100, 16).substring(1));
+            for (byte hashByte : hashBytes) {
+                md5String.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
             }
             return md5String.toString();
         } catch (NoSuchAlgorithmException e) {
