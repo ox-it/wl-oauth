@@ -1,13 +1,11 @@
 package uk.ac.ox.oucs.oauth.service;
 
 import net.oauth.*;
+import net.oauth.OAuthException;
 import net.oauth.server.OAuthServlet;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
-import uk.ac.ox.oucs.oauth.exception.ExpiredAccessorException;
-import uk.ac.ox.oucs.oauth.exception.InvalidAccessorException;
-import uk.ac.ox.oucs.oauth.exception.InvalidConsumerException;
-import uk.ac.ox.oucs.oauth.exception.RevokedAccessorException;
+import uk.ac.ox.oucs.oauth.exception.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -94,6 +92,8 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(consumer);
             OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(requestAccessor, oAuthConsumer);
             oAuthValidator.validateMessage(oAuthMessage, oAuthAccessor);
+            if(requestAccessor.getVerifier() != null && !requestAccessor.getVerifier().equals(oAuthMessage.getParameter(OAuth.OAUTH_VERIFIER)))
+                throw new InvalidVerifierException();
 
             Accessor accessAccessor = oAuthService.createAccessAccessor(requestAccessor.getToken());
             sendOAuthResponse(response, OAuth.newList(
@@ -186,6 +186,8 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             return new OAuthProblemException(OAuth.Problems.TOKEN_REVOKED);
         else if (originalException instanceof InvalidAccessorException)
             return new OAuthProblemException(OAuth.Problems.TOKEN_REJECTED);
+        else if (originalException instanceof InvalidVerifierException)
+            return new OAuthProblemException(OAuth.Problems.PARAMETER_REJECTED);
         else
             return new OAuthProblemException();
     }

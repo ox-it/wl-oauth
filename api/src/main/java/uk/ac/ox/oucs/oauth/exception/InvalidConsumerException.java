@@ -3,7 +3,7 @@ package uk.ac.ox.oucs.oauth.exception;
 /**
  * @author Colin Hebert
  */
-public class InvalidConsumerException extends OAuthException{
+public class InvalidConsumerException extends OAuthException {
     public InvalidConsumerException() {
     }
 
