@@ -107,10 +107,10 @@ public class OAuthServiceImpl implements OAuthService {
 
     private static String generateToken(Accessor accessor) {
         // TODO Need a better way of generating tokens in the long run.
-        return generateMd5(accessor.getConsumerId() + System.nanoTime());
+        return generateHash(accessor.getConsumerId() + System.nanoTime());
     }
 
-    private static String generateMd5(String string) {
+    private static String generateHash(String string) {
         try {
             MessageDigest messageDigest;
             try {
