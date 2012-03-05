@@ -8,6 +8,22 @@
     <name>OAuth Base</name>
     <version>1.1-SNAPSHOT</version>
 
+    <distributionManagement>
+        <repository>
+            <id>maven-repo.oucs</id>
+            <url>http://maven-repo.oucs.ox.ac.uk/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-repo.oucs</id>
+            <url>http://maven-repo.oucs.ox.ac.uk/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <scm>
+        <connection>scm:git:git://git-repo.oucs.ox.ac.uk/git/repos/local-project/oauth</connection>
+        <developerConnection>scm:git:ssh://git-repo.oucs.ox.ac.uk/~git/repos/local-project/oauth</developerConnection>
+        <url>http://git-repo.oucs.ox.ac.uk/cgi-bin/gitweb.cgi?p=repos/local-project/oauth</url>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
