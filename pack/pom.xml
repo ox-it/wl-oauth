@@ -30,6 +30,10 @@
             <artifactId>oauth-dao-hbm</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>oauth-dao-server-config</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.sakaiproject.kernel</groupId>

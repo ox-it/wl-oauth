@@ -32,6 +32,7 @@
         <module>impl</module>
         <module>impl/dao-hbm</module>
         <module>impl/dao-memory</module>
+        <module>impl/dao-server-config</module>
         <module>pack</module>
         <module>tool</module>
     </modules>
@@ -52,6 +53,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>oauth-dao-hbm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>oauth-dao-server-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
