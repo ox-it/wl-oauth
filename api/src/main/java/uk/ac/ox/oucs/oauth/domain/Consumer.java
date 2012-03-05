@@ -15,9 +15,9 @@ public class Consumer {
     private String accessorSecret;
     private Set<String> rights;
     /**
-     * Default access token validity in milliseconds
+     * Default access token validity in minutes
      */
-    private Integer defaultValidity;
+    private int defaultValidity;
 
     public String getCallbackURL() {
         return callbackURL;
@@ -83,11 +83,11 @@ public class Consumer {
         this.rights = rights;
     }
 
-    public Integer getDefaultValidity() {
+    public int getDefaultValidity() {
         return defaultValidity;
     }
 
-    public void setDefaultValidity(Integer defaultValidity) {
+    public void setDefaultValidity(int defaultValidity) {
         this.defaultValidity = defaultValidity;
     }
 

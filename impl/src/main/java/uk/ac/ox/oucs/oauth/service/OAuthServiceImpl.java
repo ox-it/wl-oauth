@@ -175,7 +175,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessAccessor.setStatus(Accessor.Status.VALID);
         accessAccessor.setCreationDate(new DateTime().toDate());
         //An access accessor is valid based on the number of minutes given by the consumer
-        if (consumer.getDefaultValidity() != null)
+        if (consumer.getDefaultValidity() > 0)
             accessAccessor.setExpirationDate(new DateTime().plusMinutes(consumer.getDefaultValidity()).toDate());
         accessAccessor.setToken(generateToken(accessAccessor));
 
