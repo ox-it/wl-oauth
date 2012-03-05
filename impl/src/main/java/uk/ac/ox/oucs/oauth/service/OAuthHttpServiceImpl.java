@@ -92,7 +92,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(consumer);
             OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(requestAccessor, oAuthConsumer);
             oAuthValidator.validateMessage(oAuthMessage, oAuthAccessor);
-            if(requestAccessor.getVerifier() != null && !requestAccessor.getVerifier().equals(oAuthMessage.getParameter(OAuth.OAUTH_VERIFIER)))
+            if (requestAccessor.getVerifier() != null && !requestAccessor.getVerifier().equals(oAuthMessage.getParameter(OAuth.OAUTH_VERIFIER)))
                 throw new InvalidVerifierException();
 
             Accessor accessAccessor = oAuthService.createAccessAccessor(requestAccessor.getToken());
@@ -126,7 +126,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                 } else {
                     String callbackUrl = OAuth.addParameters(accessor.getCallbackUrl(),
                             OAuth.OAUTH_TOKEN, accessor.getToken(),
-                            OAuth.OAUTH_VERIFIER, OAuth.OAUTH_VERIFIER);
+                            OAuth.OAUTH_VERIFIER, accessor.getVerifier());
 
                     response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
                     response.setHeader("Location", callbackUrl);
