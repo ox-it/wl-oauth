@@ -11,7 +11,8 @@
         <dependencySet>
             <outputDirectory>shared/lib/</outputDirectory>
             <includes>
-                <include>*:jar:*</include>
+                <include>uk.ac.ox.oucs.oauth:oauth-api:jar:*</include>
+                <include>uk.ac.ox.oucs.oauth:oauth-dao-hbm:jar:*</include>
             </includes>
             <unpack>false</unpack>
         </dependencySet>
@@ -19,14 +20,14 @@
             <outputDirectory>webapps/</outputDirectory>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
             <includes>
-                <include>*:war:*</include>
+                <include>uk.ac.ox.oucs.oauth:oauth-tool:war:*</include>
             </includes>
             <unpack>false</unpack>
         </dependencySet>
         <dependencySet>
             <outputDirectory>components/${artifact.artifactId}</outputDirectory>
             <includes>
-                <include>*:sakai-component:*</include>
+                <include>uk.ac.ox.oucs.oauth:oauth-pack:sakai-component:*</include>
             </includes>
             <unpack>true</unpack>
         </dependencySet>
