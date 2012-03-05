@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * @author Colin Hebert
  */
-interface AccessorDao {
+public interface AccessorDao {
     void create(Accessor accessor);
 
     Accessor get(String accessorId);

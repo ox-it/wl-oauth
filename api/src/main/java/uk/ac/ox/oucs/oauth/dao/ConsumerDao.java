@@ -5,7 +5,7 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
 /**
  * @author Colin Hebert
  */
-interface ConsumerDao {
+public interface ConsumerDao {
     void create(Consumer consumer);
 
     Consumer get(String consumerId);

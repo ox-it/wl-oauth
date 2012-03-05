@@ -3,7 +3,8 @@ package uk.ac.ox.oucs.oauth.service;
 import org.joda.time.DateTime;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import uk.ac.ox.oucs.oauth.advisor.LimitedPermissionsAdvisor;
-import uk.ac.ox.oucs.oauth.dao.OAuthProvider;
+import uk.ac.ox.oucs.oauth.dao.AccessorDao;
+import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 import uk.ac.ox.oucs.oauth.exception.*;
@@ -20,11 +21,16 @@ import java.util.Random;
  * @author Colin Hebert
  */
 public class OAuthServiceImpl implements OAuthService {
-    private OAuthProvider oAuthProvider;
+    private AccessorDao accessorDao;
+    private ConsumerDao consumerDao;
     private boolean keepOldAccessors;
 
-    public void setoAuthProvider(OAuthProvider oAuthProvider) {
-        this.oAuthProvider = oAuthProvider;
+    public void setAccessorDao(AccessorDao accessorDao) {
+        this.accessorDao = accessorDao;
+    }
+
+    public void setConsumerDao(ConsumerDao consumerDao) {
+        this.consumerDao = consumerDao;
     }
 
     public void setKeepOldAccessors(boolean keepOldAccessors) {
@@ -32,7 +38,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     public Accessor getAccessor(String token, Accessor.Type expectedType) {
-        Accessor accessor = oAuthProvider.getAccessor(token);
+        Accessor accessor = accessorDao.get(token);
 
         if (accessor == null)
             throw new InvalidAccessorException("Accessor '" + token + "' doesn't exist.");
@@ -56,18 +62,18 @@ public class OAuthServiceImpl implements OAuthService {
     @Override
     public SecurityAdvisor getSecurityAdvisor(String accessorId) {
         Accessor accessor = getAccessor(accessorId, Accessor.Type.ACCESS);
-        Consumer consumer = oAuthProvider.getConsumer(accessor.getConsumerId());
+        Consumer consumer = consumerDao.get(accessor.getConsumerId());
         return new LimitedPermissionsAdvisor(consumer.getRights());
     }
 
     @Override
     public Consumer getConsumer(String consumerKey) {
-        return oAuthProvider.getConsumer(consumerKey);
+        return consumerDao.get(consumerKey);
     }
 
     @Override
     public Accessor createRequestAccessor(String consumerId, String secret, String callback) {
-        Consumer consumer = oAuthProvider.getConsumer(consumerId);
+        Consumer consumer = consumerDao.get(consumerId);
         if (consumer == null)
             throw new InvalidConsumerException("Invalid consumer " + consumerId);
         Accessor accessor = new Accessor();
@@ -94,7 +100,7 @@ public class OAuthServiceImpl implements OAuthService {
             accessor.setCallbackUrl(OUT_OF_BAND_CALLBACK);
 
         accessor.setToken(generateToken(accessor));
-        oAuthProvider.createAccessor(accessor);
+        accessorDao.create(accessor);
 
         return accessor;
     }
@@ -135,7 +141,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setType(Accessor.Type.REQUEST_AUTHORISING);
         //The authorisation must be done in less than 15 minutes
         accessor.setExpirationDate(new DateTime().plusMinutes(15).toDate());
-        accessor = oAuthProvider.updateAccessor(accessor);
+        accessor = accessorDao.update(accessor);
         return accessor;
     }
 
@@ -149,7 +155,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setUserId(userId);
         //An authorised request accessor is valid for one month only
         accessor.setExpirationDate(new DateTime().plusMonths(1).toDate());
-        accessor = oAuthProvider.updateAccessor(accessor);
+        accessor = accessorDao.update(accessor);
         return accessor;
     }
 
@@ -161,7 +167,7 @@ public class OAuthServiceImpl implements OAuthService {
     public Accessor createAccessAccessor(String requestAccessorId) {
         Accessor requestAccessor = getAccessor(requestAccessorId, Accessor.Type.REQUEST_AUTHORISED);
 
-        Consumer consumer = oAuthProvider.getConsumer(requestAccessor.getConsumerId());
+        Consumer consumer = consumerDao.get(requestAccessor.getConsumerId());
         Accessor accessAccessor = new Accessor();
         accessAccessor.setConsumerId(consumer.getId());
         accessAccessor.setUserId(requestAccessor.getUserId());
@@ -174,7 +180,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessAccessor.setToken(generateToken(accessAccessor));
 
         updateAccessorStatus(requestAccessor, Accessor.Status.EXPIRED);
-        oAuthProvider.createAccessor(accessAccessor);
+        accessorDao.create(accessAccessor);
 
         return accessAccessor;
     }
@@ -191,7 +197,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Collection<Accessor> getAccessAccessorForUser(String userId) {
-        Collection<Accessor> accessors = new ArrayList<Accessor>(oAuthProvider.getAccessorsByUser(userId));
+        Collection<Accessor> accessors = new ArrayList<Accessor>(accessorDao.getByUser(userId));
 
         for (Iterator<Accessor> iterator = accessors.iterator(); iterator.hasNext(); ) {
             Accessor accessor = iterator.next();
@@ -223,8 +229,8 @@ public class OAuthServiceImpl implements OAuthService {
     private void updateAccessorStatus(Accessor accessor, Accessor.Status status) {
         if (keepOldAccessors || status == Accessor.Status.VALID) {
             accessor.setStatus(status);
-            oAuthProvider.updateAccessor(accessor);
+            accessorDao.update(accessor);
         } else
-            oAuthProvider.removeAccessor(accessor);
+            accessorDao.remove(accessor);
     }
 }
