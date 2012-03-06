@@ -41,7 +41,7 @@
 
                     <p>You are currently logged in as  ${requestScope.userName} (${requestScope.userId})</p>
 
-                    <form name="authZForm" action="authorise" method="post">
+                    <form name="authZForm" action="authorize" method="post">
                         <input type="hidden" name="oauthToken" value="${requestScope.token}"/>
                         <input type="hidden" name="oauthVerifier" value="${requestScope.oauthVerifier}"/>
                         <input type="submit" name="${requestScope.authorise}" value="${requestScope.authorise}"/>
