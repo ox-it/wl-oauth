@@ -68,14 +68,16 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Consumer getConsumer(String consumerKey) {
-        return consumerDao.get(consumerKey);
+        Consumer consumer = consumerDao.get(consumerKey);
+        if (consumer == null)
+            throw new InvalidConsumerException("Consumer '" + consumerKey + " doesn't exist");
+
+        return consumer;
     }
 
     @Override
     public Accessor createRequestAccessor(String consumerId, String secret, String callback) {
         Consumer consumer = consumerDao.get(consumerId);
-        if (consumer == null)
-            throw new InvalidConsumerException("Invalid consumer " + consumerId);
         Accessor accessor = new Accessor();
         accessor.setConsumerId(consumer.getId());
         accessor.setType(Accessor.Type.REQUEST);
