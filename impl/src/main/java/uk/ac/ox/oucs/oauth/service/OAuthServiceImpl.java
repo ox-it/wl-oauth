@@ -76,7 +76,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public Accessor createRequestAccessor(String consumerId, String secret, String callback) {
+    public Accessor createRequestAccessor(String consumerId, String callback) {
         Consumer consumer = consumerDao.get(consumerId);
         Accessor accessor = new Accessor();
         accessor.setConsumerId(consumer.getId());
@@ -85,14 +85,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setCreationDate(new DateTime().toDate());
         //A request accessor is valid for 15 minutes only
         accessor.setExpirationDate(new DateTime().plusMinutes(15).toDate());
-        if (secret != null)
-            //Support Variable Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
-            accessor.setSecret(secret);
-        else if (consumer.getAccessorSecret() != null)
-            //Support Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
-            accessor.setSecret(consumer.getAccessorSecret());
-        else
-            accessor.setSecret(consumer.getSecret());
+        accessor.setSecret(consumer.getSecret());
 
         if (callback != null)
             accessor.setCallbackUrl(callback);
@@ -166,7 +159,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public Accessor createAccessAccessor(String requestAccessorId) {
+    public Accessor createAccessAccessor(String requestAccessorId, String secret) {
         Accessor requestAccessor = getAccessor(requestAccessorId, Accessor.Type.REQUEST_AUTHORISED);
 
         Consumer consumer = consumerDao.get(requestAccessor.getConsumerId());
@@ -176,6 +169,15 @@ public class OAuthServiceImpl implements OAuthService {
         accessAccessor.setType(Accessor.Type.ACCESS);
         accessAccessor.setStatus(Accessor.Status.VALID);
         accessAccessor.setCreationDate(new DateTime().toDate());
+        if (secret != null)
+            //Support Variable Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
+            accessAccessor.setSecret(secret);
+        else if (consumer.getAccessorSecret() != null)
+            //Support Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
+            accessAccessor.setSecret(consumer.getAccessorSecret());
+        else
+            accessAccessor.setSecret(consumer.getSecret());
+
         //An access accessor is valid based on the number of minutes given by the consumer
         if (consumer.getDefaultValidity() > 0)
             accessAccessor.setExpirationDate(new DateTime().plusMinutes(consumer.getDefaultValidity()).toDate());

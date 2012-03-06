@@ -18,13 +18,13 @@ public interface OAuthService {
 
     Consumer getConsumer(String consumerKey);
 
-    Accessor createRequestAccessor(String consumerId, String secret, String callback);
+    Accessor createRequestAccessor(String consumerId, String callback);
 
     Accessor startAuthorisation(String accessorId);
 
     Accessor authoriseAccessor(String accessorId, String verifier, String userId);
 
-    Accessor createAccessAccessor(String requestAccessorId);
+    Accessor createAccessAccessor(String requestAccessorId, String secret);
     
     Collection<Accessor> getAccessAccessorForUser(String userId);
     
