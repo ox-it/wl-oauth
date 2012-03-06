@@ -141,7 +141,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                     out.flush();
                     out.close();
                 } else {
-                    response.setStatus(HttpServletResponse.TEMPORARY_REDIRECT);
+                    response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
                     response.setHeader("Location", accessor.getCallbackUrl());
                 }
 
