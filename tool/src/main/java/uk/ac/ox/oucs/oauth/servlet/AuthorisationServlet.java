@@ -154,8 +154,6 @@ public class AuthorisationServlet extends HttpServlet {
             request.getRequestDispatcher(authorisePath).forward(request, response);
         } catch (OAuthException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            if (accessor != null && accessor.getCallbackUrl() != null && !OAuthService.OUT_OF_BAND_CALLBACK.equals(accessor.getCallbackUrl()))
-                response.setHeader("Location", accessor.getCallbackUrl());
         }
     }
 

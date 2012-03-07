@@ -128,7 +128,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                             OAuth.OAUTH_TOKEN, accessor.getToken(),
                             OAuth.OAUTH_VERIFIER, accessor.getVerifier());
 
-                    response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+                    response.setStatus(HttpServletResponse.SC_SEE_OTHER);
                     response.setHeader("Location", callbackUrl);
                 }
             } else {
@@ -136,12 +136,12 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                 if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
                     response.setContentType("text/plain");
                     PrintWriter out = response.getWriter();
-                    out.println("You have not  authorized '" + consumer.getName() + "'.\n" +
+                    out.println("You have not authorized '" + consumer.getName() + "'.\n" +
                             "Please close this browser window and click continue in the client.");
                     out.flush();
                     out.close();
                 } else {
-                    response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
+                    response.setStatus(HttpServletResponse.SC_SEE_OTHER);
                     response.setHeader("Location", accessor.getCallbackUrl());
                 }
 
