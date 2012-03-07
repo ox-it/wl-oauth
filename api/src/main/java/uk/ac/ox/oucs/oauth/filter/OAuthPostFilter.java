@@ -56,12 +56,12 @@ public class OAuthPostFilter implements Filter {
 
                     @Override
                     public String getUid() {
-                        return eid;
+                        return uid;
                     }
 
                     @Override
                     public String getEid() {
-                        return uid;
+                        return eid;
                     }
                 };
 
