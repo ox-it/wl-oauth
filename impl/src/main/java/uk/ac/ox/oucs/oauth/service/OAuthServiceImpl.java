@@ -76,7 +76,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public Accessor createRequestAccessor(String consumerId, String callback) {
+    public Accessor createRequestAccessor(String consumerId, String callback, String accessorSecret) {
         Consumer consumer = consumerDao.get(consumerId);
         Accessor accessor = new Accessor();
         accessor.setConsumerId(consumer.getId());
@@ -85,7 +85,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setCreationDate(new DateTime().toDate());
         //A request accessor is valid for 15 minutes only
         accessor.setExpirationDate(new DateTime().plusMinutes(15).toDate());
-        accessor.setSecret(consumer.getSecret());
+        accessor.setAccessorSecret(accessorSecret);
 
         if (callback != null)
             accessor.setCallbackUrl(callback);
@@ -95,6 +95,7 @@ public class OAuthServiceImpl implements OAuthService {
             accessor.setCallbackUrl(OUT_OF_BAND_CALLBACK);
 
         accessor.setToken(generateToken(accessor));
+        accessor.setSecret(generateSecret(accessor, consumer));
         accessorDao.create(accessor);
 
         return accessor;
@@ -103,6 +104,11 @@ public class OAuthServiceImpl implements OAuthService {
     private static String generateToken(Accessor accessor) {
         // TODO Need a better way of generating tokens in the long run.
         return generateHash(accessor.getConsumerId() + System.nanoTime());
+    }
+
+    private static String generateSecret(Accessor accessor, Consumer consumer) {
+        // TODO Need a better way of generating tokens in the long run.
+        return generateHash(accessor.getToken() + consumer.getSecret() + System.nanoTime());
     }
 
     private static String generateHash(String string) {
@@ -142,7 +148,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Accessor authoriseAccessor(String accessorId, String verifier, String userId) {
-        Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
+         Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
         if (!accessor.getVerifier().equals(verifier))
             throw new OAuthException("Accessor verifier invalid.");
         accessor.setVerifier(generateVerifier(accessor));
@@ -159,7 +165,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public Accessor createAccessAccessor(String requestAccessorId, String secret) {
+    public Accessor createAccessAccessor(String requestAccessorId) {
         Accessor requestAccessor = getAccessor(requestAccessorId, Accessor.Type.REQUEST_AUTHORISED);
 
         Consumer consumer = consumerDao.get(requestAccessor.getConsumerId());
@@ -169,19 +175,12 @@ public class OAuthServiceImpl implements OAuthService {
         accessAccessor.setType(Accessor.Type.ACCESS);
         accessAccessor.setStatus(Accessor.Status.VALID);
         accessAccessor.setCreationDate(new DateTime().toDate());
-        if (secret != null)
-            //Support Variable Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
-            accessAccessor.setSecret(secret);
-        else if (consumer.getAccessorSecret() != null)
-            //Support Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
-            accessAccessor.setSecret(consumer.getAccessorSecret());
-        else
-            accessAccessor.setSecret(consumer.getSecret());
 
         //An access accessor is valid based on the number of minutes given by the consumer
         if (consumer.getDefaultValidity() > 0)
-            accessAccessor.setExpirationDate(new DateTime().plusMinutes(consumer.getDefaultValidity()).toDate());
+            accessAccessor.setExpirationDate(DateTime.now().plusMinutes(consumer.getDefaultValidity()).toDate());
         accessAccessor.setToken(generateToken(accessAccessor));
+        accessAccessor.setSecret(generateSecret(accessAccessor, consumer));
 
         updateAccessorStatus(requestAccessor, Accessor.Status.EXPIRED);
         accessorDao.create(accessAccessor);

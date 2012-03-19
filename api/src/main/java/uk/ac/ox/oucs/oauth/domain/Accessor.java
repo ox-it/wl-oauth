@@ -16,6 +16,7 @@ public class Accessor {
     private Date expirationDate;
     private String callbackUrl;
     private String userId;
+    private String accessorSecret;
 
     public static enum Type {
         REQUEST,
@@ -110,6 +111,13 @@ public class Accessor {
         this.userId = userId;
     }
 
+    public String getAccessorSecret() {
+        return accessorSecret;
+    }
+
+    public void setAccessorSecret(String accessorSecret) {
+        this.accessorSecret = accessorSecret;
+    }
 
     @Override
     public String toString() {

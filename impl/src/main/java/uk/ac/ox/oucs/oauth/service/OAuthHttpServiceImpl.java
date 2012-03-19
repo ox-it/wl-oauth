@@ -66,7 +66,8 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             oAuthValidator.validateMessage(oAuthMessage, new OAuthAccessor(oAuthConsumer));
 
             String callback = oAuthMessage.getParameter(OAuth.OAUTH_CALLBACK);
-            Accessor accessor = oAuthService.createRequestAccessor(consumer.getId(), callback);
+            String accessorSecret = oAuthMessage.getParameter(OAuthConsumer.ACCESSOR_SECRET);
+            Accessor accessor = oAuthService.createRequestAccessor(consumer.getId(), callback, accessorSecret);
             OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(accessor, oAuthConsumer);
 
             sendOAuthResponse(response, OAuth.newList(
@@ -94,8 +95,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             if (requestAccessor.getVerifier() != null && !requestAccessor.getVerifier().equals(oAuthMessage.getParameter(OAuth.OAUTH_VERIFIER)))
                 throw new InvalidVerifierException();
 
-            String secret = oAuthMessage.getParameter(OAuthConsumer.ACCESSOR_SECRET);
-            Accessor accessAccessor = oAuthService.createAccessAccessor(requestAccessor.getToken(), secret);
+            Accessor accessAccessor = oAuthService.createAccessAccessor(requestAccessor.getToken());
             sendOAuthResponse(response, OAuth.newList(
                     OAuth.OAUTH_TOKEN, accessAccessor.getToken(),
                     OAuth.OAUTH_TOKEN_SECRET, accessAccessor.getSecret()));

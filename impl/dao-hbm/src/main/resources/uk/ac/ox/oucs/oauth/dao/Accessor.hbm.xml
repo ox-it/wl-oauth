@@ -24,5 +24,6 @@
                 <param name="enumClass">uk.ac.ox.oucs.oauth.domain.Accessor$Type</param>
             </type>
         </property>
+        <property name="accessorSecret" />
     </class>
 </hibernate-mapping>
