@@ -15,6 +15,12 @@ import java.io.IOException;
 import java.security.Principal;
 
 /**
+ * First filter to apply with OAuth protocol
+ * <p>
+ * Checks the validity of the current request and OAuth parameters.
+ * Sets a security advisor for the request.
+ * </p>
+ *
  * @author Colin Hebert
  */
 public class OAuthPreFilter implements Filter {

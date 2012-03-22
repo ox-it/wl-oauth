@@ -3,19 +3,45 @@ package uk.ac.ox.oucs.oauth.domain;
 import java.util.Set;
 
 /**
+ * Consumer (client) allowed to connect through an OAuth authentication
+ *
  * @author Colin Hebert
  */
 public class Consumer {
+    /**
+     * Unique identifier of the consumer, also used as consumer's key
+     */
     private String id;
+    /**
+     * Name of the consumer, used for display
+     */
     private String name;
+    /**
+     * Consumer's description, contains messages addressed to the user during the authorisation phase
+     */
     private String description;
+    /**
+     * Consumer's URL, not the callback URL, a simple URL to allow the user to access the consumer's web site
+     */
     private String URL;
+    /**
+     * Callback URL, used during the authorisation phase
+     */
     private String callbackURL;
+    /**
+     * Consumer's secret (password), used to sign oauth messages
+     */
     private String secret;
+    /**
+     * Consumer's accessor secret, as defined in http://wiki.oauth.net/w/page/12238502/AccessorSecret
+     */
     private String accessorSecret;
+    /**
+     * Set of rights available for this specific consumer
+     */
     private Set<String> rights;
     /**
-     * Default access token validity in minutes
+     * Default access token validity in minutes. The token won't expire if the value is 0
      */
     private int defaultValidity;
 

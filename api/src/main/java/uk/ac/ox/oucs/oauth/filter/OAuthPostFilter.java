@@ -17,6 +17,11 @@ import java.io.IOException;
 import java.security.Principal;
 
 /**
+ * Last filter applied for the OAuth protocol
+ * <p>
+ * Gets the current user from the principal and log the user in.
+ * </p>
+ *
  * @author Colin Hebert
  */
 public class OAuthPostFilter implements Filter {
@@ -46,8 +51,10 @@ public class OAuthPostFilter implements Filter {
         }
 
         Principal principal = req.getUserPrincipal();
+        //Do not log the user in if there is already an opened session
         if (principal != null && sessionManager.getCurrentSessionUserId() == null) {
             try {
+                //Force the authentication/login with the user Eid
                 final String eid = userDirectoryService.getUserEid(principal.getName());
                 final String uid = principal.getName();
 

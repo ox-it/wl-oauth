@@ -1,6 +1,8 @@
 package uk.ac.ox.oucs.oauth.exception;
 
 /**
+ * Exception thrown when a consumer can't be used, because it's nonexistant or disabled
+ *
  * @author Colin Hebert
  */
 public class InvalidConsumerException extends OAuthException {
