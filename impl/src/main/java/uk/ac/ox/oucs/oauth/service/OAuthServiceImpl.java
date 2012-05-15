@@ -2,6 +2,7 @@ package uk.ac.ox.oucs.oauth.service;
 
 import org.joda.time.DateTime;
 import org.sakaiproject.authz.api.SecurityAdvisor;
+import org.sakaiproject.site.api.SiteService;
 import uk.ac.ox.oucs.oauth.advisor.LimitedPermissionsAdvisor;
 import uk.ac.ox.oucs.oauth.dao.AccessorDao;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
@@ -24,6 +25,7 @@ public class OAuthServiceImpl implements OAuthService {
     private AccessorDao accessorDao;
     private ConsumerDao consumerDao;
     private boolean keepOldAccessors;
+    private SiteService siteService;
 
     public void setAccessorDao(AccessorDao accessorDao) {
         this.accessorDao = accessorDao;
@@ -157,6 +159,9 @@ public class OAuthServiceImpl implements OAuthService {
         //An authorised request accessor is valid for one month only
         accessor.setExpirationDate(new DateTime().plusMonths(1).toDate());
         accessor = accessorDao.update(accessor);
+
+        //Generate user's site if this is the very first login
+        siteService.getSiteUserId(userId);
         return accessor;
     }
 
@@ -235,5 +240,9 @@ public class OAuthServiceImpl implements OAuthService {
             accessorDao.update(accessor);
         } else
             accessorDao.remove(accessor);
+    }
+
+    public void setSiteService(SiteService siteService) {
+        this.siteService = siteService;
     }
 }

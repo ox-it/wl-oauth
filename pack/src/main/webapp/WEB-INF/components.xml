@@ -11,6 +11,7 @@
     </bean>
 
     <bean id="uk.ac.ox.oucs.oauth.service.OAuthService" class="uk.ac.ox.oucs.oauth.service.OAuthServiceImpl">
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
         <property name="accessorDao">
             <!--
             <bean class="uk.ac.ox.oucs.oauth.dao.MemoryAccessorDao">
