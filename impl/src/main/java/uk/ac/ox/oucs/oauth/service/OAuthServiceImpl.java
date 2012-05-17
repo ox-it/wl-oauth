@@ -2,6 +2,7 @@ package uk.ac.ox.oucs.oauth.service;
 
 import org.joda.time.DateTime;
 import org.sakaiproject.authz.api.SecurityAdvisor;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.site.api.SiteService;
 import uk.ac.ox.oucs.oauth.advisor.LimitedPermissionsAdvisor;
 import uk.ac.ox.oucs.oauth.dao.AccessorDao;
@@ -26,6 +27,7 @@ public class OAuthServiceImpl implements OAuthService {
     private ConsumerDao consumerDao;
     private boolean keepOldAccessors;
     private SiteService siteService;
+    private SecurityService securityService;
 
     public void setAccessorDao(AccessorDao accessorDao) {
         this.accessorDao = accessorDao;
@@ -153,6 +155,8 @@ public class OAuthServiceImpl implements OAuthService {
          Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
         if (!accessor.getVerifier().equals(verifier))
             throw new OAuthException("Accessor verifier invalid.");
+        if (securityService.isSuperUser(userId))
+            throw new OAuthException("Super users can't use OAuth for security reasons.");
         accessor.setVerifier(generateVerifier(accessor));
         accessor.setType(Accessor.Type.REQUEST_AUTHORISED);
         accessor.setUserId(userId);
@@ -244,5 +248,9 @@ public class OAuthServiceImpl implements OAuthService {
 
     public void setSiteService(SiteService siteService) {
         this.siteService = siteService;
+    }
+
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }
