@@ -3,6 +3,7 @@ package uk.ac.ox.oucs.oauth.service;
 import org.joda.time.DateTime;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.SiteService;
 import uk.ac.ox.oucs.oauth.advisor.LimitedPermissionsAdvisor;
 import uk.ac.ox.oucs.oauth.dao.AccessorDao;
@@ -164,9 +165,21 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setExpirationDate(new DateTime().plusMonths(1).toDate());
         accessor = accessorDao.update(accessor);
 
-        //Generate user's site if this is the very first login
-        siteService.getSiteUserId(userId);
+        generateUserSite(userId);
         return accessor;
+    }
+
+    /**
+     * Generate user's site if this is the very first login
+     * @param userId
+     */
+    private void generateUserSite(String userId) {
+        try {
+            String userSiteId = siteService.getUserSiteId(userId);
+            siteService.getSite(userSiteId);
+        } catch (IdUnusedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static String generateVerifier(Accessor accessor) {
