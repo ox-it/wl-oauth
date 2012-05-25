@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class OAuthTool {
     private HtmlDataTable accessorTable;
-    private ResourceLoader msgs = new ResourceLoader("uk.ac.ox.oucs.oauth.tool.Messages");
+    private ResourceLoader msgs = new ResourceLoader("uk.ac.ox.oucs.oauth.tool.messages");
     private SessionManager sessionManager = (SessionManager) ComponentManager.getInstance().get(SessionManager.class.getCanonicalName());
     private OAuthService oAuthService = (OAuthService) ComponentManager.get(OAuthService.class.getCanonicalName());
 
