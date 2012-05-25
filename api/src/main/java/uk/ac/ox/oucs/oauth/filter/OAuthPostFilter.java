@@ -5,7 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.tool.api.SessionManager;
-import org.sakaiproject.user.api.*;
+import org.sakaiproject.user.api.Authentication;
+import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import uk.ac.ox.oucs.oauth.service.OAuthHttpService;
 
 import javax.servlet.*;
@@ -27,7 +29,7 @@ public class OAuthPostFilter implements Filter {
     private SessionManager sessionManager;
     private UserDirectoryService userDirectoryService;
     private UsageSessionService usageSessionService;
-    private AuthenticationManager authenticationManager;
+    //private AuthenticationManager authenticationManager;
     private final static Log log = LogFactory.getLog(OAuthPostFilter.class);
 
 
@@ -36,7 +38,7 @@ public class OAuthPostFilter implements Filter {
         sessionManager = (SessionManager) ComponentManager.getInstance().get(SessionManager.class.getCanonicalName());
         userDirectoryService = (UserDirectoryService) ComponentManager.getInstance().get(UserDirectoryService.class.getCanonicalName());
         usageSessionService = (UsageSessionService) ComponentManager.getInstance().get(UsageSessionService.class.getCanonicalName());
-        authenticationManager = (AuthenticationManager) ComponentManager.getInstance().get(AuthenticationManager.class.getCanonicalName());
+        //authenticationManager = (AuthenticationManager) ComponentManager.getInstance().get(AuthenticationManager.class.getCanonicalName());
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -55,17 +57,30 @@ public class OAuthPostFilter implements Filter {
             try {
                 //Force the authentication/login with the user Eid
                 final String eid = userDirectoryService.getUserEid(principal.getName());
+                final String uid = principal.getName();
 
-                Authentication authentication = authenticationManager.authenticate(new ExternalTrustedEvidence() {
-                    public String getIdentifier() {
+                // TODO This is a hack and we should go through the AuthenticationManager API.
+                Authentication authentication = new Authentication() {
+
+                    @Override
+                    public String getUid() {
+                        return uid;
+                    }
+
+                    @Override
+                    public String getEid() {
                         return eid;
                     }
-                });
+                };
+
+                //Authentication authentication = authenticationManager.authenticate(new ExternalTrustedEvidence() {
+                //    public String getIdentifier() {
+                //        return eid;
+                //    }
+                //});
                 usageSessionService.login(authentication, req);
             } catch (UserNotDefinedException e) {
                 log.warn("Failed to find user \"" + principal.getName() + "\". This shouldn't happen", e);
-            } catch (AuthenticationException e) {
-                log.warn("Failed to login as \"" + principal.getName() + "\". This shouldn't happen", e);
             }
         }
         chain.doFilter(req, res);
