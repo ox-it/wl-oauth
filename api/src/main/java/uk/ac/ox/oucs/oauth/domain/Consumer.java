@@ -45,6 +45,10 @@ public class Consumer implements Serializable {
      * Default access token validity in minutes. The token won't expire if the value is 0
      */
     private int defaultValidity;
+    /**
+     * Enable or disable the record mode. The default value should always be false for security reasons.
+     */
+    private boolean recordModeEnabled;
 
     public String getCallbackURL() {
         return callbackURL;
@@ -116,6 +120,14 @@ public class Consumer implements Serializable {
 
     public void setDefaultValidity(int defaultValidity) {
         this.defaultValidity = defaultValidity;
+    }
+
+    public boolean isRecordModeEnabled() {
+        return recordModeEnabled;
+    }
+
+    public void setRecordModeEnabled(boolean recordModeEnabled) {
+        this.recordModeEnabled = recordModeEnabled;
     }
 
     @Override
