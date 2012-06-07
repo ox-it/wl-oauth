@@ -37,35 +37,11 @@
                 </property>
             </bean>
         </property>
-        <property name="consumerDao">
-            <!--
-            <bean class="uk.ac.ox.oucs.oauth.dao.MemoryConsumerDao">
-                <constructor-arg>
-                    <map>
-                        <entry key="sakai">
-                            <bean class="uk.ac.ox.oucs.oauth.domain.Consumer">
-                                <property name="id" value="sakai"/>
-                                <property name="secret" value="A Secret"/>
-                                <property name="name" value="WebLearn Portal"/>
-                                <property name="description" value="WebLean web site"/>
-                                <property name="URL" value="http://weblearn.ox.ac.uk/"/>
-                                <property name="rights">
-                                    <list>
-                                        <value>test</value>
-                                        <value>teste</value>
-                                    </list>
-                                </property>
-                            </bean>
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
-            -->
-            <bean class="uk.ac.ox.oucs.oauth.dao.ServerConfigConsumerDao">
-                <constructor-arg ref="org.sakaiproject.component.api.ServerConfigurationService" />
-            </bean>
-        </property>
+        <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
         <property name="keepOldAccessors" value="true"/>
+    </bean>
+    <bean id="uk.ac.ox.oucs.oauth.dao.ConsumerDao" class="uk.ac.ox.oucs.oauth.dao.ServerConfigConsumerDao">
+        <constructor-arg ref="org.sakaiproject.component.api.ServerConfigurationService"/>
     </bean>
     <bean id="uk.ac.ox.oucs.oauth.service.OAuthHttpService" class="uk.ac.ox.oucs.oauth.service.OAuthHttpServiceImpl">
         <property name="oAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
@@ -73,5 +49,4 @@
             <bean class="net.oauth.SimpleOAuthValidator"/>
         </property>
     </bean>
-
 </beans>
