@@ -2,6 +2,8 @@ package uk.ac.ox.oucs.oauth.dao;
 
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 
+import java.util.Collection;
+
 /**
  * Data access object for consumers (clients)
  *
@@ -15,4 +17,6 @@ public interface ConsumerDao {
     Consumer update(Consumer consumer);
 
     void remove(Consumer consumer);
+
+    Collection<Consumer> getAll();
 }
