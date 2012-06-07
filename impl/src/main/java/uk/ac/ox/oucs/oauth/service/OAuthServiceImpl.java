@@ -153,7 +153,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public Accessor authoriseAccessor(String accessorId, String verifier, String userId) {
-         Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
+        Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
         if (!accessor.getVerifier().equals(verifier))
             throw new OAuthException("Accessor verifier invalid.");
         if (securityService.isSuperUser(userId))
@@ -171,6 +171,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     /**
      * Generate user's site if this is the very first login
+     *
      * @param userId
      */
     private void generateUserSite(String userId) {
