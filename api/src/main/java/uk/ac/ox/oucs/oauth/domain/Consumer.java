@@ -1,5 +1,6 @@
 package uk.ac.ox.oucs.oauth.domain;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Set;
  *
  * @author Colin Hebert
  */
-public class Consumer {
+public class Consumer implements Serializable {
     /**
      * Unique identifier of the consumer, also used as consumer's key
      */
