@@ -7,7 +7,7 @@
         <id name="id" type="string">
             <column name="id"/>
         </id>
-        <set name="rights" table="OAUTH_RIGHTS">
+        <set name="rights" table="OAUTH_RIGHTS" lazy="false" >
             <key column="id"/>
             <element type="string" column="accessright" not-null="true"/>
         </set>
