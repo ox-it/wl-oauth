@@ -40,7 +40,7 @@
         <commons-logging.version>1.1.1</commons-logging.version>
         <servlet-api.version>2.5</servlet-api.version>
         <hibernate.version>3.2.7.ga</hibernate.version>
-        <wicket.version>1.5.7</wicket.version>
+        <wicket.version>1.4.20</wicket.version>
         <slf4j.version>1.6.4</slf4j.version>
     </properties>
 
@@ -205,7 +205,7 @@
             <!-- Wicket -->
             <dependency>
                 <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-core</artifactId>
+                <artifactId>wicket</artifactId>
                 <version>${wicket.version}</version>
             </dependency>
             <dependency>
