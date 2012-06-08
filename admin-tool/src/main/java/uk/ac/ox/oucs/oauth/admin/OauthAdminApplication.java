@@ -5,6 +5,9 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import uk.ac.ox.oucs.oauth.admin.pages.ListConsumers;
 
+/**
+ * @author Colin Hebert
+ */
 public class OauthAdminApplication extends WebApplication {
     @Override
     protected void init() {
@@ -17,6 +20,4 @@ public class OauthAdminApplication extends WebApplication {
     public Class<? extends Page> getHomePage() {
         return ListConsumers.class;
     }
-
-
 }

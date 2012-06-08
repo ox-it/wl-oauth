@@ -14,11 +14,7 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
 import java.util.ArrayList;
 
 /**
- * Created with IntelliJ IDEA.
- * User: oucs0164
- * Date: 06/06/2012
- * Time: 11:43
- * To change this template use File | Settings | File Templates.
+ * @author Colin Hebert
  */
 public class ListConsumers extends WebPage {
     @SpringBean

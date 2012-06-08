@@ -10,6 +10,8 @@ import java.io.IOException;
 
 /**
  * Filter users before displaying the oAuth administration page
+ *
+ * @author Colin Hebert
  */
 public class AdminFilter implements Filter {
     private static final String OAUTH_ADMIN_RIGHT = "oauth.admin";
