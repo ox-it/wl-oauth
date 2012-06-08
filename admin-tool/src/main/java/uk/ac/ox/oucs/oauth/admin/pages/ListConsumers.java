@@ -36,6 +36,7 @@ public class ListConsumers extends SakaiPage {
                     public void onClick() {
                         try {
                             consumerDao.remove(getModelObject());
+                            setResponsePage(getPage().getClass());
                         } catch (Exception e) {
                             warn("Couldn't remove '" + getModelObject().getName() + "': " + e.getLocalizedMessage());
                         }
