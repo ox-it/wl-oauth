@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author Colin Hebert
  */
-public class ConsumerAdministration extends WebPage {
+public class ConsumerAdministration extends SakaiPage {
     @SpringBean
     private FunctionManager functionManager;
     @SpringBean

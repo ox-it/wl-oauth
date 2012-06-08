@@ -1,6 +1,5 @@
 package uk.ac.ox.oucs.oauth.admin.pages;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 /**
  * @author Colin Hebert
  */
-public class ListConsumers extends WebPage {
+public class ListConsumers extends SakaiPage {
     @SpringBean
     private ConsumerDao consumerDao;
 
