@@ -41,8 +41,12 @@ public class ConsumerAdministration extends WebPage {
             @Override
             protected void onSubmit() {
                 super.onSubmit();
-                consumerDao.update(consumer);
-                info(consumer.getName() + " has been saved.");
+                try {
+                    consumerDao.update(consumer);
+                    info(consumer.getName() + " has been saved.");
+                } catch (Exception e) {
+                    error("Couldn't update '" + consumer.getName() + "': " + e.getLocalizedMessage());
+                }
             }
         };
 
