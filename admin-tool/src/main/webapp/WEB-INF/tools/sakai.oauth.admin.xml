@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <registration>
-    <tool id="sakai.oauth.admin"
-          title="oAuth Admin"
-          description="This is the Administration interface to oAuth.">
-    </tool>
+    <tool id="sakai.oauth.admin" title="oAuth Admin" description="This is the Administration interface to oAuth." />
 </registration>
 
