@@ -20,7 +20,9 @@ public class ListConsumers extends SakaiPage {
     private ConsumerDao consumerDao;
 
     public ListConsumers() {
-        add(new FeedbackPanel("feedback"));
+        addMenuLink(ListConsumers.class, "List consumers", null);
+        addMenuLink(ConsumerAdministration.class, "Add a consumer", null);
+
         add(new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(consumerDao.getAll())) {
             @Override
             protected void populateItem(ListItem<Consumer> components) {
@@ -37,6 +39,7 @@ public class ListConsumers extends SakaiPage {
                         try {
                             consumerDao.remove(getModelObject());
                             setResponsePage(getPage().getClass());
+                            getSession().info(getModelObject().getName() + " has been removed.");
                         } catch (Exception e) {
                             warn("Couldn't remove '" + getModelObject().getName() + "': " + e.getLocalizedMessage());
                         }

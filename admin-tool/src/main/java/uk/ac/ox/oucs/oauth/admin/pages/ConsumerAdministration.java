@@ -1,13 +1,10 @@
 package uk.ac.ox.oucs.oauth.admin.pages;
 
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.authz.api.FunctionManager;
@@ -15,6 +12,7 @@ import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -28,30 +26,57 @@ public class ConsumerAdministration extends SakaiPage {
 
     private final Consumer consumer;
 
+    public ConsumerAdministration() {
+        consumer = new Consumer();
+        //Manually set an empty Set for rights to avoid confusion with CheckBoxMultipleChoice and not ending up with a List
+        consumer.setRights(new HashSet<String>());
+        init(false);
+    }
+
     public ConsumerAdministration(PageParameters parameters) {
         super(parameters);
+
         String consumerId = parameters.getString("consumer");
         consumer = consumerDao.get(consumerId);
+        init(true);
+    }
+
+    private void init(final boolean edit) {
+        addMenuLink(ListConsumers.class, "List consumers", null);
+        addMenuLink(ConsumerAdministration.class, "Add a consumer", null);
 
         Form consumerForm = new Form<Void>("consumerForm") {
             @Override
             protected void onSubmit() {
                 super.onSubmit();
                 try {
-                    consumerDao.update(consumer);
-                    info(consumer.getName() + " has been saved.");
+                    if (edit)
+                        consumerDao.update(consumer);
+                    else
+                        consumerDao.create(consumer);
+                    setResponsePage(ListConsumers.class);
+                    getSession().info(consumer.getName() + " has been saved.");
                 } catch (Exception e) {
                     error("Couldn't update '" + consumer.getName() + "': " + e.getLocalizedMessage());
                 }
             }
         };
 
-        consumerForm.add(new TextField<String>("id", new PropertyModel<String>(consumer, "id")));
-        consumerForm.add(new TextField<String>("name", new PropertyModel<String>(consumer, "name")));
+        TextField<String> idTextField;
+        if (edit) {
+            idTextField = new TextField<String>("id");
+            idTextField.add(new SimpleAttributeModifier("disabled", "disabled"));
+            idTextField.setModel(Model.of(consumer.getId()));
+        } else {
+            idTextField = new RequiredTextField<String>("id", new PropertyModel<String>(consumer, "id"));
+        }
+        consumerForm.add(idTextField);
+
+        consumerForm.add(new RequiredTextField<String>("name", new PropertyModel<String>(consumer, "name")));
         consumerForm.add(new TextArea<String>("description", new PropertyModel<String>(consumer, "description")));
         consumerForm.add(new TextField<String>("url", new PropertyModel<String>(consumer, "uRL")));
         consumerForm.add(new TextField<String>("callbackURL", new PropertyModel<String>(consumer, "callbackURL")));
-        consumerForm.add(new TextField<String>("secret", new PropertyModel<String>(consumer, "secret")));
+        consumerForm.add(new RequiredTextField<String>("secret", new PropertyModel<String>(consumer, "secret")));
         consumerForm.add(new TextField<String>("accessorSecret", new PropertyModel<String>(consumer, "accessorSecret")));
         consumerForm.add(new TextField<Integer>("defaultValidity", new PropertyModel<Integer>(consumer, "defaultValidity")));
 
@@ -60,7 +85,6 @@ public class ConsumerAdministration extends SakaiPage {
                 new PropertyModel<Collection<String>>(consumer, "rights"), getAvailableFunctions());
         consumerForm.add(rightCheckboxes);
 
-        add(new FeedbackPanel("feedback"));
         add(new Label("consumerName", consumer.getName()));
         add(consumerForm);
     }
