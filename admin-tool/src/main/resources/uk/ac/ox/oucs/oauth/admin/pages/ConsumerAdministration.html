@@ -1,56 +1,63 @@
-<html>
+<?xml encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
     <title>OAuth - Edit consumer</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-<h1><span wicket:id="consumerName">Consumer name</span></h1>
+<wicket:extend>
 
-<div wicket:id="feedback">Feedback</div>
-<form wicket:id="consumerForm" action="post">
-    <h2>Settings</h2>
+    <h1><span wicket:id="consumerName">Consumer name</span></h1>
 
-    <div>
-        <label for="id">Unique identifier (consumer's key)</label>
-        <input type="text" id="id" value="consumer's key" wicket:id="id"/>
-    </div>
-    <div>
-        <label for="name">Consumer's name (used for display)</label>
-        <input type="text" id="name" value="consumer's name" wicket:id="name"/>
-    </div>
-    <div>
-        <label for="description">Description</label>
-        <textarea id="description" cols="0" rows="0" wicket:id="description">Consumer's description</textarea>
-    </div>
-    <div>
-        <label for="url">URL (website, homepage)</label>
-        <input type="text" id="url" value="http://www.consumersite.com/" wicket:id="url"/>
-    </div>
-    <div>
-        <label for="callbackURL">Callback URL (used during the authorisation phase)</label>
-        <input type="text" id="callbackURL" value="http://www.consumersite.com/oauth/callback" wicket:id="callbackURL"/>
-    </div>
-    <div>
-        <label for="secret">Consumer's secret (password), used to sign oauth messages</label>
-        <input type="text" id="secret" value="sEcre7/p@s$W0rd" wicket:id="secret"/>
-    </div>
-    <div>
-        <label for="accessorSecret">Accessor's secret</label>
-        <input type="text" id="accessorSecret" value="sEcre7/p@s$W0rd" wicket:id="accessorSecret"/>
-    </div>
-    <div>
-        <label for="defaultValidity">Default validity (in minutes)</label>
-        <input type="text" id="defaultValidity" value="42" wicket:id="defaultValidity"/>
-    </div>
+    <form wicket:id="consumerForm" action="post">
+        <h2>Settings</h2>
 
-    <input type="submit" value="Save" />
+        <div>
+            <label wicket:for="id">Unique identifier (consumer's key)</label>
+            <input type="text" id="id" value="consumer's key" wicket:id="id"/>
+        </div>
+        <div>
+            <label wicket:for="name">Consumer's name (used for display)</label>
+            <input type="text" id="name" value="consumer's name" wicket:id="name"/>
+        </div>
+        <div>
+            <label wicket:for="description">Description</label>
+            <textarea id="description" cols="0" rows="0" wicket:id="description">Consumer's description</textarea>
+        </div>
+        <div>
+            <label wicket:for="url">URL (website, homepage)</label>
+            <input type="text" id="url" value="http://www.consumersite.com/" wicket:id="url"/>
+        </div>
+        <div>
+            <label wicket:for="callbackURL">Callback URL (used during the authorisation phase)</label>
+            <input type="text" id="callbackURL" value="http://www.consumersite.com/oauth/callback"
+                   wicket:id="callbackURL"/>
+        </div>
+        <div>
+            <label wicket:for="secret">Consumer's secret (password), used to sign oauth messages</label>
+            <input type="text" id="secret" value="sEcre7/p@s$W0rd" wicket:id="secret"/>
+        </div>
+        <div>
+            <label wicket:for="accessorSecret">Accessor's secret</label>
+            <input type="text" id="accessorSecret" value="sEcre7/p@s$W0rd" wicket:id="accessorSecret"/>
+        </div>
+        <div>
+            <label wicket:for="defaultValidity">Default validity (in minutes)</label>
+            <input type="text" id="defaultValidity" value="42" wicket:id="defaultValidity"/>
+        </div>
 
-    <h2>Rights</h2>
+        <input type="submit" value="Save"/>
+
+        <h2>Rights</h2>
     <span wicket:id="rights">
         <input type="checkbox" id="right.name" checked="checked"/><label for="right.name">Right's name</label><br/>
         <input type="checkbox" id="otherright.name"/><label for="otherright.name">Other right's name</label>
     </span>
-    <input type="submit" value="Save" />
-</form>
+        <input type="submit" value="Save"/>
+    </form>
+
+</wicket:extend>
 </body>
 </html>
