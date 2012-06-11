@@ -5,7 +5,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
@@ -20,8 +20,8 @@ public class ListConsumers extends SakaiPage {
     private ConsumerDao consumerDao;
 
     public ListConsumers() {
-        addMenuLink(ListConsumers.class, "List consumers", null);
-        addMenuLink(ConsumerAdministration.class, "Add a consumer", null);
+        addMenuLink(ListConsumers.class, new ResourceModel("menu.list.consumer"), null);
+        addMenuLink(ConsumerAdministration.class, new ResourceModel("menu.add.consumer"), null);
 
         add(new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(consumerDao.getAll())) {
             @Override
@@ -47,7 +47,7 @@ public class ListConsumers extends SakaiPage {
                 });
 
 
-                components.add(new Link<Consumer>("record", components.getModel()) {
+                Link<Consumer> recordLink = new Link<Consumer>("record", components.getModel()) {
                     @Override
                     public void onClick() {
                         try {
@@ -59,7 +59,13 @@ public class ListConsumers extends SakaiPage {
                             warn("Couldn't change record mode on '" + getModelObject().getName() + "': " + e.getLocalizedMessage());
                         }
                     }
-                });
+                };
+                if(components.getModelObject().isRecordModeEnabled())
+                    recordLink.add(new Label("recordLink", new ResourceModel("record.disable.link")));
+                else
+                    recordLink.add(new Label("recordLink", new ResourceModel("record.enable.link")));
+                components.add(recordLink);
+
             }
         });
     }

@@ -122,7 +122,7 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
      * @param text  Link's text
      * @param title Title attribute for the link
      */
-    protected void addMenuLink(Class<? extends Page> clazz, String text, String title) {
+    protected void addMenuLink(Class<? extends Page> clazz, IModel<String> text, String title) {
         Link<Page> link = new BookmarkablePageLink<Page>("menuItem", clazz);
         link.setEnabled(!getClass().equals(clazz));
         addMenuLink(link, text, title);
@@ -135,10 +135,10 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
      * @param text  Link's text
      * @param title Title attribute for the link
      */
-    protected void addMenuLink(final Link<Page> link, String text, String title) {
+    protected void addMenuLink(final Link<Page> link, IModel<String> text, String title) {
         WebMarkupContainer parent = new WebMarkupContainer(menu.newChildId());
         menu.add(parent);
-        link.add(new Label("menuItemText", Model.of(text)).setRenderBodyOnly(true));
+        link.add(new Label("menuItemText", text).setRenderBodyOnly(true));
         if (title != null)
             link.add(new AttributeModifier("title", true, new ResourceModel(title)));
 

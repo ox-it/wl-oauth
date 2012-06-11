@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
-    <title>OAuth - Consumer list</title>
+    <title><wicket:message key="page.title">Consumers list</wicket:message></title>
 </head>
 <body>
 <wicket:extend>
@@ -14,9 +14,9 @@
 
         <div><span wicket:id="description">Consumer's description</span></div>
         <div>
-            <a href="#" wicket:id="edit">edit</a>
-            <a href="#" wicket:id="delete">delete</a>
-            <a href="#" wicket:id="record">enable/disable record mode</a>
+            <a href="#" wicket:id="edit"><wicket:message key="edit.link">Edit</wicket:message></a>
+            <a href="#" wicket:id="delete"><wicket:message key="delete.link">delete</wicket:message></a>
+            <a href="#" wicket:id="record"><span wicket:id="recordLink">enable/disable record mode</span></a>
         </div>
     </div>
 
