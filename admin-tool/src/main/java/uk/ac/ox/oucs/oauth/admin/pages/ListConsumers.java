@@ -45,6 +45,21 @@ public class ListConsumers extends SakaiPage {
                         }
                     }
                 });
+
+
+                components.add(new Link<Consumer>("record", components.getModel()) {
+                    @Override
+                    public void onClick() {
+                        try {
+                            getModelObject().setRecordModeEnabled(!getModelObject().isRecordModeEnabled());
+                            consumerDao.update(getModelObject());
+                            setResponsePage(getPage().getClass());
+                            getSession().info(getModelObject().getName() + " record mode has changed.");
+                        } catch (Exception e) {
+                            warn("Couldn't change record mode on '" + getModelObject().getName() + "': " + e.getLocalizedMessage());
+                        }
+                    }
+                });
             }
         });
     }
