@@ -6,7 +6,7 @@
     <artifactId>oauth-base</artifactId>
     <packaging>pom</packaging>
     <name>OAuth Base</name>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.0</version>
 
     <distributionManagement>
         <repository>
