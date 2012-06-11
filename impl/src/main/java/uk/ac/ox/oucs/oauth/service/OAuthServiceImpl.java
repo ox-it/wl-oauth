@@ -5,6 +5,7 @@ import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.SiteService;
+import uk.ac.ox.oucs.oauth.advisor.CollectingPermissionsAdvisor;
 import uk.ac.ox.oucs.oauth.advisor.LimitedPermissionsAdvisor;
 import uk.ac.ox.oucs.oauth.dao.AccessorDao;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
@@ -68,7 +69,10 @@ public class OAuthServiceImpl implements OAuthService {
     public SecurityAdvisor getSecurityAdvisor(String accessorId) {
         Accessor accessor = getAccessor(accessorId, Accessor.Type.ACCESS);
         Consumer consumer = consumerDao.get(accessor.getConsumerId());
-        return new LimitedPermissionsAdvisor(consumer.getRights());
+        if (consumer.isRecordModeEnabled())
+            return new CollectingPermissionsAdvisor(consumerDao, consumer);
+        else
+            return new LimitedPermissionsAdvisor(consumer.getRights());
     }
 
     @Override
