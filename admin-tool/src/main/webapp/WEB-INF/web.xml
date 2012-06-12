@@ -11,7 +11,7 @@
         <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationClassName</param-name>
-            <param-value>uk.ac.ox.oucs.oauth.admin.OauthAdminApplication</param-value>
+            <param-value>uk.ac.ox.oucs.oauth.tool.admin.OauthAdminApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -31,7 +31,7 @@
     <!-- Sakai Request Filter -->
     <filter>
         <filter-name>oauth.admin</filter-name>
-        <filter-class>uk.ac.ox.oucs.oauth.admin.AdminFilter</filter-class>
+        <filter-class>uk.ac.ox.oucs.oauth.tool.admin.AdminFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>oauth.admin</filter-name>

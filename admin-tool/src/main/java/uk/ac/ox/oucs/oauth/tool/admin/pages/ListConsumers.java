@@ -1,4 +1,4 @@
-package uk.ac.ox.oucs.oauth.admin.pages;
+package uk.ac.ox.oucs.oauth.tool.admin.pages;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;

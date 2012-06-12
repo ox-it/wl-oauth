@@ -1,4 +1,4 @@
-package uk.ac.ox.oucs.oauth.admin;
+package uk.ac.ox.oucs.oauth.tool.admin;
 
 import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.authz.api.SecurityService;

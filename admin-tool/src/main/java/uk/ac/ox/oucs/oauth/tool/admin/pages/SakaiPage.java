@@ -1,4 +1,4 @@
-package uk.ac.ox.oucs.oauth.admin.pages;
+package uk.ac.ox.oucs.oauth.tool.admin.pages;
 
 import org.apache.wicket.*;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -14,7 +14,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.component.api.ServerConfigurationService;

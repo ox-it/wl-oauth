@@ -1,4 +1,4 @@
-package uk.ac.ox.oucs.oauth.admin.pages;
+package uk.ac.ox.oucs.oauth.tool.admin.pages;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
