@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.authz.api.FunctionManager;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
@@ -42,8 +43,8 @@ public class ConsumerAdministration extends SakaiPage {
     }
 
     private void init(final boolean edit) {
-        addMenuLink(ListConsumers.class, "List consumers", null);
-        addMenuLink(ConsumerAdministration.class, "Add a consumer", null);
+        addMenuLink(ListConsumers.class, new ResourceModel("menu.list.consumer"), null);
+        addMenuLink(ConsumerAdministration.class, new ResourceModel("menu.add.consumer"), null);
 
         Form consumerForm = new Form<Void>("consumerForm") {
             @Override
