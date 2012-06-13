@@ -33,7 +33,9 @@ public class ListAccessors extends SakaiPage {
             protected void populateItem(ListItem<Accessor> components) {
                 final Consumer consumer = oAuthService.getConsumer(components.getModelObject().getConsumerId());
                 DateFormat dateFormat = DateFormat.getDateInstance();
-                components.add(new ExternalLink("consumerUrl", consumer.getURL(), consumer.getName()));
+                ExternalLink consumerHomepage = new ExternalLink("consumerUrl", consumer.getURL(), consumer.getName());
+                consumerHomepage.setEnabled(consumer.getURL() != null && !consumer.getURL().isEmpty());
+                components.add(consumerHomepage);
                 components.add(new Label("consumerDescription", consumer.getDescription()));
                 components.add(new Label("creationDate", dateFormat.format(components.getModelObject().getCreationDate())));
                 components.add(new Label("expirationDate", dateFormat.format(components.getModelObject().getExpirationDate())));
