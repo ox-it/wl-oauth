@@ -9,6 +9,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.tool.api.SessionManager;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
+import uk.ac.ox.oucs.oauth.exception.InvalidConsumerException;
 import uk.ac.ox.oucs.oauth.service.OAuthService;
 import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
 
@@ -31,27 +32,34 @@ public class ListAccessors extends SakaiPage {
         add(new ListView<Accessor>("accessorlist", new ArrayList<Accessor>(accessors)) {
             @Override
             protected void populateItem(ListItem<Accessor> components) {
-                final Consumer consumer = oAuthService.getConsumer(components.getModelObject().getConsumerId());
-                DateFormat dateFormat = DateFormat.getDateInstance();
-                ExternalLink consumerHomepage = new ExternalLink("consumerUrl", consumer.getURL(), consumer.getName());
-                consumerHomepage.setEnabled(consumer.getURL() != null && !consumer.getURL().isEmpty());
-                components.add(consumerHomepage);
-                components.add(new Label("consumerDescription", consumer.getDescription()));
-                components.add(new Label("creationDate", dateFormat.format(components.getModelObject().getCreationDate())));
-                components.add(new Label("expirationDate", dateFormat.format(components.getModelObject().getExpirationDate())));
+                try {
+                    final Consumer consumer = oAuthService.getConsumer(components.getModelObject().getConsumerId());
+                    DateFormat dateFormat = DateFormat.getDateInstance();
+                    ExternalLink consumerHomepage = new ExternalLink("consumerUrl", consumer.getURL(), consumer.getName());
+                    consumerHomepage.setEnabled(consumer.getURL() != null && !consumer.getURL().isEmpty());
+                    components.add(consumerHomepage);
+                    components.add(new Label("consumerDescription", consumer.getDescription()));
+                    components.add(new Label("creationDate", dateFormat.format(components.getModelObject().getCreationDate())));
+                    components.add(new Label("expirationDate", dateFormat.format(components.getModelObject().getExpirationDate())));
 
-                components.add(new Link<Accessor>("delete", components.getModel()) {
-                    @Override
-                    public void onClick() {
-                        try {
-                            oAuthService.revokeAccessor(getModelObject().getToken());
-                            setResponsePage(getPage().getClass());
-                            getSession().info(consumer.getName() + "' token has been removed.");
-                        } catch (Exception e) {
-                            warn("Couldn't remove '" + consumer.getName() + "'s token': " + e.getLocalizedMessage());
+                    components.add(new Link<Accessor>("delete", components.getModel()) {
+                        @Override
+                        public void onClick() {
+                            try {
+                                oAuthService.revokeAccessor(getModelObject().getToken());
+                                setResponsePage(getPage().getClass());
+                                getSession().info(consumer.getName() + "' token has been removed.");
+                            } catch (Exception e) {
+                                warn("Couldn't remove '" + consumer.getName() + "'s token': " + e.getLocalizedMessage());
+                            }
                         }
-                    }
-                });
+                    });
+                } catch (InvalidConsumerException invalidConsumerException) {
+                    //Invalid consumer, it is probably deleted
+                    //For security reasons, this token should be revoked
+                    oAuthService.revokeAccessor(components.getModelObject().getToken());
+                    components.setVisible(false);
+                }
             }
         });
     }
