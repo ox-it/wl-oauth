@@ -1,9 +1,9 @@
-package uk.ac.ox.oucs.oauth.tool;
+package uk.ac.ox.oucs.oauth.tool.user;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import uk.ac.ox.oucs.oauth.tool.pages.ListAccessors;
+import uk.ac.ox.oucs.oauth.tool.user.pages.ListAccessors;
 
 /**
  * @author Colin Hebert

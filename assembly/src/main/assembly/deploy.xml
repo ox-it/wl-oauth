@@ -25,14 +25,6 @@
             <unpack>false</unpack>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>webapps/</outputDirectory>
-            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
-            <includes>
-                <include>uk.ac.ox.oucs.oauth:oauth-admin-tool:war:*</include>
-            </includes>
-            <unpack>false</unpack>
-        </dependencySet>
-        <dependencySet>
             <outputDirectory>components/${artifact.artifactId}</outputDirectory>
             <includes>
                 <include>uk.ac.ox.oucs.oauth:oauth-pack:sakai-component:*</include>

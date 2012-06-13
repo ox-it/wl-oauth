@@ -39,11 +39,6 @@
             <artifactId>oauth-tool</artifactId>
             <type>war</type>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>oauth-admin-tool</artifactId>
-            <type>war</type>
-        </dependency>
     </dependencies>
 
     <build>

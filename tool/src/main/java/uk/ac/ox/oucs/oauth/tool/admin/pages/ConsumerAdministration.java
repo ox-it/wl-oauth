@@ -11,6 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.authz.api.FunctionManager;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
+import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
 
 import java.util.Collection;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package uk.ac.ox.oucs.oauth.tool.pages;
+package uk.ac.ox.oucs.oauth.tool.user.pages;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -10,6 +10,7 @@ import org.sakaiproject.tool.api.SessionManager;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 import uk.ac.ox.oucs.oauth.service.OAuthService;
+import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
 
 import java.text.DateFormat;
 import java.util.ArrayList;

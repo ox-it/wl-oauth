@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <registration>
     <tool id="sakai.oauth"
           title="Trusted Applications"

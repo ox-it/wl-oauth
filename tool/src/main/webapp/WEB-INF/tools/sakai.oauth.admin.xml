@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<registration>
+    <tool id="sakai.oauth.admin"
+          title="oAuth Admin"
+          description="Tool to allow you to manage applications that can use oAuth." />
+</registration>
+

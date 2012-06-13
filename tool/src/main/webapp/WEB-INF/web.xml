@@ -38,7 +38,7 @@
         <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationClassName</param-name>
-            <param-value>uk.ac.ox.oucs.oauth.tool.OAuthApplication</param-value>
+            <param-value>uk.ac.ox.oucs.oauth.tool.user.OAuthApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -46,6 +46,22 @@
         <servlet-name>sakai.oauth</servlet-name>
         <url-pattern>/tool/*</url-pattern>
     </servlet-mapping>
+
+    <!-- Admin tool -->
+    <servlet>
+        <servlet-name>sakai.oauth.admin</servlet-name>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
+        <init-param>
+            <param-name>applicationClassName</param-name>
+            <param-value>uk.ac.ox.oucs.oauth.tool.admin.OauthAdminApplication</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sakai.oauth.admin</servlet-name>
+        <url-pattern>/admin/*</url-pattern>
+    </servlet-mapping>
+
 
     <!-- Wicket deployment mode -->
     <context-param>
@@ -76,5 +92,18 @@
     <filter-mapping>
         <filter-name>request-filter</filter-name>
         <servlet-name>AuthorizationServlet</servlet-name>
+    </filter-mapping>
+
+    <!-- Administration filter -->
+    <filter>
+        <filter-name>oauth.admin</filter-name>
+        <filter-class>uk.ac.ox.oucs.oauth.tool.admin.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>oauth.admin</filter-name>
+        <servlet-name>sakai.oauth.admin</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 </web-app>
