@@ -84,7 +84,17 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
             }
         });
         add(feedbackPanel);
-        menu = new RepeatingView("menu");
+        menu = new RepeatingView("menu") {
+            /**
+             * Automatically hide the repeating view if there is no element present in there.
+             * @return true if there is at least one child element, false otherwise
+             */
+            @Override
+            public boolean isVisible() {
+                return iterator().hasNext();
+            }
+        };
+        menu.setVisible(false);
         add(menu);
     }
 
