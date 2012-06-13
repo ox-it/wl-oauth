@@ -29,13 +29,24 @@ public class MemoryAccessorDao implements AccessorDao {
 
     @Override
     public Collection<Accessor> getByUser(String userId) {
-        Collection<Accessor> retreivedAccessors = new LinkedList<Accessor>();
+        Collection<Accessor> retrievedAccessors = new LinkedList<Accessor>();
         for (Accessor accessor : accessors.values()) {
             if (userId.equals(accessor.getUserId()))
-                retreivedAccessors.add(accessor);
+                retrievedAccessors.add(accessor);
         }
 
-        return retreivedAccessors;
+        return retrievedAccessors;
+    }
+
+    @Override
+    public Collection<Accessor> getByConsumer(String consumerId) {
+        Collection<Accessor> retrievedAccessors = new LinkedList<Accessor>();
+        for (Accessor accessor : accessors.values()) {
+            if (consumerId.equals(accessor.getConsumerId()))
+                retrievedAccessors.add(accessor);
+        }
+
+        return retrievedAccessors;
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.authz.api.FunctionManager;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
+import uk.ac.ox.oucs.oauth.service.OAuthAdminService;
 import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
 
 import java.util.Collection;
@@ -24,7 +25,7 @@ public class ConsumerAdministration extends SakaiPage {
     @SpringBean
     private FunctionManager functionManager;
     @SpringBean
-    private ConsumerDao consumerDao;
+    private OAuthAdminService oAuthAdminService;
 
     private final Consumer consumer;
 
@@ -39,7 +40,7 @@ public class ConsumerAdministration extends SakaiPage {
         super(parameters);
 
         String consumerId = parameters.getString("consumer");
-        consumer = consumerDao.get(consumerId);
+        consumer = oAuthAdminService.getConsumer(consumerId);
         init(true);
     }
 
@@ -53,9 +54,9 @@ public class ConsumerAdministration extends SakaiPage {
                 super.onSubmit();
                 try {
                     if (edit)
-                        consumerDao.update(consumer);
+                        oAuthAdminService.updateConsumer(consumer);
                     else
-                        consumerDao.create(consumer);
+                        oAuthAdminService.createConsumer(consumer);
                     setResponsePage(ListConsumers.class);
                     getSession().info(consumer.getName() + " has been saved.");
                 } catch (Exception e) {

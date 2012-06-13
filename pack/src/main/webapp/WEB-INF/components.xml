@@ -14,26 +14,33 @@
     <bean id="uk.ac.ox.oucs.oauth.service.OAuthService" class="uk.ac.ox.oucs.oauth.service.OAuthServiceImpl">
         <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
         <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
-        <property name="accessorDao">
-            <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-                <property name="transactionManager"
-                          ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
-                <property name="target">
-                    <bean class="uk.ac.ox.oucs.oauth.dao.HibernateAccessorDao">
-                        <property name="sessionFactory"
-                                  ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
-                    </bean>
-                </property>
-                <property name="transactionAttributes">
-                    <props>
-                        <prop key="*">PROPAGATION_REQUIRED</prop>
-                    </props>
-                </property>
-            </bean>
-        </property>
+        <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
         <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
         <property name="keepOldAccessors" value="true"/>
     </bean>
+
+    <bean id="uk.ac.ox.oucs.oauth.service.OAuthAdminService" class="uk.ac.ox.oucs.oauth.service.OAuthAdminServiceImpl">
+        <property name="OAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
+        <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
+        <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
+    </bean>
+
+    <bean id="uk.ac.ox.oucs.oauth.dao.AccessorDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager"
+                  ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+        <property name="target">
+            <bean class="uk.ac.ox.oucs.oauth.dao.HibernateAccessorDao">
+                <property name="sessionFactory"
+                          ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+            </bean>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="uk.ac.ox.oucs.oauth.dao.ConsumerDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager"
                   ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
@@ -49,6 +56,7 @@
             </props>
         </property>
     </bean>
+
     <bean id="uk.ac.ox.oucs.oauth.service.OAuthHttpService" class="uk.ac.ox.oucs.oauth.service.OAuthHttpServiceImpl">
         <property name="oAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
         <property name="oAuthValidator">

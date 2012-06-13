@@ -9,6 +9,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
+import uk.ac.ox.oucs.oauth.service.OAuthAdminService;
 import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
 
 import java.util.ArrayList;
@@ -18,13 +19,13 @@ import java.util.ArrayList;
  */
 public class ListConsumers extends SakaiPage {
     @SpringBean
-    private ConsumerDao consumerDao;
+    private OAuthAdminService oAuthAdminService;
 
     public ListConsumers() {
         addMenuLink(ListConsumers.class, new ResourceModel("menu.list.consumer"), null);
         addMenuLink(ConsumerAdministration.class, new ResourceModel("menu.add.consumer"), null);
 
-        ListView<Consumer> consumerList = new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(consumerDao.getAll())) {
+        ListView<Consumer> consumerList = new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(oAuthAdminService.getAllConsumers())) {
             @Override
             protected void populateItem(ListItem<Consumer> components) {
                 components.add(new Label("id", components.getModelObject().getId()));
@@ -38,7 +39,7 @@ public class ListConsumers extends SakaiPage {
                     @Override
                     public void onClick() {
                         try {
-                            consumerDao.remove(getModelObject());
+                            oAuthAdminService.deleteConsumer(getModelObject());
                             setResponsePage(getPage().getClass());
                             getSession().info(getModelObject().getName() + " has been removed.");
                         } catch (Exception e) {
@@ -52,8 +53,7 @@ public class ListConsumers extends SakaiPage {
                     @Override
                     public void onClick() {
                         try {
-                            getModelObject().setRecordModeEnabled(!getModelObject().isRecordModeEnabled());
-                            consumerDao.update(getModelObject());
+                            oAuthAdminService.switchRecordMode(getModelObject());
                             setResponsePage(getPage().getClass());
                             getSession().info(getModelObject().getName() + " record mode has changed.");
                         } catch (Exception e) {
