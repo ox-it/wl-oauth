@@ -94,7 +94,6 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
                 return iterator().hasNext() && super.isVisible();
             }
         };
-        menu.setVisible(false);
         add(menu);
     }
 
