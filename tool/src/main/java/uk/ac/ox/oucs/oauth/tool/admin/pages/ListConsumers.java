@@ -24,7 +24,7 @@ public class ListConsumers extends SakaiPage {
         addMenuLink(ListConsumers.class, new ResourceModel("menu.list.consumer"), null);
         addMenuLink(ConsumerAdministration.class, new ResourceModel("menu.add.consumer"), null);
 
-        add(new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(consumerDao.getAll())) {
+        ListView<Consumer> consumerList = new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(consumerDao.getAll())) {
             @Override
             protected void populateItem(ListItem<Consumer> components) {
                 components.add(new Label("id", components.getModelObject().getId()));
@@ -61,13 +61,23 @@ public class ListConsumers extends SakaiPage {
                         }
                     }
                 };
-                if(components.getModelObject().isRecordModeEnabled())
+                if (components.getModelObject().isRecordModeEnabled())
                     recordLink.add(new Label("recordLink", new ResourceModel("record.disable.link")));
                 else
                     recordLink.add(new Label("recordLink", new ResourceModel("record.enable.link")));
                 components.add(recordLink);
 
             }
-        });
+
+            @Override
+            public boolean isVisible() {
+                return !getModelObject().isEmpty() && super.isVisible();
+            }
+        };
+        add(consumerList);
+
+        Label noConsumerLabel = new Label("noConsumer", new ResourceModel("no.consumer"));
+        noConsumerLabel.setVisible(!consumerList.isVisible());
+        add(noConsumerLabel);
     }
 }
