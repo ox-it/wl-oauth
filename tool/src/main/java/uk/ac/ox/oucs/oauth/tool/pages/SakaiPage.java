@@ -91,7 +91,7 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
              */
             @Override
             public boolean isVisible() {
-                return iterator().hasNext();
+                return iterator().hasNext() && super.isVisible();
             }
         };
         menu.setVisible(false);
