@@ -14,7 +14,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.site.api.SiteService;
@@ -121,7 +120,7 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
      * @param text  Link's text
      * @param title Title attribute for the link
      */
-    protected void addMenuLink(Class<? extends Page> clazz, IModel<String> text, String title) {
+    protected void addMenuLink(Class<? extends Page> clazz, IModel<String> text, IModel<String> title) {
         Link<Page> link = new BookmarkablePageLink<Page>("menuItem", clazz);
         link.setEnabled(!getClass().equals(clazz));
         addMenuLink(link, text, title);
@@ -134,12 +133,12 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
      * @param text  Link's text
      * @param title Title attribute for the link
      */
-    protected void addMenuLink(final Link<Page> link, IModel<String> text, String title) {
+    protected void addMenuLink(Link<Page> link, IModel<String> text, IModel<String> title) {
         WebMarkupContainer parent = new WebMarkupContainer(menu.newChildId());
         menu.add(parent);
         link.add(new Label("menuItemText", text).setRenderBodyOnly(true));
         if (title != null)
-            link.add(new AttributeModifier("title", true, new ResourceModel(title)));
+            link.add(new AttributeModifier("title", true, title));
 
         parent.add(link);
     }
