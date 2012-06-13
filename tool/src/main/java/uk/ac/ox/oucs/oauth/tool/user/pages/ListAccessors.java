@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.tool.api.SessionManager;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
@@ -29,7 +30,7 @@ public class ListAccessors extends SakaiPage {
     public ListAccessors() {
         String userId = sessionManager.getCurrentSessionUserId();
         Collection<Accessor> accessors = oAuthService.getAccessAccessorForUser(userId);
-        add(new ListView<Accessor>("accessorlist", new ArrayList<Accessor>(accessors)) {
+        ListView<Accessor> accessorList = new ListView<Accessor>("accessorlist", new ArrayList<Accessor>(accessors)) {
             @Override
             protected void populateItem(ListItem<Accessor> components) {
                 try {
@@ -61,6 +62,18 @@ public class ListAccessors extends SakaiPage {
                     components.setVisible(false);
                 }
             }
-        });
+
+            @Override
+            public boolean isVisible() {
+                return !getModelObject().isEmpty() && super.isVisible();
+            }
+        };
+        add(accessorList);
+
+
+
+        Label noAccessorLabel = new Label("noAccessor", new ResourceModel("no.accessor"));
+        noAccessorLabel.setVisible(!accessorList.isVisible());
+        add(noAccessorLabel);
     }
 }
