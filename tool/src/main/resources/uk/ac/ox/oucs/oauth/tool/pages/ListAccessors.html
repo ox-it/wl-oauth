@@ -1,0 +1,34 @@
+<?xml encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title>
+        <wicket:message key="page.title">Trusted Applications</wicket:message>
+    </title>
+</head>
+<body>
+<wicket:extend>
+
+    <h1>
+        <wicket:message key="page.header">List of Applications.</wicket:message>
+    </h1>
+    <div class="accessor" wicket:id="accessorlist">
+        <div><a href="http://consumerurl" wicket:id="consumerUrl">Consumer's name</a></div>
+        <div class="description">
+            <span wicket:id="consumerDescription">Consumer's description</span>
+        </div>
+        <div class="creation-date">
+            <span wicket:id="creationDate">creationDate</span>
+        </div>
+        <div class="expiration-date">
+            <span wicket:id="expirationDate">expirationDate</span>
+        </div>
+        <div class="actions"><a wicket:id="delete"><wicket:message key="accessor.delete">delete</wicket:message></a></div>
+    </div>
+    <wicket:message key="accessor.empty">You currently don't have any applications able to access your account.</wicket:message>
+
+</wicket:extend>
+</body>
+</html>
