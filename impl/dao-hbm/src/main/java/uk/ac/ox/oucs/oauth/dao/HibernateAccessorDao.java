@@ -7,6 +7,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,13 @@ public class HibernateAccessorDao extends HibernateDaoSupport implements Accesso
         return (List<Accessor>) getHibernateTemplate().find(
                 "FROM Accessor a WHERE a.userId = ?",
                 new Object[]{userId});
+    }
+
+    @Override
+    public Collection<Accessor> getByConsumer(String consumerId) {
+        return (List<Accessor>) getHibernateTemplate().find(
+                "FROM Accessor a WHERE a.consumerId = ?",
+                new Object[]{consumerId});
     }
 
     public void markExpiredAccessors() {

@@ -1,0 +1,26 @@
+<?xml encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title><wicket:message key="page.title">Consumers list</wicket:message></title>
+</head>
+<body>
+<wicket:extend>
+
+    <div class="oAuthConsumer" wicket:id="consumerlist">
+        <h2><span wicket:id="name">Consumer's name</span> <em><span wicket:id="id">Consumer's id</span></em></h2>
+
+        <div><span wicket:id="description">Consumer's description</span></div>
+        <div>
+            <a href="#" wicket:id="edit"><wicket:message key="edit.link">Edit</wicket:message></a>
+            <a href="#" wicket:id="delete"><wicket:message key="delete.link">delete</wicket:message></a>
+            <a href="#" wicket:id="record"><span wicket:id="recordLink">enable/disable record mode</span></a>
+        </div>
+    </div>
+    <span class="no-consumer" wicket:id="noConsumer">There is no consumer to administrate</span>
+
+</wicket:extend>
+</body>
+</html>

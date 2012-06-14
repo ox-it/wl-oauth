@@ -6,6 +6,7 @@
         <property name="mappingResources">
             <list>
                 <value>uk/ac/ox/oucs/oauth/dao/Accessor.hbm.xml</value>
+                <value>uk/ac/ox/oucs/oauth/dao/Consumer.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -13,65 +14,53 @@
     <bean id="uk.ac.ox.oucs.oauth.service.OAuthService" class="uk.ac.ox.oucs.oauth.service.OAuthServiceImpl">
         <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
         <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
-        <property name="accessorDao">
-            <!--
-            <bean class="uk.ac.ox.oucs.oauth.dao.MemoryAccessorDao">
-                <constructor-arg>
-                    <map/>
-                </constructor-arg>
-            </bean>
-            -->
-            <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-                <property name="transactionManager"
-                          ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
-                <property name="target">
-                    <bean class="uk.ac.ox.oucs.oauth.dao.HibernateAccessorDao">
-                        <property name="sessionFactory"
-                                  ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
-                    </bean>
-                </property>
-                <property name="transactionAttributes">
-                    <props>
-                        <prop key="*">PROPAGATION_REQUIRED</prop>
-                    </props>
-                </property>
-            </bean>
-        </property>
-        <property name="consumerDao">
-            <!--
-            <bean class="uk.ac.ox.oucs.oauth.dao.MemoryConsumerDao">
-                <constructor-arg>
-                    <map>
-                        <entry key="sakai">
-                            <bean class="uk.ac.ox.oucs.oauth.domain.Consumer">
-                                <property name="id" value="sakai"/>
-                                <property name="secret" value="A Secret"/>
-                                <property name="name" value="WebLearn Portal"/>
-                                <property name="description" value="WebLean web site"/>
-                                <property name="URL" value="http://weblearn.ox.ac.uk/"/>
-                                <property name="rights">
-                                    <list>
-                                        <value>test</value>
-                                        <value>teste</value>
-                                    </list>
-                                </property>
-                            </bean>
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
-            -->
-            <bean class="uk.ac.ox.oucs.oauth.dao.ServerConfigConsumerDao">
-                <constructor-arg ref="org.sakaiproject.component.api.ServerConfigurationService" />
-            </bean>
-        </property>
+        <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
+        <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
         <property name="keepOldAccessors" value="true"/>
     </bean>
+
+    <bean id="uk.ac.ox.oucs.oauth.service.OAuthAdminService" class="uk.ac.ox.oucs.oauth.service.OAuthAdminServiceImpl">
+        <property name="OAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
+        <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
+        <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
+    </bean>
+
+    <bean id="uk.ac.ox.oucs.oauth.dao.AccessorDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager"
+                  ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+        <property name="target">
+            <bean class="uk.ac.ox.oucs.oauth.dao.HibernateAccessorDao">
+                <property name="sessionFactory"
+                          ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+            </bean>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="uk.ac.ox.oucs.oauth.dao.ConsumerDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager"
+                  ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+        <property name="target">
+            <bean class="uk.ac.ox.oucs.oauth.dao.HibernateConsumerDao">
+                <property name="sessionFactory"
+                          ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+            </bean>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="uk.ac.ox.oucs.oauth.service.OAuthHttpService" class="uk.ac.ox.oucs.oauth.service.OAuthHttpServiceImpl">
         <property name="oAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
         <property name="oAuthValidator">
             <bean class="net.oauth.SimpleOAuthValidator"/>
         </property>
     </bean>
-
 </beans>

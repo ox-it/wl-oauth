@@ -2,6 +2,7 @@ package uk.ac.ox.oucs.oauth.dao;
 
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -31,5 +32,10 @@ public class MemoryConsumerDao implements ConsumerDao {
 
     public void remove(Consumer consumer) {
         consumers.remove(consumer.getId());
+    }
+
+    @Override
+    public Collection<Consumer> getAll() {
+        return consumers.values();
     }
 }

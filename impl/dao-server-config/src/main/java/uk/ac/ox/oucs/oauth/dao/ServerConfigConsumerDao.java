@@ -41,19 +41,28 @@ public class ServerConfigConsumerDao implements ConsumerDao {
         return (values != null) ? Arrays.asList(values) : Collections.<String>emptyList();
     }
 
+    @Override
     public void create(Consumer consumer) {
         throw new UnsupportedOperationException("Can't create a consumer in the server config");
     }
 
+    @Override
     public Consumer get(String consumerId) {
         return consumers.get(consumerId);
     }
 
+    @Override
     public Consumer update(Consumer consumer) {
         throw new UnsupportedOperationException("Can't update a consumer in the server config");
     }
 
+    @Override
     public void remove(Consumer consumer) {
         throw new UnsupportedOperationException("Can't remove a consumer in the server config");
+    }
+
+    @Override
+    public Collection<Consumer> getAll() {
+        return consumers.values();
     }
 }

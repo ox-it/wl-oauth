@@ -1,5 +1,6 @@
 package uk.ac.ox.oucs.oauth.domain;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Set;
  *
  * @author Colin Hebert
  */
-public class Consumer {
+public class Consumer implements Serializable {
     /**
      * Unique identifier of the consumer, also used as consumer's key
      */
@@ -44,6 +45,10 @@ public class Consumer {
      * Default access token validity in minutes. The token won't expire if the value is 0
      */
     private int defaultValidity;
+    /**
+     * Enable or disable the record mode. The default value should always be false for security reasons.
+     */
+    private boolean recordModeEnabled;
 
     public String getCallbackURL() {
         return callbackURL;
@@ -115,6 +120,14 @@ public class Consumer {
 
     public void setDefaultValidity(int defaultValidity) {
         this.defaultValidity = defaultValidity;
+    }
+
+    public boolean isRecordModeEnabled() {
+        return recordModeEnabled;
+    }
+
+    public void setRecordModeEnabled(boolean recordModeEnabled) {
+        this.recordModeEnabled = recordModeEnabled;
     }
 
     @Override

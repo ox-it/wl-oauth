@@ -22,6 +22,13 @@ public interface AccessorDao {
      */
     Collection<Accessor> getByUser(String userId);
 
+    /**
+     * Get every accessor created for a consumer
+     * @param consumerId consumer responsible of these accessors
+     * @return accessors for a consumer
+     */
+    Collection<Accessor> getByConsumer(String consumerId);
+
     Accessor update(Accessor accessor);
 
     void remove(Accessor accessor);

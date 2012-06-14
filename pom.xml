@@ -35,11 +35,12 @@
         <sakai.kernel.version>1.2.5ox1-SNAPSHOT</sakai.kernel.version>
         <oauth.version>20100527</oauth.version>
         <joda-time.version>2.1</joda-time.version>
-        <sakai.jsf.version>2.8.2</sakai.jsf.version>
         <spring.version>2.5.6.SEC02</spring.version>
         <commons-logging.version>1.1.1</commons-logging.version>
         <servlet-api.version>2.5</servlet-api.version>
         <hibernate.version>3.2.7.ga</hibernate.version>
+        <wicket.version>1.4.20</wicket.version>
+        <slf4j.version>1.6.4</slf4j.version>
     </properties>
 
     <modules>
@@ -126,6 +127,16 @@
                 <version>${commons-logging.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring</artifactId>
                 <version>${spring.version}</version>
@@ -154,33 +165,16 @@
                 <version>${sakai.kernel.version}</version>
             </dependency>
 
-            <!-- JSF Sakai -->
+            <!-- Wicket -->
             <dependency>
-                <groupId>org.sakaiproject.jsf</groupId>
-                <artifactId>jsf-app</artifactId>
-                <version>${sakai.jsf.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jsf</groupId>
-                        <artifactId>jsf-api</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>org.apache.wicket</groupId>
+                <artifactId>wicket</artifactId>
+                <version>${wicket.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.jsf</groupId>
-                <artifactId>myfaces-widgets-depend</artifactId>
-                <version>${sakai.jsf.version}</version>
-                <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.jsf</groupId>
-                <artifactId>jsf-spreadsheet</artifactId>
-                <version>${sakai.jsf.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.jsf</groupId>
-                <artifactId>jsf-tool</artifactId>
-                <version>${sakai.jsf.version}</version>
+                <groupId>org.apache.wicket</groupId>
+                <artifactId>wicket-spring</artifactId>
+                <version>${wicket.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

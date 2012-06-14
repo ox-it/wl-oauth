@@ -2,6 +2,8 @@ package uk.ac.ox.oucs.oauth.dao;
 
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 
+import java.util.Collection;
+
 /**
  * Data access object for consumers (clients)
  *
@@ -14,5 +16,15 @@ public interface ConsumerDao {
 
     Consumer update(Consumer consumer);
 
+    /**
+     * Removes a consumer, making it impossible to connect through oAuth with its credentials.
+     * <p>
+     * A proper implementation of this method MUST also revoke every token associated with the consumer.
+     * </p>
+     *
+     * @param consumer consumer to remove
+     */
     void remove(Consumer consumer);
+
+    Collection<Consumer> getAll();
 }

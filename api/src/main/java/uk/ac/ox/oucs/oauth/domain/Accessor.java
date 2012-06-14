@@ -1,5 +1,6 @@
 package uk.ac.ox.oucs.oauth.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  *
  * @author Colin Hebert
  */
-public class Accessor {
+public class Accessor implements Serializable {
     /**
      * Unique token associated with the accessor
      */
