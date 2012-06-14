@@ -14,19 +14,21 @@
     <h1>
         <wicket:message key="page.header">List of Applications.</wicket:message>
     </h1>
-    <div class="accessor" wicket:id="accessorlist">
-        <div><a href="http://consumerurl" wicket:id="consumerUrl">Consumer's name</a></div>
-        <div class="description">
-            <span wicket:id="consumerDescription">Consumer's description</span>
-        </div>
-        <div class="creation-date">
-            <span wicket:id="creationDate">creationDate</span>
-        </div>
-        <div class="expiration-date">
-            <span wicket:id="expirationDate">expirationDate</span>
-        </div>
-        <div class="actions"><a wicket:id="delete"><wicket:message key="accessor.delete">delete</wicket:message></a></div>
-    </div>
+    <table wicket:enclosure="accessorlist">
+        <tr class="accessor" wicket:id="accessorlist">
+            <td class="name"><a href="http://consumerurl" wicket:id="consumerUrl">Consumer's name</a></td>
+            <td class="description">
+                <div class="description" wicket:id="consumerDescription">Consumer's description</div>
+                <div class="creation-date" wicket:id="creationDate">creationDate</div>
+                <div class="expiration-date" wicket:id="expirationDate">expirationDate</div>
+            </td>
+            <td class="actions">
+                <a wicket:id="delete">
+                    <wicket:message key="accessor.delete">delete</wicket:message>
+                </a>
+            </td>
+        </tr>
+    </table>
     <span wicket:id="noAccessor">You currently don't have any applications able to access your account.</span>
 
 </wicket:extend>
