@@ -4,11 +4,11 @@
   <parent>
     <artifactId>oauth-base</artifactId>
     <groupId>uk.ac.ox.oucs</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
   <groupId>uk.ac.ox.oucs</groupId>
   <artifactId>oauth-assembly</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>OAuth Assembly</name>
   <packaging>pom</packaging>
   <dependencies>
