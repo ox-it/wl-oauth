@@ -66,7 +66,7 @@
     <!-- Wicket deployment mode -->
     <context-param>
         <param-name>configuration</param-name>
-        <param-value>development</param-value>
+        <param-value>deployment</param-value>
     </context-param>
 
     <!-- Sakai Tool Listener -->
