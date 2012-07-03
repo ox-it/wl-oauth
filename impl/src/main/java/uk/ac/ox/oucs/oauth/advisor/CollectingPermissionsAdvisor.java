@@ -1,6 +1,8 @@
 package uk.ac.ox.oucs.oauth.advisor;
 
 import org.sakaiproject.authz.api.SecurityAdvisor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 
@@ -13,6 +15,7 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
  * @author Colin Hebert
  */
 public class CollectingPermissionsAdvisor implements SecurityAdvisor {
+    private static final Logger logger = LoggerFactory.getLogger(CollectingPermissionsAdvisor.class);
     private ConsumerDao consumerDao;
     private Consumer consumer;
 
@@ -23,12 +26,13 @@ public class CollectingPermissionsAdvisor implements SecurityAdvisor {
 
     public SecurityAdvice isAllowed(String userId, String function, String reference) {
         if (!consumer.getRights().contains(function)) {
+            logger.info("'"+consumer.getId()+"' requires '"+function+"' right in order to work, enable it.");
             try {
                 consumer.getRights().add(function);
                 consumerDao.update(consumer);
             } catch (Exception e) {
                 //If the update doesn't work, carry on
-                //TODO: Log this exception
+                logger.warn("Activation of the '"+function+"' right on '"+consumer.getId()+"' failed.", e);
             }
         }
         return SecurityAdvice.PASS;
