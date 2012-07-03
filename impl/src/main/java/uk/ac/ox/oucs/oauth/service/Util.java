@@ -4,6 +4,7 @@ import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthProblemException;
+import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 
@@ -35,5 +36,11 @@ public class Util {
         //Support Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
         oAuthConsumer.setProperty(OAuthConsumer.ACCESSOR_SECRET, consumer.getAccessorSecret());
         return oAuthConsumer;
+    }
+
+    public static void importConsumers(ConsumerDao source, ConsumerDao destination) {
+        for (Consumer consumer : source.getAll()) {
+            destination.create(consumer);
+        }
     }
 }
