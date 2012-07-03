@@ -25,7 +25,8 @@
         <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
     </bean>
 
-    <bean id="uk.ac.ox.oucs.oauth.dao.AccessorDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <bean id="uk.ac.ox.oucs.oauth.dao.AccessorDao"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager"
                   ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
         <property name="target">
@@ -41,7 +42,8 @@
         </property>
     </bean>
 
-    <bean id="uk.ac.ox.oucs.oauth.dao.ConsumerDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <bean id="uk.ac.ox.oucs.oauth.dao.ConsumerDao"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager"
                   ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
         <property name="target">
@@ -61,6 +63,21 @@
         <property name="oAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
         <property name="oAuthValidator">
             <bean class="net.oauth.SimpleOAuthValidator"/>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject">
+            <bean class="uk.ac.ox.oucs.oauth.service.Util"/>
+        </property>
+        <property name="targetMethod" value="importConsumers"/>
+        <property name="arguments">
+            <list>
+                <bean class="uk.ac.ox.oucs.oauth.dao.ServerConfigConsumerDao">
+                    <constructor-arg ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+                </bean>
+                <ref bean="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
+            </list>
         </property>
     </bean>
 </beans>
