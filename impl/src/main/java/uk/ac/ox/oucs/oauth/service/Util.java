@@ -4,6 +4,8 @@ import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthProblemException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Accessor;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
@@ -12,6 +14,8 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
  * @author Colin Hebert
  */
 public class Util {
+    private static final Logger logger = LoggerFactory.getLogger(Util.class);
+
     public static OAuthAccessor convertToOAuthAccessor(Accessor accessor, OAuthConsumer oAuthConsumer) throws OAuthProblemException {
         if (accessor == null)
             return null;
@@ -40,7 +44,12 @@ public class Util {
 
     public static void importConsumers(ConsumerDao source, ConsumerDao destination) {
         for (Consumer consumer : source.getAll()) {
-            destination.create(consumer);
+            try {
+                destination.create(consumer);
+                logger.info("New consumer imported '"+consumer.getId()+"'");
+            } catch (Exception e) {
+                logger.warn("Impossible to import '"+consumer.getId()+"' as a consumer.", e);
+            }
         }
     }
 }
