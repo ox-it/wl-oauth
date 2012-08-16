@@ -37,7 +37,7 @@ public class ListAccessors extends SakaiPage {
                 try {
                     final Consumer consumer = oAuthService.getConsumer(components.getModelObject().getConsumerId());
                     ExternalLink consumerHomepage = new ExternalLink("consumerUrl", consumer.getURL(), consumer.getName());
-                    consumerHomepage.add(new SimpleAttributeModifier("target", "_parent"));
+                    consumerHomepage.add(new SimpleAttributeModifier("target", "_blank"));
                     consumerHomepage.setEnabled(consumer.getURL() != null && !consumer.getURL().isEmpty());
                     components.add(consumerHomepage);
                     components.add(new Label("consumerDescription", consumer.getDescription()));
