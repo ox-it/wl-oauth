@@ -25,6 +25,7 @@ public class ServerConfigConsumerDao implements ConsumerDao {
             consumer.setAccessorSecret(serverConfig.getString("oauth." + consumerKey + ".accessorsecret", null));
             consumer.setDefaultValidity(serverConfig.getInt("oauth." + consumerKey + ".validity", 0));
             consumer.setRights(new HashSet<String>(getStringsOrSplit("oauth." + consumerKey + ".rights", serverConfig)));
+            consumer.setRecordModeEnabled(serverConfig.getBoolean("oauth." + consumerKey + ".record", false));
 
             consumers.put(consumerKey, consumer);
         }
