@@ -8,7 +8,7 @@ thanks to the [OAuth system](http://oauth.net/) 1.0.
 The project is divided in five modules similar to the structure of many Sakai
 projects:
 
-- *api* contains a basic API for OAuth logins, such as DAO for accessors and
+- *api* contains a basic API for OAuth login, such as DAO for accessors and
 consumers, and mandatory services.
 - *assembly* gathers the content of every other modules in one assembly file
 which can easily be deployed.
@@ -25,22 +25,23 @@ you're working with. Here is what is used in this project:
 
 - **Accessor**, also known as *token (see note)*.  
     Two kinds of accessors are used:
-    - *Access*, used by a *consumer* to directly access some protected resources
-	without requiring the *user* to log in.
     - *Request*, temporary credentials authorised manually by the *user*.
 	This accessor allows a *consumer* to generate one *Access Accessor*.  
-        The request accessor goes through three states:
+        The request accessor goes through three states before being revoked:
         - *new*, the accessor has been created by the OAuth service on
 		the request of a *consumer* and is not yet bound to a specific *user*.
-        - *authorising*, this state is specific to Sakai OAuth, it's the part
-		during which the *consumer* waits for a *user* to authorise the request
-		accessor.  
-        - *authorised*, the accessor can be used to generate *Access Accessors*.
+        - *authorising*, it's the part during which the *consumer* waits for a
+		*user* to grant it an access to the resources.
+        - *authorised*, the accessor can be used to generate one (and only one)
+		*Access Accessor*.
+
+    - *Access*, used by a *consumer* to directly access some protected resources
+	without requiring the *user* to log in.
 
     *note:* a token is actually the unique identifier of an accessor.  
 	*Request accessor* states are specific to Sakai OAuth.
 - **Consumer**, also known as *client* or *third party application*.  
-It's the application the user will allow to login on Sakai.  
+It's the application the user will allow to access Sakai on his behalf.
 Consumers have to be declared in the OAuth service by an administrator first.
 - **Consumer secret**  
 Secret password shared only between *one consumer* and the OAuth service.  
