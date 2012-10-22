@@ -120,3 +120,53 @@ current userId.
 	
 
 ### The default implementation
+
+- Any administrator is not permitted authenticate via OAuth.
+
+#### Configuration
+
+The OAuth service can be configured through sakai.properties.
+
+### Testing
+
+To test that OAuth is setup correctly you need a tool which will make HTTP requests with OAuth headers.
+There is a small Java utility called [oacurl](http://code.google.com/p/oacurl) which can make OAuth requests.
+
+#### Sakai Setup
+
+- Login to your Sakai instance as admin and go to the Administration Workspace.
+- Using the Sites tool edit the Administration Workspace (!admin), add a page, on the page put the OAuth
+ Administration Tool that allows you to manage OAuth consumers (tool ID: sakai.oauth.admin) and save the site.
+- Also using the Sites tool edit the My Workspace template (!user), add a page, on the page put the OAuth Trusted
+Applications tool which allows end users to manage their autorized applications (tool ID: sakai.oauth).
+- Refresh the browser on the Administration Workspace and you should see the oAuth Admin page appear. 
+- In the oAuth Admin tool add a new consumer.
+- The consumer key should be unique and meaningful. Eg: oacurl-test.
+- The consumer name is displayed to the users when they are allowing it access to their account. Eg oacurl.
+- The description should be used to describe what the consumer is doing or used for, again this is shown to
+end users.
+- The secret is the password for the consumer and should be secure. Eg: ooWaebai2Aep
+- Save the new consumer, then enable record mode which will set the permission filter to record permissions
+requested and allow them.
+
+#### oacurl Setup
+
+- Download the  oacurl .jar file and put if somewhere sensible.
+- Create a properties file (eg oacurl-test.properties) configured with the consumer you have just created.
+
+    consumerKey=oacurl-test
+    consumerSecret=ooWaebai2Aep
+    requestTokenUrl=http://localhost:8080/oauth-tool/request_token
+    userAuthorizationUrl=http://localhost:8080/oauth-tool/authorize/
+    accessTokenUrl=http://localhost:8080/oauth-tool/access_token
+
+- Launch the oacurl login:
+    java -cp oacurl-1.3.0.jar  com.google.oacurl.Login --service-provider=oacurl-test.properties --consumer=oacurl-test.properties
+- Your browser should popup now and ask you to login.
+- After logging in as a non-admin user you should be asked to allow the oacurl consumer access to your account.
+- After accepting it, a token will be save for later use.
+- To test login create a text file in the users My Workspace and save it (eg: test.txt).
+- Test the download using oacurl:
+    java -cp oacurl-1.3.0.jar com.google.oacurl.Fetch http://localhost:8080/access/content/user/21096/test.txt  
+
+
