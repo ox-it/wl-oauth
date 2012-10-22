@@ -154,19 +154,21 @@ requested and allow them.
 - Download the  oacurl .jar file and put if somewhere sensible.
 - Create a properties file (eg oacurl-test.properties) configured with the consumer you have just created.
 
-      consumerKey=oacurl-test
-      consumerSecret=ooWaebai2Aep
-      requestTokenUrl=http://localhost:8080/oauth-tool/request_token
-      userAuthorizationUrl=http://localhost:8080/oauth-tool/authorize/
-      accessTokenUrl=http://localhost:8080/oauth-tool/access_token
+```
+    consumerKey=oacurl-test
+    consumerSecret=ooWaebai2Aep
+    requestTokenUrl=http://localhost:8080/oauth-tool/request_token
+    userAuthorizationUrl=http://localhost:8080/oauth-tool/authorize/
+    accessTokenUrl=http://localhost:8080/oauth-tool/access_token
+```
 
 - Launch the oacurl login:
-    java -cp oacurl-1.3.0.jar  com.google.oacurl.Login --service-provider=oacurl-test.properties --consumer=oacurl-test.properties
+    `java -cp oacurl-1.3.0.jar  com.google.oacurl.Login --service-provider=oacurl-test.properties --consumer=oacurl-test.properties`
 - Your browser should popup now and ask you to login.
 - After logging in as a non-admin user you should be asked to allow the oacurl consumer access to your account.
 - After accepting it, a token will be save for later use.
 - To test login create a text file in the users My Workspace and save it (eg: test.txt).
 - Test the download using oacurl:
-    java -cp oacurl-1.3.0.jar com.google.oacurl.Fetch http://localhost:8080/access/content/user/21096/test.txt  
+    `java -cp oacurl-1.3.0.jar com.google.oacurl.Fetch http://localhost:8080/access/content/user/21096/test.txt`
 
 
