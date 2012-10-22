@@ -154,11 +154,11 @@ requested and allow them.
 - Download the  oacurl .jar file and put if somewhere sensible.
 - Create a properties file (eg oacurl-test.properties) configured with the consumer you have just created.
 
-    consumerKey=oacurl-test
-    consumerSecret=ooWaebai2Aep
-    requestTokenUrl=http://localhost:8080/oauth-tool/request_token
-    userAuthorizationUrl=http://localhost:8080/oauth-tool/authorize/
-    accessTokenUrl=http://localhost:8080/oauth-tool/access_token
+      consumerKey=oacurl-test
+      consumerSecret=ooWaebai2Aep
+      requestTokenUrl=http://localhost:8080/oauth-tool/request_token
+      userAuthorizationUrl=http://localhost:8080/oauth-tool/authorize/
+      accessTokenUrl=http://localhost:8080/oauth-tool/access_token
 
 - Launch the oacurl login:
     java -cp oacurl-1.3.0.jar  com.google.oacurl.Login --service-provider=oacurl-test.properties --consumer=oacurl-test.properties
