@@ -127,6 +127,9 @@ current userId.
 
 The OAuth service can be configured through sakai.properties.
 
+The OAuth service is enabled by default. To disable OAuth on all requests this in the sakai.properties:
+`oauth.enabled=false`
+
 ### Testing
 
 To test that OAuth is setup correctly you need a tool which will make HTTP requests with OAuth headers.

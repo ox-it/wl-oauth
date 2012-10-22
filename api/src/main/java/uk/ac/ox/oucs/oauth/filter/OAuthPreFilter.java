@@ -39,7 +39,7 @@ public class OAuthPreFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
 
         //Only apply filter on valid OAuth requests
-        if (!oAuthHttpService.isValidOAuthRequest(req, res)) {
+        if (!oAuthHttpService.isEnabled() || !oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
             return;
         }

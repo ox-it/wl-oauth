@@ -22,6 +22,8 @@ import java.util.List;
 public class OAuthHttpServiceImpl implements OAuthHttpService {
     private OAuthService oAuthService;
     private OAuthValidator oAuthValidator;
+    // Keep track of is OAuth should be enabled, this allows us to shutdown OAuth if we need to.
+    private boolean isEnabled = true;
 
     public void setoAuthValidator(OAuthValidator oAuthValidator) {
         this.oAuthValidator = oAuthValidator;
@@ -29,6 +31,10 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
 
     public void setoAuthService(OAuthService oAuthService) {
         this.oAuthService = oAuthService;
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     @Override
@@ -190,5 +196,9 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             return new OAuthProblemException(OAuth.Problems.PARAMETER_REJECTED);
         else
             return new OAuthProblemException();
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }
