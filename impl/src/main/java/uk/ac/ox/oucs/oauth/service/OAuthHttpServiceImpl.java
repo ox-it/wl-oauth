@@ -125,7 +125,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                     response.setContentType("text/plain");
                     PrintWriter out = response.getWriter();
                     out.println("You have successfully authorized '" + consumer.getName() + "'.\n" +
-                            "The authorisation token is: " + accessor.getToken() + "\n" +
+                            "The authorisation verifier is: " + accessor.getVerifier() + "\n" +
                             "Please close this browser window and click continue in the client.");
                     out.flush();
                     out.close();
