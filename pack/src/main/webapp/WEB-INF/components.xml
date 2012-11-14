@@ -64,6 +64,14 @@
         <property name="oAuthValidator">
             <bean class="net.oauth.SimpleOAuthValidator"/>
         </property>
+        <!-- This means we don't have to put another dependency in the bean -->
+        <property name="enabled">
+            <bean factory-bean="org.sakaiproject.component.api.ServerConfigurationService"
+                    factory-method="getBoolean">
+                <constructor-arg value="oauth.enabled"/>
+                <constructor-arg value="true"/>
+            </bean>
+        </property>
     </bean>
 
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

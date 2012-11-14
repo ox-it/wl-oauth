@@ -44,8 +44,9 @@ public class OAuthPostFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        //Only apply filter on OAuth request
-        if (!oAuthHttpService.isValidOAuthRequest(req, res)) {
+
+        //Only apply filter if there is an OAuth implementation and a valid OAuth request
+        if (oAuthHttpService == null || !oAuthHttpService.isEnabled() || !oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
             return;
         }

@@ -88,4 +88,10 @@ public interface OAuthHttpService {
      * @see <a href="http://tools.ietf.org/html/rfc5849#section-2.2">Resource Owner Authorization</a>
      */
     void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response, boolean authorised, String token, String verifier, String userId) throws IOException, ServletException;
+
+    /**
+     * Is the OAuth enabled?
+     * @return <code>true</code> is the OAuth service is enabled.
+     */
+    boolean isEnabled();
 }
