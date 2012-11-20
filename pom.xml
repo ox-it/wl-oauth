@@ -40,7 +40,7 @@
         <servlet-api.version>2.5</servlet-api.version>
         <hibernate.version>3.2.7.ga</hibernate.version>
         <wicket.version>1.4.20</wicket.version>
-        <slf4j.version>1.6.4</slf4j.version>
+        <slf4j.version>1.7.2</slf4j.version>
     </properties>
 
     <modules>
@@ -135,6 +135,12 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>${slf4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
