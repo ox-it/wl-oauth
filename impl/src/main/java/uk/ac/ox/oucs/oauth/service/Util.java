@@ -13,8 +13,11 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
 /**
  * @author Colin Hebert
  */
-public class Util {
+public final class Util {
     private static final Logger logger = LoggerFactory.getLogger(Util.class);
+
+    private Util() {
+    }
 
     public static OAuthAccessor convertToOAuthAccessor(Accessor accessor, OAuthConsumer oAuthConsumer)
             throws OAuthProblemException {
@@ -48,9 +51,9 @@ public class Util {
         for (Consumer consumer : source.getAll()) {
             try {
                 destination.create(consumer);
-                logger.info("New consumer imported '"+consumer.getId()+"'");
+                logger.info("New consumer imported '" + consumer.getId() + "'");
             } catch (Exception e) {
-                logger.warn("Impossible to import '"+consumer.getId()+"' as a consumer.", e);
+                logger.warn("Impossible to import '" + consumer.getId() + "' as a consumer.", e);
             }
         }
     }

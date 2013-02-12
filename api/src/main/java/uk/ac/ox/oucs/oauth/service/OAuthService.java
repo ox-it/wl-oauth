@@ -18,7 +18,7 @@ public interface OAuthService {
      *
      * @see <a href="http://tools.ietf.org/html/rfc5849#section-2.1">Temporary credentials</a>
      */
-    public static final String OUT_OF_BAND_CALLBACK = "oob";
+    String OUT_OF_BAND_CALLBACK = "oob";
 
     /**
      * Get the valid accessor using the given token.

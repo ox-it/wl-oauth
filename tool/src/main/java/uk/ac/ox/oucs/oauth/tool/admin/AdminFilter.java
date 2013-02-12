@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Filter users before displaying the oAuth administration page
+ * Filter users before displaying the oAuth administration page.
  *
  * @author Colin Hebert
  */

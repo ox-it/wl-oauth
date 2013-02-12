@@ -1,7 +1,7 @@
 package uk.ac.ox.oucs.oauth.servlet;
 
+import org.sakaiproject.component.api.ComponentManager;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.tool.api.*;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -30,11 +30,8 @@ public class AuthorisationServlet extends HttpServlet {
      * Name of the "deny" button in the authorisation page.
      */
     public static final String DENY_BUTTON = "deny";
-    /**
-     *
-     */
     private static final String LOGIN_PATH = "/login";
-
+    private static final String SAKAI_LOGIN_TOOL = "sakai.login";
 
     //Services and settings
     private OAuthService oAuthService;
@@ -44,7 +41,6 @@ public class AuthorisationServlet extends HttpServlet {
     private ActiveToolManager activeToolManager;
     private ServerConfigurationService serverConfigurationService;
     private String authorisePath;
-    private static final String SAKAI_LOGIN_TOOL = "sakai.login";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -97,16 +93,16 @@ public class AuthorisationServlet extends HttpServlet {
             sendToLoginPage(request, response);
 
         else if (request.getParameter(AUTHORISE_BUTTON) == null && request.getParameter(DENY_BUTTON) == null)
-            //If logged-in but haven't yet authorised (or denied)
+            // If logged-in but haven't yet authorised (or denied)
             sendToAuthorisePage(request, response);
 
         else
-            //Even if the authorisation has been denied, send the client to the consumer's callback
+            // Even if the authorisation has been denied, send the client to the consumer's callback
             handleRequestAuth(request, response);
     }
 
     private void sendToLoginPage(HttpServletRequest request, HttpServletResponse response) throws ToolException {
-        //If not logging-in, set the return path and proceed to the login steps
+        // If not logging-in, set the return path and proceed to the login steps
         String pathInfo = request.getPathInfo();
         if (pathInfo == null || !pathInfo.startsWith(LOGIN_PATH)) {
             Session session = sessionManager.getCurrentSession();

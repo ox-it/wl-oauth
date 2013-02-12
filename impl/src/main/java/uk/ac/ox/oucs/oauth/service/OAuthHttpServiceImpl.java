@@ -23,7 +23,49 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     private OAuthService oAuthService;
     private OAuthValidator oAuthValidator;
     // Keep track of is OAuth should be enabled, this allows us to shutdown OAuth if we need to.
-    private boolean isEnabled = true;
+    private boolean enabled = true;
+
+    /**
+     * Sends a response respecting the OAuth format.
+     * <p>
+     * The content type of the response is "application/x-www-form-urlencoded"
+     * </p>
+     *
+     * @param response   HttpServletResponse used to send the response
+     * @param parameters List of parameters in the form of key/value
+     * @throws IOException
+     */
+    private static void sendOAuthResponse(HttpServletResponse response, List<OAuth.Parameter> parameters)
+            throws IOException {
+        response.setContentType(OAuth.FORM_ENCODED);
+        ServletOutputStream os = response.getOutputStream();
+        OAuth.formEncode(parameters, os);
+        os.flush();
+        os.close();
+    }
+
+    private static void handleException(Exception e, HttpServletRequest request,
+                                        HttpServletResponse response, boolean sendBody)
+            throws IOException, ServletException {
+        String realm = (request.isSecure()) ? "https://" : "http://";
+        realm += request.getLocalName();
+        OAuthServlet.handleException(response, e, realm, sendBody);
+    }
+
+    private static OAuthException convertException(uk.ac.ox.oucs.oauth.exception.OAuthException originalException) {
+        if (originalException instanceof InvalidConsumerException)
+            return new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN);
+        else if (originalException instanceof ExpiredAccessorException)
+            return new OAuthProblemException(OAuth.Problems.TOKEN_EXPIRED);
+        else if (originalException instanceof RevokedAccessorException)
+            return new OAuthProblemException(OAuth.Problems.TOKEN_REVOKED);
+        else if (originalException instanceof InvalidAccessorException)
+            return new OAuthProblemException(OAuth.Problems.TOKEN_REJECTED);
+        else if (originalException instanceof InvalidVerifierException)
+            return new OAuthProblemException(OAuth.Problems.PARAMETER_REJECTED);
+        else
+            return new OAuthProblemException();
+    }
 
     public void setoAuthValidator(OAuthValidator oAuthValidator) {
         this.oAuthValidator = oAuthValidator;
@@ -31,10 +73,6 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
 
     public void setoAuthService(OAuthService oAuthService) {
         this.oAuthService = oAuthService;
-    }
-
-    public void setEnabled(boolean isEnabled) {
-        this.isEnabled = isEnabled;
     }
 
     @Override
@@ -133,9 +171,9 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                 if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
                     response.setContentType("text/plain");
                     PrintWriter out = response.getWriter();
-                    out.println("You have successfully authorized '" + consumer.getName() + "'.\n" +
-                            "The authorisation verifier is: " + accessor.getVerifier() + "\n" +
-                            "Please close this browser window and click continue in the client.");
+                    out.println("You have successfully authorized '" + consumer.getName() + "'.\n"
+                            + "The authorisation verifier is: " + accessor.getVerifier() + "\n"
+                            + "Please close this browser window and click continue in the client.");
                     out.flush();
                     out.close();
                 } else {
@@ -151,8 +189,8 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
                 if (accessor.getCallbackUrl().equals(OAuthService.OUT_OF_BAND_CALLBACK)) {
                     response.setContentType("text/plain");
                     PrintWriter out = response.getWriter();
-                    out.println("You have not authorized '" + consumer.getName() + "'.\n" +
-                            "Please close this browser window and click continue in the client.");
+                    out.println("You have not authorized '" + consumer.getName() + "'.\n"
+                            + "Please close this browser window and click continue in the client.");
                     out.flush();
                     out.close();
                 } else {
@@ -166,48 +204,11 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
         }
     }
 
-    /**
-     * Sends a response respecting the OAuth format
-     * <p>
-     * The content type of the response is "application/x-www-form-urlencoded"
-     * </p>
-     *
-     * @param response   HttpServletResponse used to send the response
-     * @param parameters List of parameters in the form of key/value
-     * @throws IOException
-     */
-    private static void sendOAuthResponse(HttpServletResponse response, List<OAuth.Parameter> parameters) throws IOException {
-        response.setContentType(OAuth.FORM_ENCODED);
-        ServletOutputStream os = response.getOutputStream();
-        OAuth.formEncode(parameters, os);
-        os.flush();
-        os.close();
-    }
-
-    private static void handleException(Exception e, HttpServletRequest request,
-                                        HttpServletResponse response, boolean sendBody)
-            throws IOException, ServletException {
-        String realm = (request.isSecure()) ? "https://" : "http://";
-        realm += request.getLocalName();
-        OAuthServlet.handleException(response, e, realm, sendBody);
-    }
-
-    private static OAuthException convertException(uk.ac.ox.oucs.oauth.exception.OAuthException originalException) {
-        if (originalException instanceof InvalidConsumerException)
-            return new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN);
-        else if (originalException instanceof ExpiredAccessorException)
-            return new OAuthProblemException(OAuth.Problems.TOKEN_EXPIRED);
-        else if (originalException instanceof RevokedAccessorException)
-            return new OAuthProblemException(OAuth.Problems.TOKEN_REVOKED);
-        else if (originalException instanceof InvalidAccessorException)
-            return new OAuthProblemException(OAuth.Problems.TOKEN_REJECTED);
-        else if (originalException instanceof InvalidVerifierException)
-            return new OAuthProblemException(OAuth.Problems.PARAMETER_REJECTED);
-        else
-            return new OAuthProblemException();
-    }
-
     public boolean isEnabled() {
-        return isEnabled;
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

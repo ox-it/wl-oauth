@@ -9,23 +9,28 @@ import java.util.*;
  * @author Colin Hebert
  */
 public class ServerConfigConsumerDao implements ConsumerDao {
+    /**
+     * Property prefix for OAuth settings
+     */
+    private static final String OAUTH_PREFIX = "oauth";
     private Map<String, Consumer> consumers;
 
     public ServerConfigConsumerDao(ServerConfigurationService serverConfig) {
-        Collection<String> consumerKeys = getStringsOrSplit("oauth.consumers", serverConfig);
+        Collection<String> consumerKeys = getStringsOrSplit(OAUTH_PREFIX + ".consumers", serverConfig);
         consumers = new HashMap<String, Consumer>(consumerKeys.size());
         for (String consumerKey : consumerKeys) {
             Consumer consumer = new Consumer();
             consumer.setId(consumerKey);
-            consumer.setName(serverConfig.getString("oauth." + consumerKey + ".name", null));
-            consumer.setDescription(serverConfig.getString("oauth." + consumerKey + ".description", null));
-            consumer.setURL(serverConfig.getString("oauth." + consumerKey + ".url", null));
-            consumer.setCallbackURL(serverConfig.getString("oauth." + consumerKey + ".callbackURL", null));
-            consumer.setSecret(serverConfig.getString("oauth." + consumerKey + ".secret"));
-            consumer.setAccessorSecret(serverConfig.getString("oauth." + consumerKey + ".accessorsecret", null));
-            consumer.setDefaultValidity(serverConfig.getInt("oauth." + consumerKey + ".validity", 0));
-            consumer.setRights(new HashSet<String>(getStringsOrSplit("oauth." + consumerKey + ".rights", serverConfig)));
-            consumer.setRecordModeEnabled(serverConfig.getBoolean("oauth." + consumerKey + ".record", false));
+            String consumerPrefix = OAUTH_PREFIX + "." + consumerKey;
+            consumer.setName(serverConfig.getString(consumerPrefix + ".name", null));
+            consumer.setDescription(serverConfig.getString(consumerPrefix + ".description", null));
+            consumer.setUrl(serverConfig.getString(consumerPrefix + ".url", null));
+            consumer.setCallbackURL(serverConfig.getString(consumerPrefix + ".callbackURL", null));
+            consumer.setSecret(serverConfig.getString(consumerPrefix + ".secret"));
+            consumer.setAccessorSecret(serverConfig.getString(consumerPrefix + ".accessorsecret", null));
+            consumer.setDefaultValidity(serverConfig.getInt(consumerPrefix + ".validity", 0));
+            consumer.setRights(new HashSet<String>(getStringsOrSplit(consumerPrefix + ".rights", serverConfig)));
+            consumer.setRecordModeEnabled(serverConfig.getBoolean(consumerPrefix + ".record", false));
 
             consumers.put(consumerKey, consumer);
         }

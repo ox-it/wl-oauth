@@ -39,7 +39,7 @@ public class ListAccessors extends SakaiPage {
                     ExternalLink consumerHomepage = new ExternalLink("consumerUrl", consumer.getUrl(),
                             consumer.getName());
                     consumerHomepage.add(new SimpleAttributeModifier("target", "_blank"));
-                    consumerHomepage.setEnabled(consumer.getURL() != null && !consumer.getURL().isEmpty());
+                    consumerHomepage.setEnabled(consumer.getUrl() != null && !consumer.getUrl().isEmpty());
                     components.add(consumerHomepage);
                     components.add(new Label("consumerDescription", consumer.getDescription()));
                     components.add(new Label("creationDate", new StringResourceModel("creation.date", null,
@@ -55,7 +55,7 @@ public class ListAccessors extends SakaiPage {
                                 setResponsePage(getPage().getClass());
                                 getSession().info(consumer.getName() + "' token has been removed.");
                             } catch (Exception e) {
-                                warn("Couldn't remove '" + consumer.getName() + "'s token': " + e.getLocalizedMessage());
+                                warn("Couldn't remove " + consumer.getName() + "'s token': " + e.getLocalizedMessage());
                             }
                         }
                     });

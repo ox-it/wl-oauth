@@ -54,46 +54,11 @@ public class Accessor implements Serializable {
     private String userId;
     /**
      * Variable accessor secret as defined in http://wiki.oauth.net/w/page/12238502/AccessorSecret.
+     * <p>
      * Should be only set on request accessors, if null OAuth will use either the accessor secret or the consumer secret
+     * </p>
      */
     private String accessorSecret;
-
-    /**
-     * Types of accessors available
-     */
-    public static enum Type {
-        /**
-         * Request accessor, used to initiate the authentication
-         */
-        REQUEST,
-        /**
-         * Request accessor, during the authorisation phase
-         */
-        REQUEST_AUTHORISING,
-        /**
-         * Authorised request accessor, associated with a user who accepted the connection
-         */
-        REQUEST_AUTHORISED,
-        /**
-         * Access accessor, used to access to protected resources
-         */
-        ACCESS
-    }
-
-    public static enum Status {
-        /**
-         * Valid token, can be used either to access resources or authenticate an user
-         */
-        VALID,
-        /**
-         * Invalid token which has either already been used (request token) or revoked by the user
-         */
-        REVOKED,
-        /**
-         * Invalid token which hasn't been used during the validity period
-         */
-        EXPIRED
-    }
 
     public String getToken() {
         return token;
@@ -185,13 +150,53 @@ public class Accessor implements Serializable {
 
     @Override
     public String toString() {
-        return "Accessor{" +
-                "token='" + token.substring(0, 7) + '\'' +
-                ", type=" + type +
-                ", status=" + status +
-                ", consumerId='" + consumerId + '\'' +
-                ", expirationDate=" + expirationDate +
-                ", userId='" + userId + '\'' +
-                '}';
+        return "Accessor{"
+                + "token='" + token + '\''
+                + ", type=" + type
+                + ", status=" + status
+                + ", consumerId='" + consumerId + '\''
+                + ", expirationDate=" + expirationDate
+                + ", userId='" + userId + '\''
+                + '}';
+    }
+
+    /**
+     * Types of accessors available.
+     */
+    public static enum Type {
+        /**
+         * Request accessor, used to initiate the authentication.
+         */
+        REQUEST,
+        /**
+         * Request accessor, during the authorisation phase.
+         */
+        REQUEST_AUTHORISING,
+        /**
+         * Authorised request accessor, associated with a user who accepted the connection.
+         */
+        REQUEST_AUTHORISED,
+        /**
+         * Access accessor, used to access to protected resources.
+         */
+        ACCESS
+    }
+
+    /**
+     * Possible status for a token.
+     */
+    public static enum Status {
+        /**
+         * Valid token, can be used either to access resources or authenticate an user.
+         */
+        VALID,
+        /**
+         * Invalid token which has either already been used (request token) or revoked by the user.
+         */
+        REVOKED,
+        /**
+         * Invalid token which hasn't been used during the validity period.
+         */
+        EXPIRED
     }
 }

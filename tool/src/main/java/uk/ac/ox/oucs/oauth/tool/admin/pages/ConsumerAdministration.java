@@ -9,7 +9,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.authz.api.FunctionManager;
-import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 import uk.ac.ox.oucs.oauth.service.OAuthAdminService;
 import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
@@ -22,12 +21,11 @@ import java.util.List;
  * @author Colin Hebert
  */
 public class ConsumerAdministration extends SakaiPage {
+    private final Consumer consumer;
     @SpringBean
     private FunctionManager functionManager;
     @SpringBean
     private OAuthAdminService oAuthAdminService;
-
-    private final Consumer consumer;
 
     public ConsumerAdministration() {
         consumer = new Consumer();

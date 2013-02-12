@@ -25,11 +25,54 @@ import java.util.Random;
  * @author Colin Hebert
  */
 public class OAuthServiceImpl implements OAuthService {
+    private static final int VERIFIER_MAX_VALUE = 10000;
     private AccessorDao accessorDao;
     private ConsumerDao consumerDao;
     private boolean keepOldAccessors;
     private SiteService siteService;
     private SecurityService securityService;
+
+    private static String generateToken(Accessor accessor) {
+        // TODO Need a better way of generating tokens in the long run.
+        return generateHash(accessor.getConsumerId() + System.nanoTime());
+    }
+
+    private static String generateSecret(Accessor accessor, Consumer consumer) {
+        // TODO Need a better way of generating tokens in the long run.
+        return generateHash(accessor.getToken() + consumer.getSecret() + System.nanoTime());
+    }
+
+    private static String generateHash(String string) {
+        try {
+            MessageDigest messageDigest;
+            try {
+                messageDigest = MessageDigest.getInstance("SHA-1");
+            } catch (NoSuchAlgorithmException e) {
+                messageDigest = MessageDigest.getInstance("MD5");
+            }
+            byte[] hashBytes = messageDigest.digest(string.getBytes("UTF-8"));
+
+            StringBuilder md5String = new StringBuilder();
+            for (byte hashByte : hashBytes) {
+                md5String.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return md5String.toString();
+        } catch (NoSuchAlgorithmException e) {
+            // Unless you don't have md5 on your JVM it will work (so this exception won't happen)
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            // Unless you don't have UTF-8 on your JVM it will work (so this exception won't happen)
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String generateVerifier(Accessor accessor) {
+        return String.valueOf(new Random().nextInt(VERIFIER_MAX_VALUE));
+    }
+
+    private static boolean isStillValid(Accessor accessor) {
+        return accessor.getExpirationDate() == null || new DateTime(accessor.getExpirationDate()).isAfterNow();
+    }
 
     public void setAccessorDao(AccessorDao accessorDao) {
         this.accessorDao = accessorDao;
@@ -43,6 +86,7 @@ public class OAuthServiceImpl implements OAuthService {
         this.keepOldAccessors = keepOldAccessors;
     }
 
+    @Override
     public Accessor getAccessor(String token, Accessor.Type expectedType) {
         Accessor accessor = accessorDao.get(token);
 
@@ -110,40 +154,6 @@ public class OAuthServiceImpl implements OAuthService {
         return accessor;
     }
 
-    private static String generateToken(Accessor accessor) {
-        // TODO Need a better way of generating tokens in the long run.
-        return generateHash(accessor.getConsumerId() + System.nanoTime());
-    }
-
-    private static String generateSecret(Accessor accessor, Consumer consumer) {
-        // TODO Need a better way of generating tokens in the long run.
-        return generateHash(accessor.getToken() + consumer.getSecret() + System.nanoTime());
-    }
-
-    private static String generateHash(String string) {
-        try {
-            MessageDigest messageDigest;
-            try {
-                messageDigest = MessageDigest.getInstance("SHA-1");
-            } catch (NoSuchAlgorithmException e) {
-                messageDigest = MessageDigest.getInstance("MD5");
-            }
-            byte[] hashBytes = messageDigest.digest(string.getBytes("UTF-8"));
-
-            StringBuilder md5String = new StringBuilder();
-            for (byte hashByte : hashBytes) {
-                md5String.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
-            }
-            return md5String.toString();
-        } catch (NoSuchAlgorithmException e) {
-            // Unless you don't have md5 on your JVM it will work (so this exception won't happen)
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            // Unless you don't have UTF-8 on your JVM it will work (so this exception won't happen)
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public Accessor startAuthorisation(String accessorId) {
         Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST);
@@ -187,10 +197,6 @@ public class OAuthServiceImpl implements OAuthService {
         }
     }
 
-    private static String generateVerifier(Accessor accessor) {
-        return String.valueOf(new Random().nextInt(10000));
-    }
-
     @Override
     public Accessor createAccessAccessor(String requestAccessorId) {
         Accessor requestAccessor = getAccessor(requestAccessorId, Accessor.Type.REQUEST_AUTHORISED);
@@ -229,14 +235,14 @@ public class OAuthServiceImpl implements OAuthService {
     public Collection<Accessor> getAccessAccessorForUser(String userId) {
         Collection<Accessor> accessors = new ArrayList<Accessor>(accessorDao.getByUser(userId));
 
-        for (Iterator<Accessor> iterator = accessors.iterator(); iterator.hasNext(); ) {
+        for (Iterator<Accessor> iterator = accessors.iterator(); iterator.hasNext();) {
             Accessor accessor = iterator.next();
 
             if (accessor.getStatus() == Accessor.Status.VALID && !isStillValid(accessor))
                 updateAccessorStatus(accessor, Accessor.Status.EXPIRED);
 
-            if (accessor.getStatus() != Accessor.Status.VALID ||
-                    accessor.getType() != Accessor.Type.ACCESS)
+            if (accessor.getStatus() != Accessor.Status.VALID
+                    || accessor.getType() != Accessor.Type.ACCESS)
                 iterator.remove();
         }
         return accessors;
@@ -250,10 +256,6 @@ public class OAuthServiceImpl implements OAuthService {
         } catch (OAuthException ignored) {
             //If the accessor is already expired/revoked, nothing to do/handle
         }
-    }
-
-    private static boolean isStillValid(Accessor accessor) {
-        return accessor.getExpirationDate() == null || new DateTime(accessor.getExpirationDate()).isAfterNow();
     }
 
     private void updateAccessorStatus(Accessor accessor, Accessor.Status status) {

@@ -7,7 +7,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 import uk.ac.ox.oucs.oauth.service.OAuthAdminService;
 import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
@@ -48,7 +47,6 @@ public class ListConsumers extends SakaiPage {
                         }
                     }
                 });
-
 
                 Link<Consumer> recordLink = new Link<Consumer>("record", components.getModel()) {
                     @Override
