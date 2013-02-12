@@ -16,7 +16,8 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
 public class Util {
     private static final Logger logger = LoggerFactory.getLogger(Util.class);
 
-    public static OAuthAccessor convertToOAuthAccessor(Accessor accessor, OAuthConsumer oAuthConsumer) throws OAuthProblemException {
+    public static OAuthAccessor convertToOAuthAccessor(Accessor accessor, OAuthConsumer oAuthConsumer)
+            throws OAuthProblemException {
         if (accessor == null)
             return null;
         if (!oAuthConsumer.consumerKey.equals(accessor.getConsumerId()))
@@ -36,7 +37,8 @@ public class Util {
     public static OAuthConsumer convertToOAuthConsumer(Consumer consumer) {
         if (consumer == null)
             return null;
-        OAuthConsumer oAuthConsumer = new OAuthConsumer(consumer.getCallbackURL(), consumer.getId(), consumer.getSecret(), null);
+        OAuthConsumer oAuthConsumer = new OAuthConsumer(consumer.getCallbackURL(), consumer.getId(),
+                consumer.getSecret(), null);
         //Support Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
         oAuthConsumer.setProperty(OAuthConsumer.ACCESSOR_SECRET, consumer.getAccessorSecret());
         return oAuthConsumer;

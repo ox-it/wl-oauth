@@ -28,7 +28,8 @@ public interface OAuthHttpService {
      * @throws IOException
      * @throws ServletException
      */
-    boolean isValidOAuthRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
+    boolean isValidOAuthRequest(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException;
 
     /**
      * Extract the access token from an OAuth request.
@@ -51,7 +52,8 @@ public interface OAuthHttpService {
      * @throws ServletException
      * @see <a href="http://tools.ietf.org/html/rfc5849#section-2.1">Temporary Credentials</a>
      */
-    void handleRequestToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
+    void handleRequestToken(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException;
 
     /**
      * Handle the last step of the OAuth 1.0 authentication.
@@ -66,7 +68,8 @@ public interface OAuthHttpService {
      * @throws ServletException
      * @see <a href="http://tools.ietf.org/html/rfc5849#section-2.3">Token Credentials</a>
      */
-    void handleGetAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
+    void handleGetAccessToken(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException;
 
     /**
      * Handle the authorisation step of the OAuth 1.0 authentication.
@@ -87,7 +90,9 @@ public interface OAuthHttpService {
      * @throws ServletException
      * @see <a href="http://tools.ietf.org/html/rfc5849#section-2.2">Resource Owner Authorization</a>
      */
-    void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response, boolean authorised, String token, String verifier, String userId) throws IOException, ServletException;
+    void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response, boolean authorised,
+                                    String token, String verifier, String userId)
+            throws IOException, ServletException;
 
     /**
      * Checks if OAuth is enabled.

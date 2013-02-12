@@ -65,7 +65,8 @@ public interface OAuthService {
      *
      * @param consumerId     consumer associated to the accessor
      * @param callback       callback used when the authorisation is done
-     * @param accessorSecret optional variable accessor secret <a href="http://wiki.oauth.net/w/page/12238502/AccessorSecret">AccessorSecret</a>
+     * @param accessorSecret optional variable accessor secret
+     *                       <a href="http://wiki.oauth.net/w/page/12238502/AccessorSecret">AccessorSecret</a>
      * @return the new request accessor
      * @see <a href="http://tools.ietf.org/html/rfc5849#section-2.1">Temporary credentials</a>
      */

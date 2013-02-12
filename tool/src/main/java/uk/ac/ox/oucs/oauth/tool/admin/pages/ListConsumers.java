@@ -25,7 +25,8 @@ public class ListConsumers extends SakaiPage {
         addMenuLink(ListConsumers.class, new ResourceModel("menu.list.consumer"), null);
         addMenuLink(ConsumerAdministration.class, new ResourceModel("menu.add.consumer"), null);
 
-        ListView<Consumer> consumerList = new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(oAuthAdminService.getAllConsumers())) {
+        ListView<Consumer> consumerList = new ListView<Consumer>("consumerlist",
+                new ArrayList<Consumer>(oAuthAdminService.getAllConsumers())) {
             @Override
             protected void populateItem(ListItem<Consumer> components) {
                 components.add(new Label("id", components.getModelObject().getId()));
@@ -57,7 +58,8 @@ public class ListConsumers extends SakaiPage {
                             setResponsePage(getPage().getClass());
                             getSession().info(getModelObject().getName() + " record mode has changed.");
                         } catch (Exception e) {
-                            warn("Couldn't change record mode on '" + getModelObject().getName() + "': " + e.getLocalizedMessage());
+                            warn("Couldn't change record mode on " + getModelObject().getName() + "': "
+                                    + e.getLocalizedMessage());
                         }
                     }
                 };

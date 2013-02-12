@@ -34,19 +34,22 @@ public class OAuthPostFilter implements Filter {
 
 
     public void init(FilterConfig filterConfig) throws ServletException {
-        oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class.getCanonicalName());
-        sessionManager = (SessionManager) ComponentManager.getInstance().get(SessionManager.class.getCanonicalName());
-        userDirectoryService = (UserDirectoryService) ComponentManager.getInstance().get(UserDirectoryService.class.getCanonicalName());
-        usageSessionService = (UsageSessionService) ComponentManager.getInstance().get(UsageSessionService.class.getCanonicalName());
-        //authenticationManager = (AuthenticationManager) ComponentManager.getInstance().get(AuthenticationManager.class.getCanonicalName());
+        ComponentManager componentManager = org.sakaiproject.component.cover.ComponentManager.getInstance();
+        oAuthHttpService = (OAuthHttpService) componentManager.get(OAuthHttpService.class);
+        sessionManager = (SessionManager) componentManager.get(SessionManager.class);
+        userDirectoryService = (UserDirectoryService) componentManager.get(UserDirectoryService.class);
+        usageSessionService = (UsageSessionService) componentManager.get(UsageSessionService.class);
+        //authenticationManager = (AuthenticationManager) componentManager.get(AuthenticationManager.class);
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
         //Only apply filter if there is an OAuth implementation and a valid OAuth request
-        if (oAuthHttpService == null || !oAuthHttpService.isEnabled() || !oAuthHttpService.isValidOAuthRequest(req, res)) {
+        if (oAuthHttpService == null || !oAuthHttpService.isEnabled()
+                || !oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
             return;
         }

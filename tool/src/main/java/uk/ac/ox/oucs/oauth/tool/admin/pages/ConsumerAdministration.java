@@ -31,7 +31,8 @@ public class ConsumerAdministration extends SakaiPage {
 
     public ConsumerAdministration() {
         consumer = new Consumer();
-        //Manually set an empty Set for rights to avoid confusion with CheckBoxMultipleChoice and not ending up with a List
+        // Manually set an empty Set for rights to avoid confusion with CheckBoxMultipleChoice
+        // and not ending up with a List
         consumer.setRights(new HashSet<String>());
         init(false);
     }
@@ -80,8 +81,10 @@ public class ConsumerAdministration extends SakaiPage {
         consumerForm.add(new TextField<String>("url", new PropertyModel<String>(consumer, "uRL")));
         consumerForm.add(new TextField<String>("callbackURL", new PropertyModel<String>(consumer, "callbackURL")));
         consumerForm.add(new RequiredTextField<String>("secret", new PropertyModel<String>(consumer, "secret")));
-        consumerForm.add(new TextField<String>("accessorSecret", new PropertyModel<String>(consumer, "accessorSecret")));
-        consumerForm.add(new TextField<Integer>("defaultValidity", new PropertyModel<Integer>(consumer, "defaultValidity")));
+        consumerForm.add(new TextField<String>("accessorSecret",
+                new PropertyModel<String>(consumer, "accessorSecret")));
+        consumerForm.add(new TextField<Integer>("defaultValidity",
+                new PropertyModel<Integer>(consumer, "defaultValidity")));
 
         //Create a list of possible rights as checkboxes, pre-check already granted permissions
         CheckBoxMultipleChoice<String> rightCheckboxes = new CheckBoxMultipleChoice<String>("rights",

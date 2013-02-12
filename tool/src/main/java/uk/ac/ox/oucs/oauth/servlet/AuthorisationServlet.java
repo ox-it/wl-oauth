@@ -49,12 +49,14 @@ public class AuthorisationServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        oAuthService = (OAuthService) ComponentManager.getInstance().get(OAuthService.class.getCanonicalName());
-        oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class.getCanonicalName());
-        sessionManager = (SessionManager) ComponentManager.getInstance().get(SessionManager.class.getCanonicalName());
-        activeToolManager = (ActiveToolManager) ComponentManager.getInstance().get(ActiveToolManager.class.getCanonicalName());
-        userDirectoryService = (UserDirectoryService) ComponentManager.getInstance().get(UserDirectoryService.class.getCanonicalName());
-        serverConfigurationService = (ServerConfigurationService) ComponentManager.getInstance().get(ServerConfigurationService.class.getCanonicalName());
+        ComponentManager componentManager = org.sakaiproject.component.cover.ComponentManager.getInstance();
+        oAuthService = (OAuthService) componentManager.get(OAuthService.class);
+        oAuthHttpService = (OAuthHttpService) componentManager.get(OAuthHttpService.class);
+        sessionManager = (SessionManager) componentManager.get(SessionManager.class);
+        activeToolManager = (ActiveToolManager) componentManager.get(ActiveToolManager.class);
+        userDirectoryService = (UserDirectoryService) componentManager.get(UserDirectoryService.class);
+        serverConfigurationService =
+                (ServerConfigurationService) componentManager.get(ServerConfigurationService.class);
         //TODO: get this path from the configuration (injection?)
         authorisePath = "/authorise.jsp";
     }
@@ -109,7 +111,8 @@ public class AuthorisationServlet extends HttpServlet {
         if (pathInfo == null || !pathInfo.startsWith(LOGIN_PATH)) {
             Session session = sessionManager.getCurrentSession();
 
-            //Set the return path for after login if needed (Note: in session, not tool session, special for Login helper)
+            // Set the return path for after login if needed
+            // (Note: in session, not tool session, special for Login helper)
             StringBuffer returnUrl = request.getRequestURL();
             if (request.getQueryString() != null)
                 returnUrl.append('?').append(request.getQueryString());
@@ -165,8 +168,10 @@ public class AuthorisationServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private void handleRequestAuth(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        boolean authorised = request.getParameter(AUTHORISE_BUTTON) != null && request.getParameter(DENY_BUTTON) == null;
+    private void handleRequestAuth(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        boolean authorised = request.getParameter(AUTHORISE_BUTTON) != null
+                && request.getParameter(DENY_BUTTON) == null;
         String token = request.getParameter("oauthToken");
         String verifier = request.getParameter("oauthVerifier");
         String userId = sessionManager.getCurrentSessionUserId();

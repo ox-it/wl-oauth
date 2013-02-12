@@ -36,14 +36,16 @@ public class ListAccessors extends SakaiPage {
             protected void populateItem(ListItem<Accessor> components) {
                 try {
                     final Consumer consumer = oAuthService.getConsumer(components.getModelObject().getConsumerId());
-                    ExternalLink consumerHomepage = new ExternalLink("consumerUrl", consumer.getURL(), consumer.getName());
+                    ExternalLink consumerHomepage = new ExternalLink("consumerUrl", consumer.getUrl(),
+                            consumer.getName());
                     consumerHomepage.add(new SimpleAttributeModifier("target", "_blank"));
                     consumerHomepage.setEnabled(consumer.getURL() != null && !consumer.getURL().isEmpty());
                     components.add(consumerHomepage);
                     components.add(new Label("consumerDescription", consumer.getDescription()));
                     components.add(new Label("creationDate", new StringResourceModel("creation.date", null,
                             new Object[]{components.getModelObject().getCreationDate()})));
-                    components.add(new Label("expirationDate", new StringResourceModel("expiration.date", null, new Object[]{components.getModelObject().getExpirationDate()})));
+                    components.add(new Label("expirationDate", new StringResourceModel("expiration.date", null,
+                            new Object[]{components.getModelObject().getExpirationDate()})));
 
                     components.add(new Link<Accessor>("delete", components.getModel()) {
                         @Override

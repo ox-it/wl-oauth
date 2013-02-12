@@ -38,14 +38,17 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     }
 
     @Override
-    public boolean isValidOAuthRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public boolean isValidOAuthRequest(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         try {
             OAuthMessage message = OAuthServlet.getMessage(request, null);
             //Non existing token, just continue
             if (message.getToken() == null)
                 return false;
-            OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(oAuthService.getConsumer(message.getConsumerKey()));
-            OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(oAuthService.getAccessor(message.getToken(), Accessor.Type.ACCESS), oAuthConsumer);
+            OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(
+                    oAuthService.getConsumer(message.getConsumerKey()));
+            OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(
+                    oAuthService.getAccessor(message.getToken(), Accessor.Type.ACCESS), oAuthConsumer);
             oAuthValidator.validateMessage(message, oAuthAccessor);
         } catch (uk.ac.ox.oucs.oauth.exception.OAuthException e) {
             handleException(convertException(e), request, response, true);
@@ -64,7 +67,8 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     }
 
     @Override
-    public void handleRequestToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void handleRequestToken(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         try {
             OAuthMessage oAuthMessage = OAuthServlet.getMessage(request, null);
             Consumer consumer = oAuthService.getConsumer(oAuthMessage.getConsumerKey());
@@ -90,15 +94,18 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     }
 
     @Override
-    public void handleGetAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void handleGetAccessToken(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         try {
             OAuthMessage oAuthMessage = OAuthServlet.getMessage(request, null);
-            Accessor requestAccessor = oAuthService.getAccessor(oAuthMessage.getToken(), Accessor.Type.REQUEST_AUTHORISED);
+            Accessor requestAccessor = oAuthService.getAccessor(oAuthMessage.getToken(),
+                    Accessor.Type.REQUEST_AUTHORISED);
             Consumer consumer = oAuthService.getConsumer(requestAccessor.getConsumerId());
             OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(consumer);
             OAuthAccessor oAuthAccessor = Util.convertToOAuthAccessor(requestAccessor, oAuthConsumer);
             oAuthValidator.validateMessage(oAuthMessage, oAuthAccessor);
-            if (requestAccessor.getVerifier() != null && !requestAccessor.getVerifier().equals(oAuthMessage.getParameter(OAuth.OAUTH_VERIFIER)))
+            if (requestAccessor.getVerifier() != null
+                    && !requestAccessor.getVerifier().equals(oAuthMessage.getParameter(OAuth.OAUTH_VERIFIER)))
                 throw new InvalidVerifierException();
 
             Accessor accessAccessor = oAuthService.createAccessAccessor(requestAccessor.getToken());
@@ -115,7 +122,9 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
     }
 
     @Override
-    public void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response, boolean authorised, String token, String verifier, String userId) throws IOException, ServletException {
+    public void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response,
+                                           boolean authorised, String token, String verifier, String userId)
+            throws IOException, ServletException {
         try {
             Accessor accessor = oAuthService.getAccessor(token, Accessor.Type.REQUEST_AUTHORISING);
             Consumer consumer = oAuthService.getConsumer(accessor.getConsumerId());
