@@ -12,14 +12,17 @@ import java.util.Date;
 import java.util.List;
 
 public class HibernateAccessorDao extends HibernateDaoSupport implements AccessorDao {
+    @Override
     public void create(final Accessor accessor) {
         getHibernateTemplate().save(accessor);
     }
 
+    @Override
     public Accessor get(String accessorId) {
         return (Accessor) getHibernateTemplate().get(Accessor.class, accessorId);
     }
 
+    @Override
     public List<Accessor> getByUser(String userId) {
         return (List<Accessor>) getHibernateTemplate().find(
                 "FROM Accessor a WHERE a.userId = ?",
@@ -33,6 +36,7 @@ public class HibernateAccessorDao extends HibernateDaoSupport implements Accesso
                 new Object[]{consumerId});
     }
 
+    @Override
     public void markExpiredAccessors() {
         getHibernateTemplate().execute(new HibernateCallback() {
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -47,11 +51,13 @@ public class HibernateAccessorDao extends HibernateDaoSupport implements Accesso
     }
 
 
+    @Override
     public Accessor update(Accessor accessor) {
         getHibernateTemplate().update(accessor);
         return accessor;
     }
 
+    @Override
     public void remove(Accessor accessor) {
         getHibernateTemplate().delete(accessor);
     }

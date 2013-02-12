@@ -24,6 +24,7 @@ public class CollectingPermissionsAdvisor implements SecurityAdvisor {
         this.consumer = consumer;
     }
 
+    @Override
     public SecurityAdvice isAllowed(String userId, String function, String reference) {
         if (!consumer.getRights().contains(function)) {
             logger.info("'"+consumer.getId()+"' requires '"+function+"' right in order to work, enable it.");
@@ -38,6 +39,7 @@ public class CollectingPermissionsAdvisor implements SecurityAdvisor {
         return SecurityAdvice.PASS;
     }
 
+    @Override
     public String toString() {
         return "Permission collector";
     }

@@ -18,6 +18,7 @@ public class LimitedPermissionsAdvisor implements SecurityAdvisor {
         allowedPermissions = new HashSet<String>(permissions);
     }
 
+    @Override
     public SecurityAdvice isAllowed(String userId, String function, String reference) {
         return (allowedPermissions.contains(function)) ? SecurityAdvice.PASS : SecurityAdvice.NOT_ALLOWED;
     }

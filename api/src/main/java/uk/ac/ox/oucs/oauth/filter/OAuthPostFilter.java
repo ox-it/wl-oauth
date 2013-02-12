@@ -33,6 +33,7 @@ public class OAuthPostFilter implements Filter {
     private final static Log log = LogFactory.getLog(OAuthPostFilter.class);
 
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ComponentManager componentManager = org.sakaiproject.component.cover.ComponentManager.getInstance();
         oAuthHttpService = (OAuthHttpService) componentManager.get(OAuthHttpService.class);
@@ -42,6 +43,7 @@ public class OAuthPostFilter implements Filter {
         //authenticationManager = (AuthenticationManager) componentManager.get(AuthenticationManager.class);
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
@@ -89,6 +91,7 @@ public class OAuthPostFilter implements Filter {
         chain.doFilter(req, res);
     }
 
+    @Override
     public void destroy() {
     }
 }

@@ -28,12 +28,14 @@ public class OAuthPreFilter implements Filter {
     private OAuthService oAuthService;
     private SecurityService securityService;
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.oAuthService = (OAuthService) ComponentManager.getInstance().get(OAuthService.class);
         this.oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class);
         this.securityService = (SecurityService) ComponentManager.getInstance().get(SecurityService.class);
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
@@ -69,6 +71,7 @@ public class OAuthPreFilter implements Filter {
         }
     }
 
+    @Override
     public void destroy() {
     }
 }
