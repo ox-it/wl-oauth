@@ -136,7 +136,7 @@ public abstract class SakaiPage extends WebPage implements IHeaderContributor {
     }
 
     /**
-     * Add a menu entry with a custom link
+     * Add a menu entry with a custom link.
      *
      * @param link  Link to add to the menu bar
      * @param text  Link's text

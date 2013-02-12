@@ -31,7 +31,7 @@ public interface OAuthHttpService {
     boolean isValidOAuthRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 
     /**
-     * Extract the access token from an OAuth request
+     * Extract the access token from an OAuth request.
      *
      * @param request OAuth request
      * @return The access token if it exists, null otherwise
@@ -40,7 +40,7 @@ public interface OAuthHttpService {
     String getOAuthAccessToken(HttpServletRequest request) throws IOException;
 
     /**
-     * Handle the first step of the OAuth 1.0 authentication
+     * Handle the first step of the OAuth 1.0 authentication.
      * <p>
      * Check consumer's signature and provide temporary credentials
      * </p>
@@ -54,7 +54,7 @@ public interface OAuthHttpService {
     void handleRequestToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 
     /**
-     * Handle the last step of the OAuth 1.0 authentication
+     * Handle the last step of the OAuth 1.0 authentication.
      * <p>
      * Check consumer's signature, the request accessor's verifier<br />
      * Create an access accessor for the user who accepted the connection
@@ -69,7 +69,7 @@ public interface OAuthHttpService {
     void handleGetAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 
     /**
-     * Handle the authorisation step of the OAuth 1.0 authentication
+     * Handle the authorisation step of the OAuth 1.0 authentication.
      * <p>
      * Check if the user has authorised the consumer.<br />
      * Assign the user to the request token.<br />
@@ -90,8 +90,8 @@ public interface OAuthHttpService {
     void handleRequestAuthorisation(HttpServletRequest request, HttpServletResponse response, boolean authorised, String token, String verifier, String userId) throws IOException, ServletException;
 
     /**
-     * Is the OAuth enabled?
-     * @return <code>true</code> is the OAuth service is enabled.
+     * Checks if OAuth is enabled.
+     * @return <code>true</code> if the OAuth service is enabled.
      */
     boolean isEnabled();
 }

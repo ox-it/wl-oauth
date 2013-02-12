@@ -7,20 +7,21 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
 import java.util.Collection;
 
 /**
- * OAuthService handles OAuth operations without interacting with HTTP data
+ * OAuthService handles OAuth operations without interacting with HTTP data.
  *
  * @author Colin Hebert
  */
 public interface OAuthService {
     /**
-     * Callback used when the client is unable to receive callbacks or a callback URI has been established via other means
+     * Callback used when the client is unable to receive callbacks
+     * or a callback URI has been established via other means.
      *
      * @see <a href="http://tools.ietf.org/html/rfc5849#section-2.1">Temporary credentials</a>
      */
     public static final String OUT_OF_BAND_CALLBACK = "oob";
 
     /**
-     * Get the valid accessor using the given token
+     * Get the valid accessor using the given token.
      * <p>
      * If the accessor doesn't exist, or the token isn't valid an exception is thrown.
      * </p>
@@ -36,7 +37,7 @@ public interface OAuthService {
     Accessor getAccessor(String oAuthToken, Accessor.Type expectedType);
 
     /**
-     * Get the security advisor associated with an access accessor
+     * Get the security advisor associated with an access accessor.
      * <p>
      * Each accessor can define its own set of rules to allow access to certain protected resources.
      * </p>
@@ -47,7 +48,7 @@ public interface OAuthService {
     SecurityAdvisor getSecurityAdvisor(String accessorId);
 
     /**
-     * Get a consumer given its key (id)
+     * Get a consumer given its key (id).
      *
      * @param consumerKey identifier of the consumer
      * @return the requested consumer
@@ -57,7 +58,7 @@ public interface OAuthService {
     Consumer getConsumer(String consumerKey);
 
     /**
-     * Create a request accessor
+     * Create a request accessor.
      * <p>
      * The created accessor's type is {@link Accessor.Type#REQUEST}
      * </p>
@@ -71,7 +72,7 @@ public interface OAuthService {
     Accessor createRequestAccessor(String consumerId, String callback, String accessorSecret);
 
     /**
-     * Start the authorisation process
+     * Start the authorisation process.
      * <p>
      * Changes the accessor's type to {@link Accessor.Type#REQUEST_AUTHORISING}
      * </p>
@@ -82,7 +83,7 @@ public interface OAuthService {
     Accessor startAuthorisation(String accessorId);
 
     /**
-     * Finish the authorisation process when the client has authorised the consumer to connect
+     * Finish the authorisation process when the client has authorised the consumer to connect.
      * <p>
      * Changes the accessor's type to {@link Accessor.Type#REQUEST_AUTHORISED}<br/>
      * Sets the verifier.
@@ -97,7 +98,7 @@ public interface OAuthService {
     Accessor authoriseAccessor(String accessorId, String verifier, String userId);
 
     /**
-     * Create an accessor allowing to access protected resources
+     * Create an accessor allowing to access protected resources.
      *
      * @param requestAccessorId the allowed request accessor
      * @return a new Accessor allowed to access protected resources
@@ -106,22 +107,22 @@ public interface OAuthService {
     Accessor createAccessAccessor(String requestAccessorId);
 
     /**
-     * Get a collection of every valid access accessors for one user
+     * Get a collection of every valid access accessors for one user.
      *
-     * @param userId
+     * @param userId unique identifier of a Sakai user
      * @return a collection of {@link Accessor.Status#VALID} accessors
      */
     Collection<Accessor> getAccessAccessorForUser(String userId);
 
     /**
-     * Manually revoke an accessor
+     * Manually revoke an accessor.
      *
      * @param accessorId accessor's token
      */
     void revokeAccessor(String accessorId);
 
     /**
-     * Finish the authorisation process when the client has NOT authorised the consumer to connect
+     * Finish the authorisation process when the client has NOT authorised the consumer to connect.
      *
      * @param accessorId accessor's token
      */

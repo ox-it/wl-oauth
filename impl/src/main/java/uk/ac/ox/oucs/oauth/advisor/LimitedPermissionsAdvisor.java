@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Advisor allowing only permissions authorised to a specific consumer
+ * Advisor allowing only permissions authorised to a specific consumer.
  *
  * @author Colin Hebert
  */

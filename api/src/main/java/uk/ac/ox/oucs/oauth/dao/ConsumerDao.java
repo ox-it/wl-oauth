@@ -5,7 +5,7 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
 import java.util.Collection;
 
 /**
- * Data access object for consumers (clients)
+ * Data access object for consumers (clients).
  *
  * @author Colin Hebert
  */

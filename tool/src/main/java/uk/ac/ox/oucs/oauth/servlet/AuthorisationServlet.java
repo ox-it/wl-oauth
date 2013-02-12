@@ -23,11 +23,11 @@ import java.io.IOException;
  */
 public class AuthorisationServlet extends HttpServlet {
     /**
-     * Name of the "authorise" button in the authorisation page
+     * Name of the "authorise" button in the authorisation page.
      */
     public static final String AUTHORISE_BUTTON = "authorise";
     /**
-     * Name of the "deny" button in the authorisation page
+     * Name of the "deny" button in the authorisation page.
      */
     public static final String DENY_BUTTON = "deny";
     /**

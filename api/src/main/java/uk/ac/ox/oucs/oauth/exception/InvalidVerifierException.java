@@ -1,7 +1,7 @@
 package uk.ac.ox.oucs.oauth.exception;
 
 /**
- * Exception thrown when the given verifier doesn't match the expected verifier
+ * Exception thrown when the given verifier doesn't match the expected verifier.
  *
  * @author Colin Hebert
  */

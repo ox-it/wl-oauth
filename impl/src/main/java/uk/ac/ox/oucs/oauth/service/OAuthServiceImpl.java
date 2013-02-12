@@ -174,7 +174,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     /**
-     * Generate user's site if this is the very first login
+     * Generate user's site if this is the very first login.
      *
      * @param userId
      */
