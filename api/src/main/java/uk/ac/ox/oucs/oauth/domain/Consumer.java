@@ -24,7 +24,7 @@ public class Consumer implements Serializable {
     /**
      * Consumer's URL, not the callback URL, a simple URL to allow the user to access the consumer's web site.
      */
-    private String URL;
+    private String url;
     /**
      * Callback URL, used during the authorisation phase.
      */
@@ -98,12 +98,12 @@ public class Consumer implements Serializable {
         this.accessorSecret = accessorSecret;
     }
 
-    public String getURL() {
-        return URL;
+    public String getUrl() {
+        return url;
     }
 
-    public void setURL(String URL) {
-        this.URL = URL;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Set<String> getRights() {
@@ -132,10 +132,10 @@ public class Consumer implements Serializable {
 
     @Override
     public String toString() {
-        return "Consumer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", URL='" + URL + '\'' +
-                '}';
+        return "Consumer{"
+                + "id='" + id + '\''
+                + ", name='" + name + '\''
+                + ", url='" + url + '\''
+                + '}';
     }
 }
