@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Advisor allowing only permissions authorised to a specific consumer
+ * Advisor allowing only permissions authorised to a specific consumer.
  *
  * @author Colin Hebert
  */
@@ -18,6 +18,7 @@ public class LimitedPermissionsAdvisor implements SecurityAdvisor {
         allowedPermissions = new HashSet<String>(permissions);
     }
 
+    @Override
     public SecurityAdvice isAllowed(String userId, String function, String reference) {
         return (allowedPermissions.contains(function)) ? SecurityAdvice.PASS : SecurityAdvice.NOT_ALLOWED;
     }

@@ -5,13 +5,13 @@ import uk.ac.ox.oucs.oauth.domain.Consumer;
 import java.util.Collection;
 
 /**
- * Administration service handling every sensitive tasks
+ * Administration service handling every sensitive tasks.
  *
  * @author Colin Hebert
  */
 public interface OAuthAdminService {
     /**
-     * Get a raw consumer based on its id
+     * Get a raw consumer based on its id.
      *
      * @param consumerId Id of the desired consumer
      * @return consumer if it exists,
@@ -19,14 +19,14 @@ public interface OAuthAdminService {
     Consumer getConsumer(String consumerId);
 
     /**
-     * Create a new consumer available for future oAuth communications
+     * Create a new consumer available for future oAuth communications.
      *
      * @param consumer consumer to create
      */
     void createConsumer(Consumer consumer);
 
     /**
-     * Update a consumer with new settings
+     * Update a consumer with new settings.
      *
      * @param consumer consumer to update
      * @return the updated consumer
@@ -34,14 +34,14 @@ public interface OAuthAdminService {
     Consumer updateConsumer(Consumer consumer);
 
     /**
-     * Delete a consumer and associated accessors
+     * Delete a consumer and associated accessors.
      *
      * @param consumer consumer to delete
      */
     void deleteConsumer(Consumer consumer);
 
     /**
-     * Get a list of every available consumer
+     * Get a list of every available consumer.
      *
      * @return every consumer
      */

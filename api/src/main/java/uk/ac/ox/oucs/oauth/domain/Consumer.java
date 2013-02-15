@@ -4,45 +4,45 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * Consumer (client) allowed to connect through an OAuth authentication
+ * Consumer (client) allowed to connect through an OAuth authentication.
  *
  * @author Colin Hebert
  */
 public class Consumer implements Serializable {
     /**
-     * Unique identifier of the consumer, also used as consumer's key
+     * Unique identifier of the consumer, also used as consumer's key.
      */
     private String id;
     /**
-     * Name of the consumer, used for display
+     * Name of the consumer, used for display.
      */
     private String name;
     /**
-     * Consumer's description, contains messages addressed to the user during the authorisation phase
+     * Consumer's description, contains messages addressed to the user during the authorisation phase.
      */
     private String description;
     /**
-     * Consumer's URL, not the callback URL, a simple URL to allow the user to access the consumer's web site
+     * Consumer's URL, not the callback URL, a simple URL to allow the user to access the consumer's web site.
      */
-    private String URL;
+    private String url;
     /**
-     * Callback URL, used during the authorisation phase
+     * Callback URL, used during the authorisation phase.
      */
     private String callbackURL;
     /**
-     * Consumer's secret (password), used to sign oauth messages
+     * Consumer's secret (password), used to sign oauth messages.
      */
     private String secret;
     /**
-     * Consumer's accessor secret, as defined in http://wiki.oauth.net/w/page/12238502/AccessorSecret
+     * Consumer's accessor secret, as defined in http://wiki.oauth.net/w/page/12238502/AccessorSecret.
      */
     private String accessorSecret;
     /**
-     * Set of rights available for this specific consumer
+     * Set of rights available for this specific consumer.
      */
     private Set<String> rights;
     /**
-     * Default access token validity in minutes. The token won't expire if the value is 0
+     * Default access token validity in minutes. The token won't expire if the value is 0.
      */
     private int defaultValidity;
     /**
@@ -98,12 +98,12 @@ public class Consumer implements Serializable {
         this.accessorSecret = accessorSecret;
     }
 
-    public String getURL() {
-        return URL;
+    public String getUrl() {
+        return url;
     }
 
-    public void setURL(String URL) {
-        this.URL = URL;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Set<String> getRights() {
@@ -132,10 +132,10 @@ public class Consumer implements Serializable {
 
     @Override
     public String toString() {
-        return "Consumer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", URL='" + URL + '\'' +
-                '}';
+        return "Consumer{"
+                + "id='" + id + '\''
+                + ", name='" + name + '\''
+                + ", url='" + url + '\''
+                + '}';
     }
 }

@@ -1,7 +1,7 @@
 package uk.ac.ox.oucs.oauth.exception;
 
 /**
- * Exception thrown when the accessor used is considered as expired
+ * Exception thrown when the accessor used is considered as expired.
  *
  * @author Colin Hebert
  */

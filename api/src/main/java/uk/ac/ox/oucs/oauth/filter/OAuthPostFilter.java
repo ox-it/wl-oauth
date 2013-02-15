@@ -2,7 +2,7 @@ package uk.ac.ox.oucs.oauth.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.component.api.ComponentManager;
 import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.Authentication;
@@ -25,28 +25,32 @@ import java.security.Principal;
  * @author Colin Hebert
  */
 public class OAuthPostFilter implements Filter {
+    private static final Log log = LogFactory.getLog(OAuthPostFilter.class);
     private OAuthHttpService oAuthHttpService;
     private SessionManager sessionManager;
     private UserDirectoryService userDirectoryService;
     private UsageSessionService usageSessionService;
     //private AuthenticationManager authenticationManager;
-    private final static Log log = LogFactory.getLog(OAuthPostFilter.class);
 
-
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class.getCanonicalName());
-        sessionManager = (SessionManager) ComponentManager.getInstance().get(SessionManager.class.getCanonicalName());
-        userDirectoryService = (UserDirectoryService) ComponentManager.getInstance().get(UserDirectoryService.class.getCanonicalName());
-        usageSessionService = (UsageSessionService) ComponentManager.getInstance().get(UsageSessionService.class.getCanonicalName());
-        //authenticationManager = (AuthenticationManager) ComponentManager.getInstance().get(AuthenticationManager.class.getCanonicalName());
+        ComponentManager componentManager = org.sakaiproject.component.cover.ComponentManager.getInstance();
+        oAuthHttpService = (OAuthHttpService) componentManager.get(OAuthHttpService.class);
+        sessionManager = (SessionManager) componentManager.get(SessionManager.class);
+        userDirectoryService = (UserDirectoryService) componentManager.get(UserDirectoryService.class);
+        usageSessionService = (UsageSessionService) componentManager.get(UsageSessionService.class);
+        //authenticationManager = (AuthenticationManager) componentManager.get(AuthenticationManager.class);
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
         //Only apply filter if there is an OAuth implementation and a valid OAuth request
-        if (oAuthHttpService == null || !oAuthHttpService.isEnabled() || !oAuthHttpService.isValidOAuthRequest(req, res)) {
+        if (oAuthHttpService == null || !oAuthHttpService.isEnabled()
+                || !oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
             return;
         }
@@ -86,6 +90,7 @@ public class OAuthPostFilter implements Filter {
         chain.doFilter(req, res);
     }
 
+    @Override
     public void destroy() {
     }
 }

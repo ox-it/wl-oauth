@@ -11,7 +11,7 @@ import java.util.Collection;
  * @author Colin Hebert
  */
 public class OAuthAdminServiceImpl implements OAuthAdminService {
-    private OAuthService oAuthService;
+    private OAuthService oauthService;
     private ConsumerDao consumerDao;
     private AccessorDao accessorDao;
 
@@ -34,7 +34,7 @@ public class OAuthAdminServiceImpl implements OAuthAdminService {
     public void deleteConsumer(Consumer consumer) {
         Collection<Accessor> accessors = accessorDao.getByConsumer(consumer.getId());
         for (Accessor accessor : accessors) {
-            oAuthService.revokeAccessor(accessor.getToken());
+            oauthService.revokeAccessor(accessor.getToken());
         }
         consumerDao.remove(consumer);
     }
@@ -50,8 +50,8 @@ public class OAuthAdminServiceImpl implements OAuthAdminService {
         consumerDao.update(consumer);
     }
 
-    public void setOAuthService(OAuthService oAuthService) {
-        this.oAuthService = oAuthService;
+    public void setOauthService(OAuthService oauthService) {
+        this.oauthService = oauthService;
     }
 
     public void setConsumerDao(ConsumerDao consumerDao) {

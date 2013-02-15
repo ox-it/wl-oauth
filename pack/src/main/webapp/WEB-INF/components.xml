@@ -20,7 +20,7 @@
     </bean>
 
     <bean id="uk.ac.ox.oucs.oauth.service.OAuthAdminService" class="uk.ac.ox.oucs.oauth.service.OAuthAdminServiceImpl">
-        <property name="OAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
+        <property name="oauthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
         <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
         <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
     </bean>

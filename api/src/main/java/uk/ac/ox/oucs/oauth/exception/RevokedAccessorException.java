@@ -1,7 +1,7 @@
 package uk.ac.ox.oucs.oauth.exception;
 
 /**
- * Thrown when an accessor is considered as revoked
+ * Thrown when an accessor is considered as revoked.
  *
  * @author Colin Hebert
  */

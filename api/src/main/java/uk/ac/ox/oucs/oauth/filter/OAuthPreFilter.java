@@ -28,18 +28,22 @@ public class OAuthPreFilter implements Filter {
     private OAuthService oAuthService;
     private SecurityService securityService;
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.oAuthService = (OAuthService) ComponentManager.getInstance().get(OAuthService.class.getCanonicalName());
-        this.oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class.getCanonicalName());
-        this.securityService = (SecurityService) ComponentManager.getInstance().get(SecurityService.class.getCanonicalName());
+        this.oAuthService = (OAuthService) ComponentManager.getInstance().get(OAuthService.class);
+        this.oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class);
+        this.securityService = (SecurityService) ComponentManager.getInstance().get(SecurityService.class);
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
         //Only apply filter if there is an OAuth implementation and a valid OAuth request
-        if (oAuthHttpService == null || !oAuthHttpService.isEnabled() || !oAuthHttpService.isValidOAuthRequest(req, res)) {
+        if (oAuthHttpService == null || !oAuthHttpService.isEnabled()
+                || !oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
             return;
         }
@@ -67,6 +71,7 @@ public class OAuthPreFilter implements Filter {
         }
     }
 
+    @Override
     public void destroy() {
     }
 }

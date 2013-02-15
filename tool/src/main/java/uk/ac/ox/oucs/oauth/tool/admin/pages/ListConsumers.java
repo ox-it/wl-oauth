@@ -7,7 +7,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 import uk.ac.ox.oucs.oauth.service.OAuthAdminService;
 import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
@@ -25,7 +24,8 @@ public class ListConsumers extends SakaiPage {
         addMenuLink(ListConsumers.class, new ResourceModel("menu.list.consumer"), null);
         addMenuLink(ConsumerAdministration.class, new ResourceModel("menu.add.consumer"), null);
 
-        ListView<Consumer> consumerList = new ListView<Consumer>("consumerlist", new ArrayList<Consumer>(oAuthAdminService.getAllConsumers())) {
+        ListView<Consumer> consumerList = new ListView<Consumer>("consumerlist",
+                new ArrayList<Consumer>(oAuthAdminService.getAllConsumers())) {
             @Override
             protected void populateItem(ListItem<Consumer> components) {
                 components.add(new Label("id", components.getModelObject().getId()));
@@ -48,7 +48,6 @@ public class ListConsumers extends SakaiPage {
                     }
                 });
 
-
                 Link<Consumer> recordLink = new Link<Consumer>("record", components.getModel()) {
                     @Override
                     public void onClick() {
@@ -57,7 +56,8 @@ public class ListConsumers extends SakaiPage {
                             setResponsePage(getPage().getClass());
                             getSession().info(getModelObject().getName() + " record mode has changed.");
                         } catch (Exception e) {
-                            warn("Couldn't change record mode on '" + getModelObject().getName() + "': " + e.getLocalizedMessage());
+                            warn("Couldn't change record mode on " + getModelObject().getName() + "': "
+                                    + e.getLocalizedMessage());
                         }
                     }
                 };

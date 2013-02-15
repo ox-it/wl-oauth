@@ -9,7 +9,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.authz.api.FunctionManager;
-import uk.ac.ox.oucs.oauth.dao.ConsumerDao;
 import uk.ac.ox.oucs.oauth.domain.Consumer;
 import uk.ac.ox.oucs.oauth.service.OAuthAdminService;
 import uk.ac.ox.oucs.oauth.tool.pages.SakaiPage;
@@ -22,16 +21,16 @@ import java.util.List;
  * @author Colin Hebert
  */
 public class ConsumerAdministration extends SakaiPage {
+    private final Consumer consumer;
     @SpringBean
     private FunctionManager functionManager;
     @SpringBean
     private OAuthAdminService oAuthAdminService;
 
-    private final Consumer consumer;
-
     public ConsumerAdministration() {
         consumer = new Consumer();
-        //Manually set an empty Set for rights to avoid confusion with CheckBoxMultipleChoice and not ending up with a List
+        // Manually set an empty Set for rights to avoid confusion with CheckBoxMultipleChoice
+        // and not ending up with a List
         consumer.setRights(new HashSet<String>());
         init(false);
     }
@@ -80,8 +79,10 @@ public class ConsumerAdministration extends SakaiPage {
         consumerForm.add(new TextField<String>("url", new PropertyModel<String>(consumer, "uRL")));
         consumerForm.add(new TextField<String>("callbackURL", new PropertyModel<String>(consumer, "callbackURL")));
         consumerForm.add(new RequiredTextField<String>("secret", new PropertyModel<String>(consumer, "secret")));
-        consumerForm.add(new TextField<String>("accessorSecret", new PropertyModel<String>(consumer, "accessorSecret")));
-        consumerForm.add(new TextField<Integer>("defaultValidity", new PropertyModel<Integer>(consumer, "defaultValidity")));
+        consumerForm.add(new TextField<String>("accessorSecret",
+                new PropertyModel<String>(consumer, "accessorSecret")));
+        consumerForm.add(new TextField<Integer>("defaultValidity",
+                new PropertyModel<Integer>(consumer, "defaultValidity")));
 
         //Create a list of possible rights as checkboxes, pre-check already granted permissions
         CheckBoxMultipleChoice<String> rightCheckboxes = new CheckBoxMultipleChoice<String>("rights",

@@ -23,6 +23,7 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
     private NullableType type;
     private int[] sqlTypes;
 
+    @Override
     public void setParameterValues(Properties parameters) {
         String enumClassName = parameters.getProperty("enumClass");
         try {
@@ -62,10 +63,12 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
         }
     }
 
+    @Override
     public Class returnedClass() {
         return enumClass;
     }
 
+    @Override
     public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
             throws HibernateException, SQLException {
         Object identifier = type.get(rs, names[0]);
@@ -83,6 +86,7 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
         }
     }
 
+    @Override
     public void nullSafeSet(PreparedStatement st, Object value, int index)
             throws HibernateException, SQLException {
         try {
@@ -100,35 +104,43 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
         }
     }
 
+    @Override
     public int[] sqlTypes() {
         return sqlTypes;
     }
 
+    @Override
     public Object assemble(Serializable cached, Object owner)
             throws HibernateException {
         return cached;
     }
 
+    @Override
     public Object deepCopy(Object value) throws HibernateException {
         return value;
     }
 
+    @Override
     public Serializable disassemble(Object value) throws HibernateException {
         return (Serializable) value;
     }
 
+    @Override
     public boolean equals(Object x, Object y) throws HibernateException {
         return x == y;
     }
 
+    @Override
     public int hashCode(Object x) throws HibernateException {
         return x.hashCode();
     }
 
+    @Override
     public boolean isMutable() {
         return false;
     }
 
+    @Override
     public Object replace(Object original, Object target, Object owner)
             throws HibernateException {
         return original;

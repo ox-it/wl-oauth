@@ -5,7 +5,7 @@ import uk.ac.ox.oucs.oauth.domain.Accessor;
 import java.util.Collection;
 
 /**
- * Data access object for accessors (tokens)
+ * Data access object for accessors (tokens).
  *
  * @author Colin Hebert
  */
@@ -15,7 +15,7 @@ public interface AccessorDao {
     Accessor get(String accessorId);
 
     /**
-     * Get every accessor for a specific user
+     * Gets every accessor for a specific user.
      *
      * @param userId user associated with accessors
      * @return accessors for a user
@@ -23,7 +23,7 @@ public interface AccessorDao {
     Collection<Accessor> getByUser(String userId);
 
     /**
-     * Get every accessor created for a consumer
+     * Gets every accessor created for a consumer.
      * @param consumerId consumer responsible of these accessors
      * @return accessors for a consumer
      */
@@ -34,7 +34,7 @@ public interface AccessorDao {
     void remove(Accessor accessor);
 
     /**
-     * Check every accessor and set them as expired if the date of expiration has passed
+     * Checks every accessor and set them as expired if the date of expiration has passed.
      */
     void markExpiredAccessors();
 }

@@ -1,7 +1,7 @@
 package uk.ac.ox.oucs.oauth.servlet;
 
+import org.sakaiproject.component.api.ComponentManager;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.tool.api.*;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -23,18 +23,15 @@ import java.io.IOException;
  */
 public class AuthorisationServlet extends HttpServlet {
     /**
-     * Name of the "authorise" button in the authorisation page
+     * Name of the "authorise" button in the authorisation page.
      */
     public static final String AUTHORISE_BUTTON = "authorise";
     /**
-     * Name of the "deny" button in the authorisation page
+     * Name of the "deny" button in the authorisation page.
      */
     public static final String DENY_BUTTON = "deny";
-    /**
-     *
-     */
     private static final String LOGIN_PATH = "/login";
-
+    private static final String SAKAI_LOGIN_TOOL = "sakai.login";
 
     //Services and settings
     private OAuthService oAuthService;
@@ -44,17 +41,18 @@ public class AuthorisationServlet extends HttpServlet {
     private ActiveToolManager activeToolManager;
     private ServerConfigurationService serverConfigurationService;
     private String authorisePath;
-    private static final String SAKAI_LOGIN_TOOL = "sakai.login";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        oAuthService = (OAuthService) ComponentManager.getInstance().get(OAuthService.class.getCanonicalName());
-        oAuthHttpService = (OAuthHttpService) ComponentManager.getInstance().get(OAuthHttpService.class.getCanonicalName());
-        sessionManager = (SessionManager) ComponentManager.getInstance().get(SessionManager.class.getCanonicalName());
-        activeToolManager = (ActiveToolManager) ComponentManager.getInstance().get(ActiveToolManager.class.getCanonicalName());
-        userDirectoryService = (UserDirectoryService) ComponentManager.getInstance().get(UserDirectoryService.class.getCanonicalName());
-        serverConfigurationService = (ServerConfigurationService) ComponentManager.getInstance().get(ServerConfigurationService.class.getCanonicalName());
+        ComponentManager componentManager = org.sakaiproject.component.cover.ComponentManager.getInstance();
+        oAuthService = (OAuthService) componentManager.get(OAuthService.class);
+        oAuthHttpService = (OAuthHttpService) componentManager.get(OAuthHttpService.class);
+        sessionManager = (SessionManager) componentManager.get(SessionManager.class);
+        activeToolManager = (ActiveToolManager) componentManager.get(ActiveToolManager.class);
+        userDirectoryService = (UserDirectoryService) componentManager.get(UserDirectoryService.class);
+        serverConfigurationService =
+                (ServerConfigurationService) componentManager.get(ServerConfigurationService.class);
         //TODO: get this path from the configuration (injection?)
         authorisePath = "/authorise.jsp";
     }
@@ -95,21 +93,22 @@ public class AuthorisationServlet extends HttpServlet {
             sendToLoginPage(request, response);
 
         else if (request.getParameter(AUTHORISE_BUTTON) == null && request.getParameter(DENY_BUTTON) == null)
-            //If logged-in but haven't yet authorised (or denied)
+            // If logged-in but haven't yet authorised (or denied)
             sendToAuthorisePage(request, response);
 
         else
-            //Even if the authorisation has been denied, send the client to the consumer's callback
+            // Even if the authorisation has been denied, send the client to the consumer's callback
             handleRequestAuth(request, response);
     }
 
     private void sendToLoginPage(HttpServletRequest request, HttpServletResponse response) throws ToolException {
-        //If not logging-in, set the return path and proceed to the login steps
+        // If not logging-in, set the return path and proceed to the login steps
         String pathInfo = request.getPathInfo();
         if (pathInfo == null || !pathInfo.startsWith(LOGIN_PATH)) {
             Session session = sessionManager.getCurrentSession();
 
-            //Set the return path for after login if needed (Note: in session, not tool session, special for Login helper)
+            // Set the return path for after login if needed
+            // (Note: in session, not tool session, special for Login helper)
             StringBuffer returnUrl = request.getRequestURL();
             if (request.getQueryString() != null)
                 returnUrl.append('?').append(request.getQueryString());
@@ -165,8 +164,10 @@ public class AuthorisationServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private void handleRequestAuth(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        boolean authorised = request.getParameter(AUTHORISE_BUTTON) != null && request.getParameter(DENY_BUTTON) == null;
+    private void handleRequestAuth(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        boolean authorised = request.getParameter(AUTHORISE_BUTTON) != null
+                && request.getParameter(DENY_BUTTON) == null;
         String token = request.getParameter("oauthToken");
         String verifier = request.getParameter("oauthVerifier");
         String userId = sessionManager.getCurrentSessionUserId();

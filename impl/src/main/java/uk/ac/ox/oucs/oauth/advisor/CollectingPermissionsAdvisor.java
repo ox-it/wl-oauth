@@ -24,20 +24,22 @@ public class CollectingPermissionsAdvisor implements SecurityAdvisor {
         this.consumer = consumer;
     }
 
+    @Override
     public SecurityAdvice isAllowed(String userId, String function, String reference) {
         if (!consumer.getRights().contains(function)) {
-            logger.info("'"+consumer.getId()+"' requires '"+function+"' right in order to work, enable it.");
+            logger.info("'" + consumer.getId() + "' requires '" + function + "' right in order to work, enable it.");
             try {
                 consumer.getRights().add(function);
                 consumerDao.update(consumer);
             } catch (Exception e) {
                 //If the update doesn't work, carry on
-                logger.warn("Activation of the '"+function+"' right on '"+consumer.getId()+"' failed.", e);
+                logger.warn("Activation of the '" + function + "' right on '" + consumer.getId() + "' failed.", e);
             }
         }
         return SecurityAdvice.PASS;
     }
 
+    @Override
     public String toString() {
         return "Permission collector";
     }
