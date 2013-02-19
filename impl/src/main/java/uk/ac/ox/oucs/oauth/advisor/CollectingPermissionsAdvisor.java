@@ -32,7 +32,7 @@ public class CollectingPermissionsAdvisor implements SecurityAdvisor {
                 consumer.getRights().add(function);
                 consumerDao.update(consumer);
             } catch (Exception e) {
-                //If the update doesn't work, carry on
+                // If the update doesn't work, carry on
                 logger.warn("Activation of the '" + function + "' right on '" + consumer.getId() + "' failed.", e);
             }
         }

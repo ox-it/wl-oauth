@@ -60,8 +60,8 @@ public class ListAccessors extends SakaiPage {
                         }
                     });
                 } catch (InvalidConsumerException invalidConsumerException) {
-                    //Invalid consumer, it is probably deleted
-                    //For security reasons, this token should be revoked
+                    // Invalid consumer, it is probably deleted
+                    // For security reasons, this token should be revoked
                     oAuthService.revokeAccessor(components.getModelObject().getToken());
                     components.setVisible(false);
                 }

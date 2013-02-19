@@ -30,7 +30,7 @@ public class OAuthPostFilter implements Filter {
     private SessionManager sessionManager;
     private UserDirectoryService userDirectoryService;
     private UsageSessionService usageSessionService;
-    //private AuthenticationManager authenticationManager;
+    // private AuthenticationManager authenticationManager;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -39,7 +39,7 @@ public class OAuthPostFilter implements Filter {
         sessionManager = (SessionManager) componentManager.get(SessionManager.class);
         userDirectoryService = (UserDirectoryService) componentManager.get(UserDirectoryService.class);
         usageSessionService = (UsageSessionService) componentManager.get(UsageSessionService.class);
-        //authenticationManager = (AuthenticationManager) componentManager.get(AuthenticationManager.class);
+        // authenticationManager = (AuthenticationManager) componentManager.get(AuthenticationManager.class);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class OAuthPostFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        //Only apply filter if there is an OAuth implementation and a valid OAuth request
+        // Only apply filter if there is an OAuth implementation and a valid OAuth request
         if (oAuthHttpService == null || !oAuthHttpService.isEnabled()
                 || !oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
@@ -56,10 +56,10 @@ public class OAuthPostFilter implements Filter {
         }
 
         Principal principal = req.getUserPrincipal();
-        //Do not log the user in if there is already an opened session
+        // Do not log the user in if there is already an opened session
         if (principal != null && sessionManager.getCurrentSessionUserId() == null) {
             try {
-                //Force the authentication/login with the user Eid
+                // Force the authentication/login with the user Eid
                 final String eid = userDirectoryService.getUserEid(principal.getName());
                 final String uid = principal.getName();
 
@@ -77,11 +77,11 @@ public class OAuthPostFilter implements Filter {
                     }
                 };
 
-                //Authentication authentication = authenticationManager.authenticate(new ExternalTrustedEvidence() {
+                // Authentication authentication = authenticationManager.authenticate(new ExternalTrustedEvidence() {
                 //    public String getIdentifier() {
                 //        return eid;
                 //    }
-                //});
+                // });
                 usageSessionService.login(authentication, req);
             } catch (UserNotDefinedException e) {
                 log.warn("Failed to find user \"" + principal.getName() + "\". This shouldn't happen", e);

@@ -33,7 +33,7 @@ public class AuthorisationServlet extends HttpServlet {
     private static final String LOGIN_PATH = "/login";
     private static final String SAKAI_LOGIN_TOOL = "sakai.login";
 
-    //Services and settings
+    // Services and settings
     private OAuthService oAuthService;
     private OAuthHttpService oAuthHttpService;
     private UserDirectoryService userDirectoryService;
@@ -53,7 +53,7 @@ public class AuthorisationServlet extends HttpServlet {
         userDirectoryService = (UserDirectoryService) componentManager.get(UserDirectoryService.class);
         serverConfigurationService =
                 (ServerConfigurationService) componentManager.get(ServerConfigurationService.class);
-        //TODO: get this path from the configuration (injection?)
+        // TODO: get this path from the configuration (injection?)
         authorisePath = "/authorise.jsp";
     }
 
@@ -89,7 +89,7 @@ public class AuthorisationServlet extends HttpServlet {
         String pathInfo = request.getPathInfo();
         String currentUserId = sessionManager.getCurrentSessionUserId();
         if (currentUserId == null || (pathInfo != null && pathInfo.startsWith(LOGIN_PATH)))
-            //Redirect non logged-in users and currently logging-in users requests
+            // Redirect non logged-in users and currently logging-in users requests
             sendToLoginPage(request, response);
 
         else if (request.getParameter(AUTHORISE_BUTTON) == null && request.getParameter(DENY_BUTTON) == null)
@@ -115,7 +115,7 @@ public class AuthorisationServlet extends HttpServlet {
             session.setAttribute(Tool.HELPER_DONE_URL, returnUrl.toString());
         }
 
-        //Redirect to the login tool
+        // Redirect to the login tool
         ActiveTool loginTool = activeToolManager.getActiveTool(SAKAI_LOGIN_TOOL);
         String context = request.getContextPath() + request.getServletPath() + LOGIN_PATH;
         loginTool.help(request, response, context, LOGIN_PATH);

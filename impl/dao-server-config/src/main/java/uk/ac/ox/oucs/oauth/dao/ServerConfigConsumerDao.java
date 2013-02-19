@@ -25,7 +25,7 @@ public class ServerConfigConsumerDao implements ConsumerDao {
             consumer.setName(serverConfig.getString(consumerPrefix + ".name", null));
             consumer.setDescription(serverConfig.getString(consumerPrefix + ".description", null));
             consumer.setUrl(serverConfig.getString(consumerPrefix + ".url", null));
-            consumer.setCallbackURL(serverConfig.getString(consumerPrefix + ".callbackURL", null));
+            consumer.setCallbackUrl(serverConfig.getString(consumerPrefix + ".callbackUrl", null));
             consumer.setSecret(serverConfig.getString(consumerPrefix + ".secret"));
             consumer.setAccessorSecret(serverConfig.getString(consumerPrefix + ".accessorsecret", null));
             consumer.setDefaultValidity(serverConfig.getInt(consumerPrefix + ".validity", 0));
