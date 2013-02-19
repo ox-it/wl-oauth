@@ -14,7 +14,7 @@
 
         <property name="name" type="string" not-null="true"/>
         <property name="description" type="string"/>
-        <property name="URL" type="string"/>
+        <property name="url" type="string"/>
         <property name="callbackURL" type="string"/>
         <property name="secret" type="string" not-null="true"/>
         <property name="accessorSecret" type="string"/>
