@@ -80,7 +80,7 @@ public class OAuthHttpServiceImpl implements OAuthHttpService {
             throws IOException, ServletException {
         try {
             OAuthMessage message = OAuthServlet.getMessage(request, null);
-            //Non existing token, just continue
+            // Non existing token, just continue
             if (message.getToken() == null)
                 return false;
             OAuthConsumer oAuthConsumer = Util.convertToOAuthConsumer(

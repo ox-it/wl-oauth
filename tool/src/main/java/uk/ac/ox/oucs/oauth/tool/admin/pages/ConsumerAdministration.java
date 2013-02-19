@@ -84,7 +84,7 @@ public class ConsumerAdministration extends SakaiPage {
         consumerForm.add(new TextField<Integer>("defaultValidity",
                 new PropertyModel<Integer>(consumer, "defaultValidity")));
 
-        //Create a list of possible rights as checkboxes, pre-check already granted permissions
+        // Create a list of possible rights as checkboxes, pre-check already granted permissions
         CheckBoxMultipleChoice<String> rightCheckboxes = new CheckBoxMultipleChoice<String>("rights",
                 new PropertyModel<Collection<String>>(consumer, "rights"), getAvailableFunctions());
         consumerForm.add(rightCheckboxes);

@@ -41,7 +41,7 @@ public class OAuthPreFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        //Only apply filter if there is an OAuth implementation and a valid OAuth request
+        // Only apply filter if there is an OAuth implementation and a valid OAuth request
         if (oAuthHttpService == null || !oAuthHttpService.isEnabled()
                 || !oAuthHttpService.isValidOAuthRequest(req, res)) {
             chain.doFilter(req, response);
@@ -67,7 +67,7 @@ public class OAuthPreFilter implements Filter {
 
             chain.doFilter(wrappedRequest, response);
         } catch (InvalidAccessorException e) {
-            //TODO: Redirect to an error page
+            // TODO: Redirect to an error page
         }
     }
 

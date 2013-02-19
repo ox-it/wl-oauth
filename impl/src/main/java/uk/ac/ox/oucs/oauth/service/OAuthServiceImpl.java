@@ -136,7 +136,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setType(Accessor.Type.REQUEST);
         accessor.setStatus(Accessor.Status.VALID);
         accessor.setCreationDate(new DateTime().toDate());
-        //A request accessor is valid for 15 minutes only
+        // A request accessor is valid for 15 minutes only
         accessor.setExpirationDate(new DateTime().plusMinutes(15).toDate());
         accessor.setAccessorSecret(accessorSecret);
 
@@ -159,7 +159,7 @@ public class OAuthServiceImpl implements OAuthService {
         Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST);
         accessor.setVerifier(generateVerifier(accessor));
         accessor.setType(Accessor.Type.REQUEST_AUTHORISING);
-        //The authorisation must be done in less than 15 minutes
+        // The authorisation must be done in less than 15 minutes
         accessor.setExpirationDate(new DateTime().plusMinutes(15).toDate());
         accessor = accessorDao.update(accessor);
         return accessor;
@@ -175,7 +175,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessor.setVerifier(generateVerifier(accessor));
         accessor.setType(Accessor.Type.REQUEST_AUTHORISED);
         accessor.setUserId(userId);
-        //An authorised request accessor is valid for one month only
+        // An authorised request accessor is valid for one month only
         accessor.setExpirationDate(new DateTime().plusMonths(1).toDate());
         accessor = accessorDao.update(accessor);
 
@@ -209,7 +209,7 @@ public class OAuthServiceImpl implements OAuthService {
         accessAccessor.setStatus(Accessor.Status.VALID);
         accessAccessor.setCreationDate(new DateTime().toDate());
 
-        //An access accessor is valid based on the number of minutes given by the consumer
+        // An access accessor is valid based on the number of minutes given by the consumer
         if (consumer.getDefaultValidity() > 0)
             accessAccessor.setExpirationDate(DateTime.now().plusMinutes(consumer.getDefaultValidity()).toDate());
         accessAccessor.setToken(generateToken(accessAccessor));
@@ -227,7 +227,7 @@ public class OAuthServiceImpl implements OAuthService {
             Accessor accessor = getAccessor(accessorId, Accessor.Type.REQUEST_AUTHORISING);
             updateAccessorStatus(accessor, Accessor.Status.REVOKED);
         } catch (OAuthException ignored) {
-            //If the accessor is already expired/revoked, nothing to do/handle
+            // If the accessor is already expired/revoked, nothing to do/handle
         }
     }
 
@@ -254,7 +254,7 @@ public class OAuthServiceImpl implements OAuthService {
             Accessor accessor = getAccessor(accessorId, Accessor.Type.ACCESS);
             updateAccessorStatus(accessor, Accessor.Status.REVOKED);
         } catch (OAuthException ignored) {
-            //If the accessor is already expired/revoked, nothing to do/handle
+            // If the accessor is already expired/revoked, nothing to do/handle
         }
     }
 

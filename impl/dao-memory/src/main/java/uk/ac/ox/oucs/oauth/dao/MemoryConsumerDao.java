@@ -17,7 +17,7 @@ public class MemoryConsumerDao implements ConsumerDao {
 
     @Override
     public void create(Consumer consumer) {
-        //TODO: Throw an exception if the consumer already exists?
+        // TODO: Throw an exception if the consumer already exists?
         consumers.put(consumer.getId(), consumer);
     }
 
@@ -29,7 +29,7 @@ public class MemoryConsumerDao implements ConsumerDao {
     @Override
     public Consumer update(Consumer consumer) {
         consumers.put(consumer.getId(), consumer);
-        //Two steps, to be sure, because we don't know the Map implementation
+        // Two steps, to be sure, because we don't know the Map implementation
         return get(consumer.getId());
     }
 
