@@ -76,8 +76,8 @@ public class ConsumerAdministration extends SakaiPage {
 
         consumerForm.add(new RequiredTextField<String>("name", new PropertyModel<String>(consumer, "name")));
         consumerForm.add(new TextArea<String>("description", new PropertyModel<String>(consumer, "description")));
-        consumerForm.add(new TextField<String>("url", new PropertyModel<String>(consumer, "uRL")));
-        consumerForm.add(new TextField<String>("callbackURL", new PropertyModel<String>(consumer, "callbackURL")));
+        consumerForm.add(new TextField<String>("url", new PropertyModel<String>(consumer, "url")));
+        consumerForm.add(new TextField<String>("callbackUrl", new PropertyModel<String>(consumer, "callbackUrl")));
         consumerForm.add(new RequiredTextField<String>("secret", new PropertyModel<String>(consumer, "secret")));
         consumerForm.add(new TextField<String>("accessorSecret",
                 new PropertyModel<String>(consumer, "accessorSecret")));

@@ -40,7 +40,7 @@ public final class Util {
     public static OAuthConsumer convertToOAuthConsumer(Consumer consumer) {
         if (consumer == null)
             return null;
-        OAuthConsumer oAuthConsumer = new OAuthConsumer(consumer.getCallbackURL(), consumer.getId(),
+        OAuthConsumer oAuthConsumer = new OAuthConsumer(consumer.getCallbackUrl(), consumer.getId(),
                 consumer.getSecret(), null);
         // Support Accessor Secret http://wiki.oauth.net/w/page/12238502/AccessorSecret
         oAuthConsumer.setProperty(OAuthConsumer.ACCESSOR_SECRET, consumer.getAccessorSecret());

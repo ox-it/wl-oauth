@@ -142,8 +142,8 @@ public class OAuthServiceImpl implements OAuthService {
 
         if (callback != null)
             accessor.setCallbackUrl(callback);
-        else if (consumer.getCallbackURL() != null)
-            accessor.setCallbackUrl(consumer.getCallbackURL());
+        else if (consumer.getCallbackUrl() != null)
+            accessor.setCallbackUrl(consumer.getCallbackUrl());
         else
             accessor.setCallbackUrl(OUT_OF_BAND_CALLBACK);
 
