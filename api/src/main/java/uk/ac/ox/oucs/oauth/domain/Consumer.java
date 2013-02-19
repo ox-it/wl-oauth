@@ -28,7 +28,7 @@ public class Consumer implements Serializable {
     /**
      * Callback URL, used during the authorisation phase.
      */
-    private String callbackURL;
+    private String callbackUrl;
     /**
      * Consumer's secret (password), used to sign oauth messages.
      */
@@ -50,12 +50,12 @@ public class Consumer implements Serializable {
      */
     private boolean recordModeEnabled;
 
-    public String getCallbackURL() {
-        return callbackURL;
+    public String getCallbackUrl() {
+        return callbackUrl;
     }
 
-    public void setCallbackURL(String callbackURL) {
-        this.callbackURL = callbackURL;
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
     }
 
     public String getDescription() {

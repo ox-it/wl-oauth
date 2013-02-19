@@ -15,7 +15,7 @@
         <property name="name" type="string" not-null="true"/>
         <property name="description" type="string"/>
         <property name="url" type="string"/>
-        <property name="callbackURL" type="string"/>
+        <property name="callbackUrl" type="string"/>
         <property name="secret" type="string" not-null="true"/>
         <property name="accessorSecret" type="string"/>
         <property name="recordModeEnabled" type="boolean"/>
