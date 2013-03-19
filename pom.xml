@@ -197,11 +197,6 @@
                     <deployDirectory>${maven.tomcat.home}</deployDirectory>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.sonar</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.4.1</version>
-            </plugin>
         </plugins>
     </build>
 
