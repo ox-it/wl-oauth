@@ -4,7 +4,7 @@ Sakai OAuth allows any external application to connect to Sakai as any user
 thanks to the [OAuth system](http://oauth.net/) 1.0.
 
 
-[![Build Status](https://secure.travis-ci.org/ColinHebert/Sakai-OAuth.png)](http://travis-ci.org/ColinHebert/Sakai-OAuth)
+[![Build Status](https://secure.travis-ci.org/ColinHebert/Sakai-OAuth.png?branch=master)](http://travis-ci.org/ColinHebert/Sakai-OAuth)
 
 ### Structure
 
