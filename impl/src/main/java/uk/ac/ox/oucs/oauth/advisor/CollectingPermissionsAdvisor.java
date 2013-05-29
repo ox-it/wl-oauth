@@ -27,13 +27,13 @@ public class CollectingPermissionsAdvisor implements SecurityAdvisor {
     @Override
     public SecurityAdvice isAllowed(String userId, String function, String reference) {
         if (!consumer.getRights().contains(function)) {
-            logger.info("'" + consumer.getId() + "' requires '" + function + "' right in order to work, enable it.");
+            logger.info("'{}' requires '{}' right in order to work, enable it.", consumer.getId(), function);
             try {
                 consumer.getRights().add(function);
                 consumerDao.update(consumer);
             } catch (Exception e) {
                 // If the update doesn't work, carry on
-                logger.warn("Activation of the '" + function + "' right on '" + consumer.getId() + "' failed.", e);
+                logger.warn("Activation of the '{}' right on '{}' failed.", function, consumer.getId(), e);
             }
         }
         return SecurityAdvice.PASS;

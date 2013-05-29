@@ -51,9 +51,9 @@ public final class Util {
         for (Consumer consumer : source.getAll()) {
             try {
                 destination.create(consumer);
-                logger.info("New consumer imported '" + consumer.getId() + "'");
+                logger.info("New consumer imported '{}'", consumer.getId());
             } catch (Exception e) {
-                logger.warn("Impossible to import '" + consumer.getId() + "' as a consumer.", e);
+                logger.warn("Impossible to import '{}' as a consumer.", consumer.getId(), e);
             }
         }
     }
