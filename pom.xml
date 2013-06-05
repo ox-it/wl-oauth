@@ -14,7 +14,7 @@
     <inceptionYear>2009</inceptionYear>
     <licenses>
         <license>
-            <name>ECL</name>
+            <name>ECL-2.0</name>
             <url>http://opensource.org/licenses/ecl2.php</url>
             <distribution>repo</distribution>
         </license>
