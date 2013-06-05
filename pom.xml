@@ -2,11 +2,63 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>org.sakaiproject.oauth</groupId>
     <artifactId>oauth-base</artifactId>
-    <packaging>pom</packaging>
-    <name>OAuth Base</name>
     <version>1.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>OAuth Base</name>
+    <description>Add OAuth capabilities to an instance of Sakai CLE.</description>
+    <url>https://github.com/ColinHebert/Sakai-OAuth</url>
+    <inceptionYear>2009</inceptionYear>
+    <licenses>
+        <license>
+            <name>ECL</name>
+            <url>http://opensource.org/licenses/ecl2.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>buckett</id>
+            <name>Matthew Buckett</name>
+            <organization>University of Oxford - IT Services</organization>
+            <organizationUrl>https://www.it.ox.ac.uk/</organizationUrl>
+        </developer>
+        <developer>
+            <id>ColinHebert</id>
+            <name>Colin Hebert</name>
+            <organization>University of Oxford - IT Services</organization>
+            <organizationUrl>https://www.it.ox.ac.uk/</organizationUrl>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>api</module>
+        <module>assembly</module>
+        <module>impl</module>
+        <module>impl/dao-hbm</module>
+        <module>impl/dao-memory</module>
+        <module>impl/dao-server-config</module>
+        <module>pack</module>
+        <module>tool</module>
+    </modules>
+
+    <scm>
+        <connection>scm:git:git://github.com/ColinHebert/Sakai-OAuth.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:ColinHebert/Sakai-OAuth.git</developerConnection>
+        <url>https://github.com/ColinHebert/Sakai-OAuth</url>
+    </scm>
+    <issueManagement>
+        <url>https://github.com/ColinHebert/Sakai-OAuth/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+    <ciManagement>
+        <system>Travis-CI</system>
+        <url>https://travis-ci.org/ColinHebert/Sakai-OAuth</url>
+    </ciManagement>
 
     <distributionManagement>
         <repository>
@@ -18,11 +70,6 @@
             <url>http://maven-repo.oucs.ox.ac.uk/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    <scm>
-        <connection>scm:git:git://github.com/ColinHebert/Sakai-OAuth.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:ColinHebert/Sakai-OAuth.git</developerConnection>
-        <url>https://github.com/ColinHebert/Sakai-OAuth</url>
-    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,17 +89,6 @@
         <wicket.version>1.4.20</wicket.version>
         <slf4j.version>1.7.5</slf4j.version>
     </properties>
-
-    <modules>
-        <module>api</module>
-        <module>assembly</module>
-        <module>impl</module>
-        <module>impl/dao-hbm</module>
-        <module>impl/dao-memory</module>
-        <module>impl/dao-server-config</module>
-        <module>pack</module>
-        <module>tool</module>
-    </modules>
 
     <dependencyManagement>
         <dependencies>
