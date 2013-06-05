@@ -19,9 +19,9 @@
         </snapshotRepository>
     </distributionManagement>
     <scm>
-        <connection>scm:git:git://github.com/ox-it/wl-oauth.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:ox-it/wl-oauth.git</developerConnection>
-        <url>https://github.com/ox-it/wl-oauth</url>
+        <connection>scm:git:git://github.com/ColinHebert/Sakai-OAuth.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:ColinHebert/Sakai-OAuth.git</developerConnection>
+        <url>https://github.com/ColinHebert/Sakai-OAuth</url>
     </scm>
 
     <properties>
