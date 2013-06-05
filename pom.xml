@@ -11,6 +11,10 @@
     <name>OAuth Base</name>
     <description>Add OAuth capabilities to an instance of Sakai CLE.</description>
     <url>https://github.com/ColinHebert/Sakai-OAuth</url>
+    <organization>
+        <name>The Sakai Foundation</name>
+        <url>http://www.sakaiproject.org/sakai-foundation</url>
+    </organization>
     <inceptionYear>2009</inceptionYear>
     <licenses>
         <license>
