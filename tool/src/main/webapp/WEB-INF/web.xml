@@ -8,15 +8,15 @@
     <!-- oAuth servlets -->
     <servlet>
         <servlet-name>RequestTokenServlet</servlet-name>
-        <servlet-class>uk.ac.ox.oucs.oauth.servlet.RequestTokenServlet</servlet-class>
+        <servlet-class>org.sakaiproject.oauth.servlet.RequestTokenServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AuthorizationServlet</servlet-name>
-        <servlet-class>uk.ac.ox.oucs.oauth.servlet.AuthorisationServlet</servlet-class>
+        <servlet-class>org.sakaiproject.oauth.servlet.AuthorisationServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AccessTokenServlet</servlet-name>
-        <servlet-class>uk.ac.ox.oucs.oauth.servlet.AccessTokenServlet</servlet-class>
+        <servlet-class>org.sakaiproject.oauth.servlet.AccessTokenServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -38,7 +38,7 @@
         <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationClassName</param-name>
-            <param-value>uk.ac.ox.oucs.oauth.tool.user.OAuthApplication</param-value>
+            <param-value>org.sakaiproject.oauth.tool.user.OAuthApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -53,7 +53,7 @@
         <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
         <init-param>
             <param-name>applicationClassName</param-name>
-            <param-value>uk.ac.ox.oucs.oauth.tool.admin.OauthAdminApplication</param-value>
+            <param-value>org.sakaiproject.oauth.tool.admin.OauthAdminApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -97,7 +97,7 @@
     <!-- Administration filter -->
     <filter>
         <filter-name>oauth.admin</filter-name>
-        <filter-class>uk.ac.ox.oucs.oauth.tool.admin.AdminFilter</filter-class>
+        <filter-class>org.sakaiproject.oauth.tool.admin.AdminFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>oauth.admin</filter-name>

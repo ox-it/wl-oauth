@@ -5,32 +5,32 @@
     <bean class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
         <property name="mappingResources">
             <list>
-                <value>uk/ac/ox/oucs/oauth/dao/Accessor.hbm.xml</value>
-                <value>uk/ac/ox/oucs/oauth/dao/Consumer.hbm.xml</value>
+                <value>org/sakaiproject/oauth/dao/Accessor.hbm.xml</value>
+                <value>org/sakaiproject/oauth/dao/Consumer.hbm.xml</value>
             </list>
         </property>
     </bean>
 
-    <bean id="uk.ac.ox.oucs.oauth.service.OAuthService" class="uk.ac.ox.oucs.oauth.service.OAuthServiceImpl">
+    <bean id="org.sakaiproject.oauth.service.OAuthService" class="org.sakaiproject.oauth.service.OAuthServiceImpl">
         <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
         <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
-        <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
-        <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
+        <property name="accessorDao" ref="org.sakaiproject.oauth.dao.AccessorDao"/>
+        <property name="consumerDao" ref="org.sakaiproject.oauth.dao.ConsumerDao"/>
         <property name="keepOldAccessors" value="true"/>
     </bean>
 
-    <bean id="uk.ac.ox.oucs.oauth.service.OAuthAdminService" class="uk.ac.ox.oucs.oauth.service.OAuthAdminServiceImpl">
-        <property name="oauthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
-        <property name="consumerDao" ref="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
-        <property name="accessorDao" ref="uk.ac.ox.oucs.oauth.dao.AccessorDao"/>
+    <bean id="org.sakaiproject.oauth.service.OAuthAdminService" class="org.sakaiproject.oauth.service.OAuthAdminServiceImpl">
+        <property name="oauthService" ref="org.sakaiproject.oauth.service.OAuthService"/>
+        <property name="consumerDao" ref="org.sakaiproject.oauth.dao.ConsumerDao"/>
+        <property name="accessorDao" ref="org.sakaiproject.oauth.dao.AccessorDao"/>
     </bean>
 
-    <bean id="uk.ac.ox.oucs.oauth.dao.AccessorDao"
+    <bean id="org.sakaiproject.oauth.dao.AccessorDao"
           class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager"
                   ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
         <property name="target">
-            <bean class="uk.ac.ox.oucs.oauth.dao.HibernateAccessorDao">
+            <bean class="org.sakaiproject.oauth.dao.HibernateAccessorDao">
                 <property name="sessionFactory"
                           ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
             </bean>
@@ -42,12 +42,12 @@
         </property>
     </bean>
 
-    <bean id="uk.ac.ox.oucs.oauth.dao.ConsumerDao"
+    <bean id="org.sakaiproject.oauth.dao.ConsumerDao"
           class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager"
                   ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
         <property name="target">
-            <bean class="uk.ac.ox.oucs.oauth.dao.HibernateConsumerDao">
+            <bean class="org.sakaiproject.oauth.dao.HibernateConsumerDao">
                 <property name="sessionFactory"
                           ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
             </bean>
@@ -59,8 +59,8 @@
         </property>
     </bean>
 
-    <bean id="uk.ac.ox.oucs.oauth.service.OAuthHttpService" class="uk.ac.ox.oucs.oauth.service.OAuthHttpServiceImpl">
-        <property name="oAuthService" ref="uk.ac.ox.oucs.oauth.service.OAuthService"/>
+    <bean id="org.sakaiproject.oauth.service.OAuthHttpService" class="org.sakaiproject.oauth.service.OAuthHttpServiceImpl">
+        <property name="oAuthService" ref="org.sakaiproject.oauth.service.OAuthService"/>
         <property name="oAuthValidator">
             <bean class="net.oauth.SimpleOAuthValidator"/>
         </property>
@@ -76,15 +76,15 @@
 
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetObject">
-            <bean class="uk.ac.ox.oucs.oauth.service.Util"/>
+            <bean class="org.sakaiproject.oauth.service.Util"/>
         </property>
         <property name="targetMethod" value="importConsumers"/>
         <property name="arguments">
             <list>
-                <bean class="uk.ac.ox.oucs.oauth.dao.ServerConfigConsumerDao">
+                <bean class="org.sakaiproject.oauth.dao.ServerConfigConsumerDao">
                     <constructor-arg ref="org.sakaiproject.component.api.ServerConfigurationService"/>
                 </bean>
-                <ref bean="uk.ac.ox.oucs.oauth.dao.ConsumerDao"/>
+                <ref bean="org.sakaiproject.oauth.dao.ConsumerDao"/>
             </list>
         </property>
     </bean>
