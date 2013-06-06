@@ -265,6 +265,8 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>license-maven-plugin</artifactId>
                     <version>1.5</version>
+                    <!-- TODO: Re-enable this section once the license artifact has been properly deployed -->
+                    <!--
                     <configuration>
                         <licenseName>ecl_v2</licenseName>
                         <licenseResolver>classpath://org/sakaiproject/license</licenseResolver>
@@ -285,6 +287,7 @@
                             <version>1.0-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
+                    -->
                 </plugin>
             </plugins>
         </pluginManagement>
