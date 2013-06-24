@@ -2,14 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <groupId>uk.ac.ox.oucs.oauth</groupId>
+        <groupId>org.sakaiproject.oauth</groupId>
         <artifactId>oauth-base</artifactId>
         <version>1.1-SNAPSHOT</version>
     </parent>
+
     <artifactId>oauth-tool</artifactId>
-    <name>OAuth Tool</name>
     <packaging>war</packaging>
+
+    <name>OAuth Tool</name>
+    <description>Web interface to manage and administrate OAuth consumers and user tokens.</description>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -48,4 +53,13 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

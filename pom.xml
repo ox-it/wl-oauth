@@ -2,11 +2,67 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>uk.ac.ox.oucs.oauth</groupId>
+
+    <groupId>org.sakaiproject.oauth</groupId>
     <artifactId>oauth-base</artifactId>
-    <packaging>pom</packaging>
-    <name>OAuth Base</name>
     <version>1.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>OAuth Base</name>
+    <description>Add OAuth capabilities to an instance of Sakai CLE.</description>
+    <url>https://github.com/ColinHebert/Sakai-OAuth</url>
+    <organization>
+        <name>The Sakai Foundation</name>
+        <url>http://www.sakaiproject.org/sakai-foundation</url>
+    </organization>
+    <inceptionYear>2009</inceptionYear>
+    <licenses>
+        <license>
+            <name>ECL-2.0</name>
+            <url>http://opensource.org/licenses/ECL-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>buckett</id>
+            <name>Matthew Buckett</name>
+            <organization>University of Oxford - IT Services</organization>
+            <organizationUrl>https://www.it.ox.ac.uk/</organizationUrl>
+        </developer>
+        <developer>
+            <id>ColinHebert</id>
+            <name>Colin Hebert</name>
+            <organization>University of Oxford - IT Services</organization>
+            <organizationUrl>https://www.it.ox.ac.uk/</organizationUrl>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>api</module>
+        <module>assembly</module>
+        <module>impl</module>
+        <module>impl/dao-hbm</module>
+        <module>impl/dao-memory</module>
+        <module>impl/dao-server-config</module>
+        <module>pack</module>
+        <module>tool</module>
+    </modules>
+
+    <scm>
+        <connection>scm:git:git://github.com/ColinHebert/Sakai-OAuth.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:ColinHebert/Sakai-OAuth.git</developerConnection>
+        <url>https://github.com/ColinHebert/Sakai-OAuth</url>
+    </scm>
+    <issueManagement>
+        <url>https://github.com/ColinHebert/Sakai-OAuth/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+    <ciManagement>
+        <system>Travis-CI</system>
+        <url>https://travis-ci.org/ColinHebert/Sakai-OAuth</url>
+    </ciManagement>
 
     <distributionManagement>
         <repository>
@@ -18,11 +74,6 @@
             <url>http://maven-repo.oucs.ox.ac.uk/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    <scm>
-        <connection>scm:git:git://github.com/ox-it/wl-oauth.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:ox-it/wl-oauth.git</developerConnection>
-        <url>https://github.com/ox-it/wl-oauth</url>
-    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,19 +91,8 @@
         <servlet-api.version>2.5</servlet-api.version>
         <hibernate.version>3.2.7.ga</hibernate.version>
         <wicket.version>1.4.20</wicket.version>
-        <slf4j.version>1.7.2</slf4j.version>
+        <slf4j.version>1.7.5</slf4j.version>
     </properties>
-
-    <modules>
-        <module>api</module>
-        <module>assembly</module>
-        <module>impl</module>
-        <module>impl/dao-hbm</module>
-        <module>impl/dao-memory</module>
-        <module>impl/dao-server-config</module>
-        <module>pack</module>
-        <module>tool</module>
-    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -197,7 +237,60 @@
                     <deployDirectory>${maven.tomcat.home}</deployDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <version>1.9</version>
+                <configuration>
+                    <signature>
+                        <groupId>org.codehaus.mojo.signature</groupId>
+                        <artifactId>java16</artifactId>
+                        <version>1.1</version>
+                    </signature>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-compatibility</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>1.5</version>
+                    <!-- TODO: Re-enable this section once the license artifact has been properly deployed -->
+                    <!--
+                    <configuration>
+                        <licenseName>ecl_v2</licenseName>
+                        <licenseResolver>classpath://org/sakaiproject/license</licenseResolver>
+                        <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>update-file-header</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.sakaiproject.license</groupId>
+                            <artifactId>ecl-2</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                        </dependency>
+                    </dependencies>
+                    -->
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>
@@ -205,10 +298,6 @@
             <id>sakai.maven2</id>
             <name>Sakai Maven2 Repo</name>
             <url>https://source.sakaiproject.org/maven2</url>
-        </repository>
-        <repository>
-            <id>oauth</id>
-            <url>http://oauth.googlecode.com/svn/code/maven/</url>
         </repository>
     </repositories>
 

@@ -2,14 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <groupId>uk.ac.ox.oucs.oauth</groupId>
+        <groupId>org.sakaiproject.oauth</groupId>
         <artifactId>oauth-base</artifactId>
         <version>1.1-SNAPSHOT</version>
     </parent>
+
     <artifactId>oauth-api</artifactId>
-    <name>OAuth API</name>
     <packaging>jar</packaging>
+
+    <name>OAuth API</name>
+    <description>Api allowing an access to a Sakai instance through OAuth 1.0.</description>
 
     <properties>
         <deploy.target>shared</deploy.target>
@@ -38,4 +42,13 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

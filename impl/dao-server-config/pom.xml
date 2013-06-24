@@ -2,15 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <groupId>uk.ac.ox.oucs.oauth</groupId>
+        <groupId>org.sakaiproject.oauth</groupId>
         <artifactId>oauth-base</artifactId>
         <version>1.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
+
     <artifactId>oauth-dao-server-config</artifactId>
-    <name>OAuth ServerConfig DAO</name>
     <packaging>jar</packaging>
+
+    <name>OAuth ServerConfig DAO</name>
+    <description>
+        In properties implementation of the DAO used by the OAuth tool, allowing to retrieve the configuration from the
+        sakai.properties file. It must be used with an other DAO implementation to store tokens.
+    </description>
 
     <dependencies>
         <dependency>
@@ -24,4 +31,13 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
