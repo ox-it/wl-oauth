@@ -8,6 +8,13 @@
     <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <parent>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>10-SNAPSHOT</version>
+        <relativePath>../master/pom.xml</relativePath>
+    </parent>
+
     <name>OAuth Base</name>
     <description>Add OAuth capabilities to an instance of Sakai CLE.</description>
     <url>https://github.com/ColinHebert/Sakai-OAuth</url>
@@ -41,7 +48,6 @@
 
     <modules>
         <module>api</module>
-        <module>assembly</module>
         <module>impl</module>
         <module>impl/dao-hbm</module>
         <module>impl/dao-memory</module>
@@ -83,15 +89,9 @@
         <maven.compiler.target>6</maven.compiler.target>
 
         <!-- dependencies versions -->
-        <sakai.kernel.version>1.2.9</sakai.kernel.version>
         <oauth.version>20100527</oauth.version>
         <joda-time.version>2.2</joda-time.version>
-        <spring.version>2.5.6.SEC02</spring.version>
-        <commons-logging.version>1.1.1</commons-logging.version>
-        <servlet-api.version>2.5</servlet-api.version>
-        <hibernate.version>3.2.7.ga</hibernate.version>
         <wicket.version>1.4.20</wicket.version>
-        <slf4j.version>1.7.5</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -151,43 +151,6 @@
                 <artifactId>oauth-provider</artifactId>
                 <version>${oauth.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate</artifactId>
-                <version>${hibernate.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>${servlet-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>${commons-logging.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
             <!-- Sakai dependencies -->
             <dependency>
                 <groupId>org.sakaiproject.kernel</groupId>
@@ -235,6 +198,15 @@
                 <extensions>true</extensions>
                 <configuration>
                     <deployDirectory>${maven.tomcat.home}</deployDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <!-- Set the paths back to standard maven pattern -->
+                    <warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -291,6 +263,15 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <!-- Set the paths back to standard maven pattern -->
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <resources>
+            <resource><directory>${basedir}/src/main/resources</directory></resource>
+        </resources>
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+        <testResources>
+            <testResource><directory>${basedir}/src/test/resources</directory></testResource>
+        </testResources>
     </build>
 
     <repositories>
