@@ -35,13 +35,15 @@
         <property name="creationDate" type="timestamp"/>
         <property name="expirationDate" type="timestamp"/>
         <property name="status">
-            <type name="org.sakaiproject.oauth.dao.GenericEnumUserType">
+            <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">org.sakaiproject.oauth.domain.Accessor$Status</param>
+                <param name="type">12</param><!-- Make it a string -->
             </type>
         </property>
         <property name="type">
-            <type name="org.sakaiproject.oauth.dao.GenericEnumUserType">
+            <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">org.sakaiproject.oauth.domain.Accessor$Type</param>
+                <param name="type">12</param><!-- Make it a string -->
             </type>
         </property>
         <property name="accessorSecret"/>
