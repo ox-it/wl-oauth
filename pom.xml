@@ -275,21 +275,4 @@
         </testResources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>sakai.maven2</id>
-            <name>Sakai Maven2 Repo</name>
-            <url>https://source.sakaiproject.org/maven2</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Sakai Plugin Repo</id>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
